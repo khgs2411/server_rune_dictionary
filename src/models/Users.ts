@@ -24,9 +24,9 @@ const usersSchema = new mongoose.Schema(
 	},
 );
 
-usersSchema.virtual("id").get(function () {
+/* usersSchema.virtual("id").get(function () {
 	return this._id.toHexString();
-});
+}); */
 
 export type User = mongoose.InferSchemaType<typeof usersSchema>;
 export const User = mongoose.model("User", usersSchema);

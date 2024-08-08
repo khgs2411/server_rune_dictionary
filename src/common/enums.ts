@@ -7,3 +7,21 @@ export enum E_IS {
 	BOOLEAN = "boolean",
 	REGEX = "regex",
 }
+export enum Actions {
+	GET_RUNE = "get_rune",
+	GET_RUNES = "get_runes",
+	GET_AFFIX = "get_affix",
+	GET_AFFIXES = "get_affixes",
+	INSERT_RUNE = "insert_rune",
+	INSERT_RUNES = "insert_runes",
+	INSERT_AFFIX = "insert_affix",
+	INSERT_AFFIXES = "insert_affixes",
+	UPDATE_RUNE = "update_rune",
+	UPDATE_RUNES = "update_runes",
+	UPDATE_AFFIX = "update_affix",
+	UPDATE_AFFIXES = "update_affixes",
+	DELETE_RUNE = "delete_rune",
+	DELETE_RUNES = "delete_runes",
+	DELETE_AFFIX = "delete_affix",
+	DELETE_AFFIXES = "delete_affixes",
+}

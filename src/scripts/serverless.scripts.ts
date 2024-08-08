@@ -2,6 +2,8 @@ import { main } from "main/index";
 
 const args: DoFunctionArgs = {
 	api_key: "r_d_25c9dd62-ba12-44de-b303-67ef659ba7bd",
+	action: "get_rune",
+	data: { test: "test" },
 };
 
 const invoke = async () => {
@@ -27,5 +29,5 @@ const run = async () => {
 	process.exit(0);
 };
 
-// await run();
-await invoke();
+await run();
+// await invoke();
