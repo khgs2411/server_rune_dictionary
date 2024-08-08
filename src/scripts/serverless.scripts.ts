@@ -27,5 +27,5 @@ const run = async () => {
 	process.exit(0);
 };
 
-await run();
-// await invoke();
+// await run();
+await invoke();

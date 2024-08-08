@@ -7,10 +7,12 @@ class App {
 	public static async Request(args: DoFunctionArgs) {
 		if (Lib.IsNumpty(args.api_key)) throw "Unauthorized!";
 		await Mongo.Connection();
-		console.log("args", args);
+		const api_key = args.api_key;
+		console.log("api_key", api_key);
 		const user = await User.findOne({
-			api_key: args.api_key,
+			api_key: api_key,
 		});
+		console.log("user: ", user);
 		if (Guards.IsNil(user)) throw "Unauthorized!!";
 	}
 

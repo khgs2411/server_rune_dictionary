@@ -2,8 +2,6 @@ import Database from "base/base.database";
 import Lib from "common/lib";
 import * as mongoose from "mongoose";
 
-export type Databases = string;
-
 class Mongo extends Database {
 	private username: string;
 	private password: string;
@@ -20,7 +18,7 @@ class Mongo extends Database {
 		this.uri = `mongodb+srv://${this.username}:${this.password}@${this.host}`;
 	}
 
-	public async connect(dbName: Databases = process.env.MONGO_DATABASE || "default"): Promise<void> {
+	public async connect(dbName: string = process.env.MONGO_DATABASE || "default"): Promise<void> {
 		this.connected = false;
 		this.client = await mongoose.connect(this.uri, { dbName: dbName });
 		this.connected = true;
@@ -39,7 +37,7 @@ class Mongo extends Database {
 		return undefined;
 	}
 
-	public async setDatabase(dbName: Databases) {
+	public async setDatabase(dbName: string) {
 		await this.disconnect();
 		await this.connect(dbName);
 	}
