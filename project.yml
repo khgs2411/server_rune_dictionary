@@ -1,6 +1,6 @@
 parameters: {}
 environment:
-    MONG_USER: admin
+    MONG_USERNAME: admin
     MONG_PASSWORD: iiNPfMdU1fG3EGHc
     MONGO_HOST: cluster0.igt0g.mongodb.net
 
