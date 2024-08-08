@@ -1,7 +1,7 @@
 {
-	"name": "do_serverless_ts",
+	"name": "rune_dictionary_server",
 	"module": "src/main/index/index.ts",
-	"description": "A simple serverless function framework written in TypeScript",
+	"description": "",
 	"type": "module",
 	"scripts": {
 		"build": "docts build",
@@ -9,9 +9,7 @@
 		"publish": "bun run build && bun run deploy",
 		"new": "docts fn new",
 		"remove": "docts fn remove",
-		"destroy": "doctl serverless undeploy",
-		"push:env": "bunx dotenv-vault@latest push",
-		"pull:env": "bunx dotenv-vault@latest pull"
+		"destroy": "doctl serverless undeploy"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
@@ -24,5 +22,8 @@
 	},
 	"peerDependencies": {
 		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"mongoose": "^8.5.2"
 	}
 }
