@@ -1,3 +1,4 @@
+import Lib from "common/lib";
 import { main } from "main/index";
 const run = async () => {
 	const args: DoFunctionArgs = {
@@ -16,8 +17,10 @@ const run = async () => {
 			},
 		},
 	};
+
 	const response = await main(args);
 	console.log(response);
+	process.exit(0);
 };
 
 await run();

@@ -16,17 +16,16 @@ class Mongo extends Database {
 		super();
 		this.username = process.env.MONGO_USERNAME || "";
 		this.password = process.env.MONGO_PASSWORD || "";
-		this.host = (process.env.NODE_ENV == "production" ? process.env.MONGO_PRODUCTION_HOST : process.env.MONGO_HOST) || "";
+		this.host = process.env.MONGO_HOST || "";
 		this.uri = `mongodb+srv://${this.username}:${this.password}@${this.host}`;
 	}
 
 	public async connect(dbName: Databases = "wisepal"): Promise<void> {
-		const start = performance.now();
 		this.connected = false;
 		this.client = await mongoose.connect(this.uri, { dbName: dbName });
 		this.connected = true;
-		const end = performance.now();
-		Lib.Log(`MongoDB connected: (${start - end}ms)`);
+
+		Lib.Log(`MongoDB connected`);
 	}
 
 	public async disconnect(): Promise<void> {

@@ -315,13 +315,16 @@ class Lib {
 	}
 
 	public static msToString(ms: number): string {
+		if (ms < 1000) {
+			return `${ms.toFixed(2)}ms`;
+		}
 		const seconds = Math.floor(ms / 1000);
 		const minutes = Math.floor(seconds / 60);
 		const hours = Math.floor(minutes / 60);
 		let output = hours > 0 ? `${hours}h ` : "";
 		output += minutes > 0 ? `${minutes % 60}m ` : "";
 		output += seconds % 60 > 0 ? `${seconds % 60}s` : "";
-		return output;
+		return output.trim();
 	}
 
 	public static async RetryHandler<T extends (...args: any[]) => any>(
