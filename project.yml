@@ -4,8 +4,8 @@ packages:
     - name: main
       parameters: {}
       environment:
-          MONG_USERNAME: admin
-          MONG_PASSWORD: iiNPfMdU1fG3EGHc
+          MONGO_USERNAME: admin
+          MONGO_PASSWORD: iiNPfMdU1fG3EGHc
           MONGO_HOST: cluster0.igt0g.mongodb.net
       annotations: {}
       functions:

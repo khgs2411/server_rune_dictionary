@@ -27,7 +27,7 @@ interface DoFunctionArgs {
 	/** @deprecated Get query params from root */
 	__ow_query?: string;
 
-	http: DoFunctionHTTP;
+	http?: DoFunctionHTTP;
 
 	[k: string]: any;
 }
