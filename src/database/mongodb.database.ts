@@ -17,6 +17,9 @@ class Mongo extends Database {
 		this.username = process.env.MONGO_USERNAME || "";
 		this.password = process.env.MONGO_PASSWORD || "";
 		this.host = process.env.MONGO_HOST || "";
+		console.log(process.env.MONGO_USERNAME);
+		console.log(process.env.MONGO_PASSWORD);
+		console.log(process.env.MONGO_HOST);
 		this.uri = `mongodb+srv://${this.username}:${this.password}@${this.host}`;
 	}
 

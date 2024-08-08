@@ -1,13 +1,12 @@
 parameters: {}
-environment:
-    MONG_USERNAME: admin
-    MONG_PASSWORD: iiNPfMdU1fG3EGHc
-    MONGO_HOST: cluster0.igt0g.mongodb.net
 
 packages:
     - name: main
       parameters: {}
-      environment: {}
+      environment:
+          MONG_USERNAME: admin
+          MONG_PASSWORD: iiNPfMdU1fG3EGHc
+          MONGO_HOST: cluster0.igt0g.mongodb.net
       annotations: {}
       functions:
           - name: index

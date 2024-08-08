@@ -1,7 +1,6 @@
 import { E_IS } from "common/enums";
 import fs from "fs";
 import path from "path";
-import Guards from "common/guards";
 
 class Lib {
 	public static Log(...args: any) {
@@ -114,9 +113,9 @@ class Lib {
 	}
 
 	public static DaysBetweenDates(startDate: Date | string | undefined, endDate: Date | string | undefined): number {
-		if (Guards.IsNil(startDate) || Guards.IsNil(endDate)) throw new Error("Lib.DaysBetweenDates() Exception: Dates are required");
-		const start = new Date(this.FormatDate(startDate, "MM/dd/yyyy")).getTime();
-		const end = new Date(this.FormatDate(endDate, "MM/dd/yyyy")).getTime();
+		if (this.IsNil(startDate) || this.IsNil(endDate)) throw new Error("Lib.DaysBetweenDates() Exception: Dates are required");
+		const start = new Date(this.FormatDate(startDate as string | Date, "MM/dd/yyyy")).getTime();
+		const end = new Date(this.FormatDate(endDate as string | Date, "MM/dd/yyyy")).getTime();
 		const difference = end - start;
 		const daysPassed = difference / (1000 * 3600 * 24);
 		return Math.floor(daysPassed);
