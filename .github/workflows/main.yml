@@ -1,0 +1,45 @@
+name: Run publish script on push
+
+on: [push]
+jobs:
+    build:
+        if: true
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: List files in workspace
+              run: ls
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "20"
+
+            - name: Authenticate doctl
+              uses: digitalocean/action-doctl@v2
+              with:
+                  token: ${{ secrets.DO_API_KEY}}
+
+            - name: Install doctl serverless support
+              run: doctl serverless install
+
+            - name: "Install docts globally"
+              run: npm install -g docts-cli
+
+            - name: Connect doctl serverless to a functions namespace
+              run: doctl serverless connect ${{ env.DOCTL_NAMESPACE }}
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run build script
+              run: npm run build
+
+            - name: List files in workspace after build
+              run: ls
+
+            - name: Run deploy script
+              run: npm run deploy

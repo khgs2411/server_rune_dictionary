@@ -1,0 +1,53 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "bun",
+			"script": "bun run publish",
+			"problemMatcher": [],
+			"label": "bun: publish",
+			"detail": "Build and deploy your doctl serverless functions",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false,
+				"close": true
+			}
+		},
+		{
+			"type": "bun",
+			"script": "bun run build",
+			"problemMatcher": [],
+			"label": "bun: build",
+			"detail": "Build your doctl serverless functions",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false,
+				"close": true
+			}
+		},
+		{
+			"type": "bun",
+			"script": "bun run deploy",
+			"problemMatcher": [],
+			"label": "bun: deploy",
+			"detail": "Deploy your doctl serverless functions",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false,
+				"close": true
+			}
+		}
+	]
+}

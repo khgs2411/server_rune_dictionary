@@ -1,0 +1,17 @@
+parameters: {}
+environment: {}
+packages:
+  - name: main
+    parameters: {}
+    environment: {}
+    annotations: {}
+    functions:
+      - name: index
+        binary: false
+        main: ""
+        runtime: nodejs:18
+        web: true
+        parameters: {}
+        environment: {}
+        annotations: {}
+        limits: {}
