@@ -1,10 +1,10 @@
 import Lib from "common/lib";
+import App from "App";
 import Mongo from "database/mongodb.database";
-import App from "core/App";
 
 let db: Mongo | null = null;
 
-export const main: DoFunction = async (args) => {
+export const main: DoFunction = async (request) => {
 	try {
 		const start = performance.now();
 
@@ -13,12 +13,12 @@ export const main: DoFunction = async (args) => {
 			Lib.Log("Connected to MongoDB");
 		}
 
-		const { user, instructions } = await App.Request(args);
+		const args = await App.Request(request);
+		const response = await App.Process(args);
 		const end = performance.now();
-		const time = Lib.msToString(end - start);
 		return App.Response({
-			message: "Hello world",
-			runtime: time,
+			...response,
+			runtime: Lib.msToString(end - start),
 		});
 	} catch (e) {
 		return App.Error(400, e);

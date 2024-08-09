@@ -1,11 +1,11 @@
 import Lib from "common/lib";
 import Mongo from "database/mongodb.database";
 import { main } from "main/index";
-import { User } from "models/Users";
+import { UserModel } from "models/users.model";
 
 const run = async () => {
 	await Mongo.Connection();
-	const new_user = await User.findOne({
+	const new_user = await UserModel.findOne({
 		username: "admin",
 	});
 	if (!new_user) return;

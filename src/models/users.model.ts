@@ -2,10 +2,16 @@ import Guards from "common/guards";
 import Lib from "common/lib";
 import mongoose from "mongoose";
 
+export enum ROLES {
+	USER = "user",
+	ADMIN = "admin",
+}
+
 const usersSchema = new mongoose.Schema(
 	{
-		username: { type: String, required: true },
-		api_key: { type: String, required: false },
+		username: { type: String, required: true, unique: true },
+		api_key: { type: String, required: false, unique: true },
+		role: { type: mongoose.Schema.Types.String, required: true, default: ROLES.USER },
 	},
 	{
 		toJSON: { virtuals: true },
@@ -28,5 +34,5 @@ const usersSchema = new mongoose.Schema(
 	return this._id.toHexString();
 }); */
 
-export type User = mongoose.InferSchemaType<typeof usersSchema>;
-export const User = mongoose.model("User", usersSchema);
+export type UserModel = mongoose.InferSchemaType<typeof usersSchema>;
+export const UserModel = mongoose.model("User", usersSchema);

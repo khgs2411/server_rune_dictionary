@@ -1,9 +1,15 @@
 import Guards from "common/guards";
 import Lib from "common/lib";
 import Mongo from "database/mongodb.database";
-import { User } from "models/Users";
+import { ROLES, UserModel } from "models/users.model";
 
-class UsersRepo {
+export type UserData = {
+	username: string;
+	api_key?: string;
+	role?: ROLES;
+};
+
+class UsersRepository {
 	public static async Validate(api_key?: string) {
 		if (Lib.IsNumpty(api_key)) throw "Unauthorized!";
 
@@ -11,7 +17,7 @@ class UsersRepo {
 
 		Lib.Log("api_key", api_key);
 
-		const user = await User.findOne({
+		const user = await UserModel.findOne({
 			api_key: api_key,
 		});
 
@@ -25,13 +31,13 @@ class UsersRepo {
 	public static async Create(username: string) {
 		await Mongo.Connection();
 
-		const user = await User.findOne({
+		const user = await UserModel.findOne({
 			username: username,
 		});
 
 		if (!Guards.IsNil(user)) throw "Username already exists";
 
-		const new_user = new User({
+		const new_user = new UserModel({
 			username: username,
 		});
 
@@ -43,16 +49,32 @@ class UsersRepo {
 	public static async Delete(username: string) {
 		await Mongo.Connection();
 
-		const user = await User.findOne({
+		const user = await UserModel.findOne({
 			username: username,
 		});
 
 		if (Guards.IsNil(user)) throw "Username does not exist";
 
-		await User.deleteOne({
+		await UserModel.deleteOne({
 			username: username,
 		});
 	}
+
+	public static async Update(data: UserData) {
+		await Mongo.Connection();
+		const user = await UserModel.findOne({
+			username: data.username,
+		});
+		if (Guards.IsNil(user)) throw "Username does not exist";
+		if (data.api_key) {
+			user.api_key = data.api_key;
+		}
+		if (data.role) {
+			user.role = data.role;
+		}
+		await user.save();
+		return user;
+	}
 }
 
-export default UsersRepo;
+export default UsersRepository;
