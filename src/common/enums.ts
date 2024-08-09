@@ -1,3 +1,8 @@
+export enum BOOLEANISH {
+	FALSE,
+	TRUE,
+}
+
 export enum E_IS {
 	ARRAY = "array",
 	OBJECT = "object",

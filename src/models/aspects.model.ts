@@ -4,8 +4,10 @@ const aspectsSchema = new mongoose.Schema({
 	aspect_id: { type: Number, required: false, unique: true }, //? auto increment
 	name: { type: String, required: true, unique: true },
 	weight: { type: Number, required: true },
-	type: { type: String, required: false },
-	rune_ids: { type: [Number], required: false },
+	potency: { type: Number, required: true },
+	rune_ids: { type: [Number], required: true },
+	required_runes: { type: [Number], required: true },
+	blocked_runes: { type: [Number], required: true },
 });
 
 aspectsSchema.pre("save", async function (next) {

@@ -4,7 +4,7 @@ import type { RuneCreationData, RuneRetrieveData, RuneUpdateData } from "core/ru
 import Mongo from "database/mongodb.database";
 import { RuneModel } from "models/runes.model";
 import type mongoose from "mongoose";
-import type { UpdateWriteOpResult, Document } from "mongoose";
+import type { Document } from "mongoose";
 
 export type RuneDocument = Document<
 	unknown,
@@ -38,7 +38,6 @@ class RuneRepository {
 
 	public static async Create(rune: Rune) {
 		await Mongo.Connection();
-
 		const already_exists = await RuneModel.findOne(rune.serialize());
 
 		if (!Guards.IsNil(already_exists)) throw "Rune already exists";

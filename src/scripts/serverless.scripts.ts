@@ -3,6 +3,7 @@ import { RUNES } from "core/rune/rune.enums";
 import type { RuneCreationData, RuneRetrieveData, RuneUpdateData } from "core/rune/rune.types";
 import { main } from "main/index";
 import { type Request } from "common/types";
+import Rune from "core/rune/rune";
 const api_key = "r_d_25c9dd62-ba12-44de-b303-67ef659ba7bd";
 
 const insert_one: Request = {
@@ -29,7 +30,6 @@ const update_one: Request = {
 	action: Actions.RUNE_UPDATE_RUNE,
 	data: <RuneUpdateData>{
 		rune_id: 2,
-		// name: RUNES.MELEE,
 		weight: 0.3,
 		type: "default",
 	},
@@ -50,7 +50,6 @@ const update_many: Request = {
 			type: "default",
 		},
 		{
-			// name: RUNES.MELEE,
 			rune_id: 2,
 			weight: 0.5,
 			type: "default",
@@ -111,16 +110,22 @@ async function getRunes() {
 	return await main(get_runes);
 	// console.log(JSON.stringify(res, null, 2));
 }
-
-const run = async () => {
-	// const res = await getRunes();
+async function runRunes() {
+	const res = await getRunes();
 	// const res = await createOne();
 	// const res = await createMany();
 	// const res = await updateOne();
-	const res = await updateMany();
+	// const res = await updateMany();
 	// const res = await deleteOne();
 	// const res = await deleteMany();
 	console.log(JSON.stringify(res, null, 2));
+}
+const run = async () => {
+	// await runRunes();
+
+	const rune = new Rune({ name: "test", weight: 1, type: "test" });
+	console.log(rune.serialize());
+
 	process.exit(0);
 };
 

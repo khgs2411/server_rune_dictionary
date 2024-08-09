@@ -5,6 +5,7 @@ class Rune implements Serializable<Rune> {
 	private name: string;
 	private weight: number;
 	private type: string;
+	private rune_id?: number;
 
 	constructor(data: RuneCreationData) {
 		this.name = data.name;
@@ -13,11 +14,7 @@ class Rune implements Serializable<Rune> {
 	}
 
 	serialize(): Dto<Rune> {
-		return {
-			name: this.name,
-			weight: this.weight,
-			type: this.type,
-		};
+		return this;
 	}
 }
 export default Rune;
