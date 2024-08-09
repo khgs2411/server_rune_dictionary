@@ -2,7 +2,7 @@ import { Actions } from "common/enums";
 import Guards from "common/guards";
 import type { ProcessArgs } from "common/types";
 import Rune from "core/rune/rune";
-import { IsRuneCreationData, IsRuneDeleteData, IsRuneUpdateData, type RuneCreationData } from "core/rune/rune.types";
+import { IsRuneCreationData, IsRuneDeleteData, IsRuneRetrieveData, IsRuneUpdateData, type RuneCreationData } from "core/rune/rune.types";
 import RuneRepository from "repositories/runes.repo";
 
 class RuneService {
@@ -12,9 +12,7 @@ class RuneService {
 			[Actions.RUNE_GET_RUNE]: () => {
 				throw "Not Implemented!";
 			},
-			[Actions.RUNE_GET_RUNES]: () => {
-				throw "Not Implemented!";
-			},
+			[Actions.RUNE_GET_RUNES]: this.getRunes,
 			[Actions.RUNE_INSERT_RUNE]: this.createRune,
 			[Actions.RUNE_INSERT_RUNES]: this.createRunes,
 			[Actions.RUNE_UPDATE_RUNE]: this.updateRune,
@@ -29,6 +27,17 @@ class RuneService {
 		const run = this.run[action];
 		if (!run) throw "Invalid action provided!";
 		return await run(args.instructions.data);
+	}
+
+	private async getRunes(data: any) {
+		if (!Guards.IsArray(data)) throw "Invalid data provided!";
+		if (!data.every((item: any) => IsRuneRetrieveData(item))) throw "Invalid data provided!!";
+		const runes = await RuneRepository.Get(data);
+
+		return {
+			msg: "Success!",
+			runes: runes.map((rune) => rune.toJSON()),
+		};
 	}
 
 	private async createRune(data: any) {

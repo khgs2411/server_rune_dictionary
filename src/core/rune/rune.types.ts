@@ -1,5 +1,10 @@
 import Guards from "common/guards";
 
+export type RuneRetrieveData = {
+	rune_id?: number;
+	name?: string;
+};
+
 export type RuneCreationData = {
 	name: string;
 	weight: number;
@@ -17,6 +22,15 @@ export type RuneDeleteData = {
 	rune_id?: number;
 	name: string;
 };
+
+export function IsRuneRetrieveData(args: any): args is RuneRetrieveData {
+	return (
+		!Guards.IsNil(args) &&
+		typeof args === "object" &&
+		Object.keys(args).length > 0 &&
+		Object.values(args).some((value) => !Guards.IsNil(value))
+	);
+}
 
 export function IsRuneCreationData(args: any): args is RuneCreationData {
 	return (
