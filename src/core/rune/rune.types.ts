@@ -13,14 +13,10 @@ export type RuneCreationData = {
 };
 
 export type RuneUpdateData = {
+	rune_id?: number;
 	name?: string;
 	weight?: number;
 	type?: string;
-};
-
-export type RuneDeleteData = {
-	rune_id?: number;
-	name: string;
 };
 
 export function IsRuneRetrieveData(args: any): args is RuneRetrieveData {
@@ -43,16 +39,6 @@ export function IsRuneCreationData(args: any): args is RuneCreationData {
 }
 
 export function IsRuneUpdateData(args: any): args is RuneUpdateData {
-	// check at least one property exist in the object
-	return (
-		!Guards.IsNil(args) &&
-		typeof args === "object" &&
-		Object.keys(args).length > 0 &&
-		Object.values(args).some((value) => !Guards.IsNil(value))
-	);
-}
-
-export function IsRuneDeleteData(args: any): args is RuneDeleteData {
 	return (
 		!Guards.IsNil(args) &&
 		typeof args === "object" &&

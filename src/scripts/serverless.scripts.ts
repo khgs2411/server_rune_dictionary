@@ -28,8 +28,9 @@ const update_one: Request = {
 	api_key,
 	action: Actions.RUNE_UPDATE_RUNE,
 	data: <RuneUpdateData>{
-		name: RUNES.MELEE,
-		weight: 0.5,
+		rune_id: 2,
+		// name: RUNES.MELEE,
+		weight: 0.3,
 		type: "default",
 	},
 };
@@ -40,16 +41,17 @@ const update_many: Request = {
 	data: <RuneUpdateData[]>[
 		{
 			name: RUNES.PHYSICAL,
-			weight: 0.5,
+			weight: 1,
 			type: "default",
 		},
 		{
 			name: RUNES.MAGICAL,
-			weight: 0.5,
+			weight: 1,
 			type: "default",
 		},
 		{
-			name: RUNES.MELEE,
+			// name: RUNES.MELEE,
+			rune_id: 2,
 			weight: 0.5,
 			type: "default",
 		},

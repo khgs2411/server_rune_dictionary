@@ -2,7 +2,7 @@ import { Actions } from "common/enums";
 import Guards from "common/guards";
 import type { ProcessArgs } from "common/types";
 import Rune from "core/rune/rune";
-import { IsRuneCreationData, IsRuneDeleteData, IsRuneRetrieveData, IsRuneUpdateData, type RuneCreationData } from "core/rune/rune.types";
+import { IsRuneCreationData, IsRuneRetrieveData, IsRuneUpdateData, type RuneCreationData } from "core/rune/rune.types";
 import RuneRepository from "repositories/runes.repo";
 
 class RuneService {
@@ -81,7 +81,7 @@ class RuneService {
 	}
 
 	private async deleteRune(data: any) {
-		if (!IsRuneDeleteData(data)) throw "Invalid data provided!";
+		if (!IsRuneRetrieveData(data)) throw "Invalid data provided!";
 		const deleted = await RuneRepository.Delete(data);
 		return {
 			msg: "Success!",
@@ -90,7 +90,7 @@ class RuneService {
 	}
 	private async deleteRunes(data: any) {
 		if (!Guards.IsArray(data)) throw "Invalid data provided!";
-		if (!data.every((item: any) => IsRuneDeleteData(item))) throw "Invalid data provided!!";
+		if (!data.every((item: any) => IsRuneRetrieveData(item))) throw "Invalid data provided!!";
 		const deleted = await RuneRepository.DeleteMany(data);
 		return {
 			msg: "Success!",
