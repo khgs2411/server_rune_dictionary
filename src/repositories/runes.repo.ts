@@ -43,8 +43,6 @@ class RuneRepository {
 		if (!Guards.IsNil(already_exists)) throw "Rune already exists";
 
 		const new_rune = RuneModel.create(rune.serialize());
-		// const new_rune = new RuneModel(rune.serialize());
-		// await new_rune.save();
 		return new_rune;
 	}
 
