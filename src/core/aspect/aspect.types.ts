@@ -40,23 +40,9 @@ export type AspectCreationData = {
 	convert?: BOOLEANISH | number;
 };
 
-export type AspectUpdateData = {
+export type AspectUpdateData = Partial<AspectCreationData> & {
 	aspect_id?: number;
 	hash?: string;
-	tier?: 1 | 2 | 3 | 4;
-	weight?: number;
-	potency?: number;
-	rune_ids?: number[];
-	required_rune_ids?: number[];
-	blocked_aspect_ids?: number[];
-	is_damage?: number;
-	is_typed?: number;
-	is_dot?: number;
-	is_range?: number;
-	hit_count?: number;
-	wait_turns?: number;
-	percent?: number;
-	convert?: BOOLEANISH | number;
 	[key: string]: any; // Add index signature
 };
 

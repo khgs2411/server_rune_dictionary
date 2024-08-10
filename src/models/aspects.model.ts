@@ -5,7 +5,16 @@ const aspectsSchema = new mongoose.Schema({
 	tier: { type: Number, required: true },
 	weight: { type: Number, required: true },
 	potency: { type: Number, required: true },
-	rune_ids: { type: [Number], required: true },
+	rune_ids: {
+		type: [Number],
+		required: true,
+		validate: {
+			validator: function (v: number[]) {
+				return v.length > 0;
+			},
+			message: "rune_ids cannot be an empty array",
+		},
+	},
 	required_rune_ids: { type: [Number], required: true },
 	blocked_aspect_ids: { type: [Number], required: true },
 	is_damage: { type: Number, required: true },
@@ -22,9 +31,12 @@ aspectsSchema.pre("save", async function (next) {
 	const aspect = this;
 
 	if (aspect.isNew) {
-		// Get the current highest aspect_id and increment it
-		const lastAspect = await mongoose.model("Aspect").findOne().sort({ aspect_id: -1 }).exec();
-		aspect.aspect_id = lastAspect ? lastAspect.aspect_id + 1 : 0;
+		if (!aspect.aspect_id) {
+			console.log("hook: aspect.isNew && !aspect.aspect_id", aspect.isNew && !aspect.aspect_id);
+			// Get the current highest aspect_id and increment it
+			const lastAspect = await mongoose.model("Aspect").findOne().sort({ aspect_id: -1 }).exec();
+			aspect.aspect_id = lastAspect ? lastAspect.aspect_id + 1 : 0;
+		}
 	}
 
 	next();

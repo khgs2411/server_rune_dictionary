@@ -8,17 +8,12 @@ export type RuneRetrieveData = {
 
 export type RuneCreationData = {
 	name: string;
-	weight: number;
 	type: BOOLEANISH;
+	weight: number;
 	rune_id?: number;
 };
 
-export type RuneUpdateData = {
-	rune_id?: number;
-	name?: string;
-	weight?: number;
-	type: BOOLEANISH;
-};
+export type RuneUpdateData = Partial<RuneCreationData>;
 
 export function IsRuneRetrieveData(args: any): args is RuneRetrieveData {
 	return (
@@ -42,8 +37,8 @@ export function IsRuneCreationData(args: any): args is RuneCreationData {
 	if (typeof args.weight !== "number") {
 		console.log('typeof args.weight === "number"', typeof args.weight === "number");
 	}
-	if (args.type !== "boolean") {
-		console.log('args.type !== "boolean"', args.type !== "boolean");
+	if (args.type && args.type !== "number") {
+		console.log('args.type !== "number"', args.type !== "number");
 	}
 
 	return (

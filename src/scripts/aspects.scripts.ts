@@ -1,6 +1,6 @@
 import { Actions } from "common/enums";
 import type { Request } from "common/types";
-import type { AspectCreationData, AspectRetrieveData } from "core/aspect/aspect.types";
+import type { AspectCreationData, AspectRetrieveData, AspectUpdateData } from "core/aspect/aspect.types";
 import { main } from "main/index";
 const api_key = "r_d_25c9dd62-ba12-44de-b303-67ef659ba7bd";
 
@@ -8,7 +8,7 @@ const insert_one_data: AspectCreationData = {
 	tier: 1,
 	weight: 0.3,
 	potency: 0,
-	rune_ids: [],
+	rune_ids: [0],
 	required_rune_ids: [],
 	blocked_aspect_ids: [],
 };
@@ -36,15 +36,15 @@ const insert_many_data: AspectCreationData[] = [
 		tier: 1,
 		weight: 0.3,
 		potency: 0,
-		rune_ids: [],
+		rune_ids: [0],
 		required_rune_ids: [],
 		blocked_aspect_ids: [],
 	},
 	{
 		tier: 1,
 		weight: 0.3,
-		potency: 0,
-		rune_ids: [],
+		potency: 10,
+		rune_ids: [0],
 		required_rune_ids: [],
 		blocked_aspect_ids: [],
 	},
@@ -56,29 +56,100 @@ const insert_many: Request = {
 	data: <AspectCreationData[]>insert_many_data,
 };
 
-const createOne = async () => await main(insert_one);
+const udpate_one_data: AspectUpdateData = {
+	aspect_id: 0,
+	potency: 10,
+};
 
-const getAspects = async () => await main(get_aspects);
+const update_one: Request = {
+	api_key,
+	action: Actions.ASPECT_UPDATE_ASPECT,
+	data: <AspectUpdateData>udpate_one_data,
+};
 
-const createMany = async () => await main(insert_many);
+const update_many_data: AspectUpdateData[] = [
+	{
+		aspect_id: 0,
+		potency: 0,
+	},
+];
+const update_many: Request = {
+	api_key,
+	action: Actions.ASPECT_UPDATE_ASPECTS,
+	data: <AspectUpdateData[]>update_many_data,
+};
 
-// const updateOne = async () => await main(update_one);
+const delete_one_data: AspectRetrieveData = {
+	aspect_id: 0,
+};
 
-// const updateMany = async () => await main(update_many);
+const delete_one: Request = {
+	api_key,
+	action: Actions.ASPECT_DELETE_ASPECT,
+	data: <AspectRetrieveData>delete_one_data,
+};
 
-// const deleteOne = async () => await main(delete_one);
+const delete_many_data: AspectRetrieveData[] = [
+	{
+		aspect_id: 0,
+	},
+	{
+		aspect_id: 1,
+	},
+	{
+		aspect_id: 2,
+	},
+];
 
-// const deleteMany = async () => await main(delete_many);
+const delete_many: Request = {
+	api_key,
+	action: Actions.ASPECT_DELETE_ASPECTS,
+	data: <AspectRetrieveData[]>delete_many_data,
+};
+
+async function createOne() {
+	const res = await main(insert_one);
+	console.log(JSON.stringify(res, null, 4));
+}
+
+async function getAspects() {
+	const res = await main(get_aspects);
+	console.log(JSON.stringify(res, null, 4));
+}
+
+async function createMany() {
+	const res = await main(insert_many);
+	console.log(JSON.stringify(res, null, 4));
+}
+
+async function updateOne() {
+	const res = await main(update_one);
+	console.log(JSON.stringify(res, null, 4));
+}
+
+async function updateMany() {
+	const res = await main(update_many);
+	console.log(JSON.stringify(res, null, 4));
+}
+
+async function deleteOne() {
+	const res = await main(delete_one);
+	console.log(JSON.stringify(res, null, 4));
+}
+
+async function deleteMany() {
+	const res = await main(delete_many);
+	console.log(JSON.stringify(res, null, 4));
+}
 
 async function runAsepcts() {
 	// const res = await createOne();
-	const res = await createMany();
+	// await deleteMany();
+	await createMany();
 	// const res = await updateOne();
 	// const res = await updateMany();
 	// const res = await deleteOne();
-	// const res = await deleteMany();
 	// const res = await getAspects();
-	console.log(JSON.stringify(res, null, 2));
 }
 
 const run = async () => {

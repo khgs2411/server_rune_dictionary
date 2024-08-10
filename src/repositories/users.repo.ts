@@ -15,13 +15,9 @@ class UsersRepository {
 
 		await Mongo.Connection();
 
-		Lib.Log("api_key", api_key);
-
 		const user = await UserModel.findOne({
 			api_key: api_key,
 		});
-
-		Lib.Log("user: ", user);
 
 		if (Guards.IsNil(user)) throw "Unauthorized!!";
 

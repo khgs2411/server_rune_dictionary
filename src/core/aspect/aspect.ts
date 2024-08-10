@@ -4,22 +4,22 @@ import type { AspectCreationData } from "./aspect.types";
 import crypto from "crypto";
 
 class Aspect implements Serializable<Aspect> {
-	aspect_id?: number;
-	hash?: string;
-	tier: number;
-	weight: number;
-	potency: number;
-	rune_ids: number[];
-	required_rune_ids: number[];
-	blocked_aspect_ids: number[];
-	is_damage: number;
-	is_typed: number;
-	is_dot: number;
-	is_range: number;
-	hit_count: number;
-	wait_turns: number;
-	percent: number;
-	convert: BOOLEANISH;
+	private aspect_id?: number;
+	private hash?: string;
+	private tier: number;
+	private weight: number;
+	private potency: number;
+	private rune_ids: number[];
+	private required_rune_ids: number[];
+	private blocked_aspect_ids: number[];
+	private is_damage: number;
+	private is_typed: number;
+	private is_dot: number;
+	private is_range: number;
+	private hit_count: number;
+	private wait_turns: number;
+	private percent: number;
+	private convert: BOOLEANISH;
 
 	constructor(data: AspectCreationData) {
 		this.tier = data.tier;
@@ -39,12 +39,21 @@ class Aspect implements Serializable<Aspect> {
 		this.getHashCode();
 	}
 
+	public setAspectId(aspect_id: number) {
+		this.aspect_id = aspect_id;
+	}
+
+	public getAspectId() {
+		return this.aspect_id;
+	}
+
 	public getHashCode() {
 		if (!this.hash) {
 			const hash = crypto.createHash("sha256");
 
 			// Concatenate all properties into a single string
 			const dataString = [
+				...(this.aspect_id ? [this.aspect_id] : []), // Only include aspect_id if it exists
 				this.tier,
 				this.weight,
 				this.potency,

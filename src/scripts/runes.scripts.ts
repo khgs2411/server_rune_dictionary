@@ -68,7 +68,7 @@ const delete_one: Request = {
 const delete_many: Request = {
 	api_key,
 	action: Actions.RUNE_DELETE_RUNES,
-	data: <RuneCreationData[]>[{ rune_id: 0 }, { name: RUNES.MAGICAL }, { name: RUNES.MELEE }],
+	data: <RuneCreationData[]>[{ name: RUNES.PHYSICAL }, { name: RUNES.MAGICAL }, { name: RUNES.MELEE }],
 };
 
 const get_runes: Request = {
@@ -76,29 +76,49 @@ const get_runes: Request = {
 	action: Actions.RUNE_GET_RUNES,
 	data: <RuneRetrieveData[]>[{ name: RUNES.PHYSICAL }, { rune_id: 1 }],
 };
-const createOne = async () => await main(insert_one);
+async function createOne() {
+	const res = await main(insert_one);
+	console.log(JSON.stringify(res, null, 4));
+}
 
-const createMany = async () => await main(insert_many);
+async function createMany() {
+	const res = await main(insert_many);
+	console.log(JSON.stringify(res, null, 4));
+}
 
-const updateOne = async () => await main(update_one);
+async function updateOne() {
+	const res = await main(update_one);
+	console.log(JSON.stringify(res, null, 4));
+}
 
-const updateMany = async () => await main(update_many);
+async function updateMany() {
+	const res = await main(update_many);
+	console.log(JSON.stringify(res, null, 4));
+}
 
-const deleteOne = async () => await main(delete_one);
+async function deleteOne() {
+	const res = await main(delete_one);
+	console.log(JSON.stringify(res, null, 4));
+}
 
-const deleteMany = async () => await main(delete_many);
+async function deleteMany() {
+	const res = await main(delete_many);
+	console.log(JSON.stringify(res, null, 4));
+}
 
-const getRunes = async () => await main(get_runes);
+async function getRunes() {
+	const res = await main(get_runes);
+	console.log(JSON.stringify(res, null, 4));
+}
 
 async function runRunes() {
-	// const res = await getRunes();
-	// const res = await createOne();
-	// const res = await createMany();
-	// const res = await updateOne();
-	const res = await updateMany();
-	// const res = await deleteOne();
-	// const res = await deleteMany();
-	console.log(JSON.stringify(res, null, 2));
+	// await getRunes();
+	// await createOne();
+	await createMany();
+	// await updateOne();
+	// await updateMany();
+	// await deleteOne();
+	// await deleteMany();
 }
 const run = async () => {
 	await runRunes();

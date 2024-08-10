@@ -58,14 +58,13 @@ class RuneRepository {
 			.exec();
 
 		const existingRuneNames = new Set(existingRunes.map((rune) => rune.name));
-		const lastRuneId = existingRunes.reduce((maxId, rune) => Math.max(maxId, rune.rune_id ?? 0), 0);
-
-		let nextRuneId = lastRuneId + 1;
+		let lastRuneId = existingRunes.reduce((maxId, rune) => Math.max(maxId, rune.rune_id ?? 0), 0);
 
 		const uniqueRunes = serializedRunes.reduce<RuneCreationData[]>((acc, rune) => {
 			if (!existingRuneNames.has(rune.name)) {
-				rune.rune_id = nextRuneId++;
+				rune.rune_id = lastRuneId;
 				acc.push(rune);
+				lastRuneId++;
 			}
 			return acc;
 		}, []);

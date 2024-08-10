@@ -1,4 +1,5 @@
 import Guards from "common/guards";
+import Lib from "common/lib";
 import type Aspect from "core/aspect/aspect";
 import type { AspectCreationData, AspectRetrieveData, AspectUpdateData } from "core/aspect/aspect.types";
 import Mongo from "database/mongodb.database";
@@ -89,13 +90,16 @@ class AspectRepository {
 			.exec();
 
 		//get the last aspect_id
-		let lastAspectId = existingAspects.reduce((maxId, aspect) => Math.max(maxId, aspect.aspect_id ?? 0), 0);
+		let lastAspectId =
+			existingAspects.length > 0 ? existingAspects.reduce((maxId, aspect) => Math.max(maxId, aspect.aspect_id ?? 0), 0) : 0;
 
 		//filter hashes that already exist, and if they don't exist, increase the aspect_id
 		const existingAspectHashes = new Set(existingAspects.map((aspect) => aspect.hash));
 		const newAspects = aspects.filter((aspect) => !existingAspectHashes.has(aspect.getHashCode()));
 		newAspects.forEach((aspect) => {
-			aspect.aspect_id = ++lastAspectId;
+			console.log(aspect.getAspectId(), lastAspectId);
+			aspect.setAspectId(lastAspectId);
+			lastAspectId++;
 		});
 
 		//create the new aspects
