@@ -14,7 +14,7 @@
 				"panel": "shared",
 				"showReuseMessage": true,
 				"clear": false,
-				"close": true
+				"close": false
 			}
 		},
 		{

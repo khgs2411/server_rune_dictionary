@@ -1,7 +1,7 @@
 import { Actions } from "common/enums";
 import type { Request } from "common/types";
 import type { AspectCreationData, AspectRetrieveData, AspectUpdateData } from "core/aspect/aspect.types";
-import { main } from "main/index";
+import { main } from "main/create";
 const api_key = "r_d_25c9dd62-ba12-44de-b303-67ef659ba7bd";
 
 const insert_one_data: AspectCreationData = {
@@ -159,7 +159,7 @@ const run = async () => {
 const invoke = async (payload: any) => {
 	// const response = await main(args);
 	const response = await fetch(
-		"https://faas-ams3-2a2df116.doserverless.co/api/v1/web/fn-8b5106d1-8570-4f63-a2af-01748ac110f3/main/index",
+		"https://faas-ams3-2a2df116.doserverless.co/api/v1/web/fn-8b5106d1-8570-4f63-a2af-01748ac110f3/main/create",
 		{
 			method: "POST",
 			body: JSON.stringify(payload),
