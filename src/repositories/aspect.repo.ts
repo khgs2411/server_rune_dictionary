@@ -1,16 +1,17 @@
 import Guards from "common/guards";
 import Lib from "common/lib";
 import type Aspect from "core/aspect/aspect";
-import type { AspectCreationData, AspectRetrieveData, AspectUpdateData } from "core/aspect/aspect.types";
+import type { IAspectProperties, AspectCreationData, AspectRetrieveData, AspectUpdateData } from "core/aspect/aspect.types";
 import Mongo from "database/mongodb.database";
 import { AspectModel } from "models/aspects.model";
 import type mongoose from "mongoose";
 import type { Document } from "mongoose";
 
-export type AspectDocument = Document<
+export type AspectDocument = mongoose.Document<
 	unknown,
 	{},
 	{
+		aspect_id?: number | null | undefined;
 		hash: string;
 		tier: number;
 		weight: number;
@@ -18,15 +19,7 @@ export type AspectDocument = Document<
 		rune_ids: number[];
 		required_rune_ids: number[];
 		blocked_aspect_ids: number[];
-		is_damage: number;
-		is_typed: number;
-		is_dot: number;
-		is_range: number;
-		hit_count: number;
-		wait_turns: number;
-		percent: number;
-		convert: number;
-		aspect_id?: number | null | undefined;
+		properties: IAspectProperties;
 	}
 > & {
 	hash: string;
@@ -36,14 +29,7 @@ export type AspectDocument = Document<
 	rune_ids: number[];
 	required_rune_ids: number[];
 	blocked_aspect_ids: number[];
-	is_damage: number;
-	is_typed: number;
-	is_dot: number;
-	is_range: number;
-	hit_count: number;
-	wait_turns: number;
-	percent: number;
-	convert: number;
+	properties: IAspectProperties;
 	aspect_id?: number | null | undefined;
 } & { _id: mongoose.Types.ObjectId };
 class AspectRepository {
@@ -70,6 +56,7 @@ class AspectRepository {
 
 	public static async Create(asepect: Aspect) {
 		await Mongo.Connection();
+		console.log(asepect.serialize());
 		const already_exists = await AspectModel.findOne(asepect.serialize());
 
 		if (!Guards.IsNil(already_exists)) throw "asepect already exists";
@@ -97,7 +84,6 @@ class AspectRepository {
 		const existingAspectHashes = new Set(existingAspects.map((aspect) => aspect.hash));
 		const newAspects = aspects.filter((aspect) => !existingAspectHashes.has(aspect.getHashCode()));
 		newAspects.forEach((aspect) => {
-			console.log(aspect.getAspectId(), lastAspectId);
 			aspect.setAspectId(lastAspectId);
 			lastAspectId++;
 		});

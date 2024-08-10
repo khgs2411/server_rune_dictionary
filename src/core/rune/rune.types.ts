@@ -25,6 +25,18 @@ export function IsRuneRetrieveData(args: any): args is RuneRetrieveData {
 }
 
 export function IsRuneCreationData(args: any): args is RuneCreationData {
+	// logValidations(args);
+
+	return (
+		typeof args === "object" &&
+		args !== null &&
+		typeof args.name === "string" &&
+		typeof args.weight === "number" &&
+		(args.type ? typeof args.type === "number" : true)
+	);
+}
+
+function logValidations(args: any) {
 	if (typeof args !== "object") {
 		console.log('typeof args === "object"', typeof args === "object");
 	}
@@ -40,14 +52,6 @@ export function IsRuneCreationData(args: any): args is RuneCreationData {
 	if (args.type && args.type !== "number") {
 		console.log('args.type !== "number"', args.type !== "number");
 	}
-
-	return (
-		typeof args === "object" &&
-		args !== null &&
-		typeof args.name === "string" &&
-		typeof args.weight === "number" &&
-		(args.type ? typeof args.type === "number" : true)
-	);
 }
 
 export function IsRuneUpdateData(args: any): args is RuneUpdateData {

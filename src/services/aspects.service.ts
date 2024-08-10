@@ -42,7 +42,6 @@ class AspectService {
 
 	private async createAspect(data: any) {
 		const aspect = new Aspect(data);
-		console.log("Serialized: ", aspect.serialize());
 		if (!IsAspectCreationData(aspect.serialize())) throw "createAspect Invalid data provided!";
 		const new_aspect = await AspectRepository.Create(aspect);
 		return {

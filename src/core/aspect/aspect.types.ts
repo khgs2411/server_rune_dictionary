@@ -1,5 +1,30 @@
-import type { BOOLEANISH, BOOLEANISH as number } from "common/enums";
+import type { BOOLEANISH } from "common/enums";
 import Guards from "common/guards";
+
+export interface IAspectProperties {
+	is_damage: BOOLEANISH;
+	is_typed: BOOLEANISH;
+	is_convert: number;
+	is_percent: BOOLEANISH;
+	is_duration: BOOLEANISH;
+	is_range: BOOLEANISH;
+	hit_count: BOOLEANISH;
+	cooldown: BOOLEANISH;
+	wait_turns: BOOLEANISH;
+	is_stun: BOOLEANISH;
+	is_slow: BOOLEANISH;
+	is_retaliate: BOOLEANISH;
+	is_silence: BOOLEANISH;
+	is_sleep: BOOLEANISH;
+	is_taunt: BOOLEANISH;
+	is_fear: BOOLEANISH;
+	is_confuse: BOOLEANISH;
+	is_charm: BOOLEANISH;
+	is_heal: BOOLEANISH;
+	is_frenzy: BOOLEANISH;
+}
+
+export interface IPropertiesSchema extends Document, IAspectProperties {}
 
 export type AspectRetrieveData = {
 	aspect_id?: number;
@@ -22,22 +47,7 @@ export type AspectCreationData = {
 	 *? aspects that can't be rolled with this aspect
 	 */
 	blocked_aspect_ids: number[];
-	is_damage?: number;
-	is_typed?: number;
-	is_dot?: number;
-	is_range?: number;
-	/**
-	 *? will always get added to the combat ability hit count - if 0, then it's a single hit, if bigger than 1, then it's a multi-hit (e.g 1 = base hit + 1 extra hit, 2 = base hit + 2 extra hits)
-	 */
-	hit_count?: number;
-	wait_turns?: number;
-	percent?: number;
-	/**
-	 * !required is_damage to be 1
-	 * !required is_typed to be 1
-	 *? if bigger than 1, then we flat conversion, if 0|1, then we use the percentage to calculate the conversion
-	 */
-	convert?: BOOLEANISH | number;
+	properties?: Partial<IAspectProperties>;
 };
 
 export type AspectUpdateData = Partial<AspectCreationData> & {
@@ -56,6 +66,25 @@ export function IsAspectRetrieveData(args: any): args is AspectRetrieveData {
 }
 
 export function IsAspectCreationData(args: any): args is AspectCreationData {
+	// logValidations(args);
+	return (
+		typeof args === "object" &&
+		args !== null &&
+		typeof args.tier === "number" &&
+		args.tier > 0 &&
+		typeof args.weight === "number" &&
+		typeof args.potency === "number" &&
+		Array.isArray(args.rune_ids) &&
+		Array.isArray(args.required_rune_ids) &&
+		Array.isArray(args.blocked_aspect_ids) &&
+		typeof args.properties === "object" &&
+		args.properties !== null &&
+		//every property is number
+		Object.values(args.properties).every((value) => typeof value === "number")
+	);
+}
+
+function logValidations(args: any) {
 	if (typeof args !== "object") {
 		console.log('typeof args === "object"', typeof args === "object");
 	}
@@ -107,25 +136,6 @@ export function IsAspectCreationData(args: any): args is AspectCreationData {
 	if (typeof args.convert !== "number") {
 		console.log('typeof args.convert === "number"', typeof args.convert === "number");
 	}
-	return (
-		typeof args === "object" &&
-		args !== null &&
-		typeof args.tier === "number" &&
-		args.tier > 0 &&
-		typeof args.weight === "number" &&
-		typeof args.potency === "number" &&
-		Array.isArray(args.rune_ids) &&
-		Array.isArray(args.required_rune_ids) &&
-		Array.isArray(args.blocked_aspect_ids) &&
-		typeof args.is_damage === "number" &&
-		typeof args.is_typed === "number" &&
-		typeof args.is_dot === "number" &&
-		typeof args.is_range === "number" &&
-		typeof args.hit_count === "number" &&
-		typeof args.wait_turns === "number" &&
-		typeof args.percent === "number" &&
-		typeof args.convert === "number"
-	);
 }
 
 export function IsAspectUpdateData(args: any): args is AspectUpdateData {

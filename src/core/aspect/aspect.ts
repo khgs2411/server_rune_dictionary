@@ -1,7 +1,7 @@
 import type { Dto, Serializable } from "common/dto";
-import type { BOOLEANISH } from "common/enums";
-import type { AspectCreationData } from "./aspect.types";
 import crypto from "crypto";
+import type { AspectCreationData, IAspectProperties } from "./aspect.types";
+import AspectProperties from "./aspectProperties";
 
 class Aspect implements Serializable<Aspect> {
 	private aspect_id?: number;
@@ -12,14 +12,7 @@ class Aspect implements Serializable<Aspect> {
 	private rune_ids: number[];
 	private required_rune_ids: number[];
 	private blocked_aspect_ids: number[];
-	private is_damage: number;
-	private is_typed: number;
-	private is_dot: number;
-	private is_range: number;
-	private hit_count: number;
-	private wait_turns: number;
-	private percent: number;
-	private convert: BOOLEANISH;
+	private properties: AspectProperties;
 
 	constructor(data: AspectCreationData) {
 		this.tier = data.tier;
@@ -28,14 +21,7 @@ class Aspect implements Serializable<Aspect> {
 		this.rune_ids = data.rune_ids;
 		this.required_rune_ids = data.required_rune_ids;
 		this.blocked_aspect_ids = data.blocked_aspect_ids;
-		this.is_damage = data.is_damage ?? 1;
-		this.is_typed = data.is_typed ?? 0;
-		this.is_dot = data.is_dot ?? 0;
-		this.is_range = data.is_range ?? 0;
-		this.hit_count = data.hit_count ?? 0;
-		this.wait_turns = data.wait_turns ?? 0;
-		this.percent = data.percent ?? 0;
-		this.convert = data.convert ?? 0;
+		this.properties = new AspectProperties(data.properties);
 		this.getHashCode();
 	}
 
@@ -60,14 +46,8 @@ class Aspect implements Serializable<Aspect> {
 				this.rune_ids.join(","), // Join array elements with a comma
 				this.required_rune_ids.join(","),
 				this.blocked_aspect_ids.join(","),
-				this.is_damage,
-				this.is_typed,
-				this.is_dot,
-				this.is_range,
-				this.hit_count,
-				this.wait_turns,
-				this.percent,
-				this.convert,
+				// Convert properties object to an array of key-value pairs, then join them with a comma
+				...Object.entries(this.properties).map(([key, value]) => `${key}=${value}`),
 			].join("|"); // Use a delimiter that won't appear in the data
 
 			// Generate the hash from the concatenated string
@@ -78,7 +58,7 @@ class Aspect implements Serializable<Aspect> {
 	}
 
 	serialize(): Dto<Aspect> {
-		return this;
+		return { ...this, properties: this.properties.serialize() };
 	}
 }
 export default Aspect;

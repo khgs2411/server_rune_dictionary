@@ -143,18 +143,17 @@ async function deleteMany() {
 }
 
 async function runAsepcts() {
-	// const res = await createOne();
+	// await createOne();
 	// await deleteMany();
 	await createMany();
-	// const res = await updateOne();
-	// const res = await updateMany();
-	// const res = await deleteOne();
-	// const res = await getAspects();
+	//  await updateOne();
+	//  await updateMany();
+	//  await deleteOne();
+	//  await getAspects();
 }
 
 const run = async () => {
 	await runAsepcts();
-	process.exit(0);
 };
 
 const invoke = async (payload: any) => {
@@ -171,7 +170,10 @@ const invoke = async (payload: any) => {
 	);
 	const output = await response.json();
 	console.log(output);
-	process.exit(0);
 };
 
 await run();
+
+// await invoke(delete_many);
+// await invoke(insert_many);
+process.exit(0);
