@@ -143,13 +143,7 @@ async function deleteMany() {
 }
 
 async function runAsepcts() {
-	// await createOne();
-	// await deleteMany();
 	await createMany();
-	//  await updateOne();
-	//  await updateMany();
-	//  await deleteOne();
-	//  await getAspects();
 }
 
 const run = async () => {

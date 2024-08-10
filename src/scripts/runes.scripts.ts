@@ -1,9 +1,8 @@
 import { Actions, BOOLEANISH } from "common/enums";
+import { type Request } from "common/types";
 import { RUNES } from "core/rune/rune.enums";
 import type { RuneCreationData, RuneRetrieveData, RuneUpdateData } from "core/rune/rune.types";
 import { main } from "main/create";
-import { type Request } from "common/types";
-import Rune from "core/rune/rune";
 const api_key = "r_d_25c9dd62-ba12-44de-b303-67ef659ba7bd";
 
 const insert_one: Request = {
