@@ -17,5 +17,5 @@ export interface ProcessArgs {
 export interface Instructions {
 	action: Actions;
 	data: any;
-	service: "rune" | "affix";
+	service: "rune" | "aspect";
 }

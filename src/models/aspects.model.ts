@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 const aspectsSchema = new mongoose.Schema({
-	hash: { type: String, required: true },
+	hash: { type: String, required: true, unique: true },
 	aspect_id: { type: Number, required: false, unique: true }, //? auto increment
 	tier: { type: Number, required: true },
 	weight: { type: Number, required: true },
 	potency: { type: Number, required: true },
 	rune_ids: { type: [Number], required: true },
-	required_runes: { type: [Number], required: true },
-	blocked_runes: { type: [Number], required: true },
+	required_rune_ids: { type: [Number], required: true },
+	blocked_aspect_ids: { type: [Number], required: true },
 	is_damage: { type: Number, required: true },
 	is_typed: { type: Number, required: true },
 	is_dot: { type: Number, required: true },

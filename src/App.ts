@@ -3,6 +3,7 @@ import Guards from "common/guards";
 import Lib from "common/lib";
 import type { Instructions, ProcessArgs, Request } from "common/types";
 import UsersRepository from "repositories/users.repo";
+import AspectService from "services/aspects.service";
 import RuneService from "services/runes.service";
 
 class App {
@@ -17,10 +18,11 @@ class App {
 	public static async Process(args: ProcessArgs) {
 		switch (args.instructions.service) {
 			case "rune":
-				const service = new RuneService();
-				return await service.call(args);
-			case "affix":
-				break;
+				const runes = new RuneService();
+				return await runes.call(args);
+			case "aspect":
+				const aspects = new AspectService();
+				return await aspects.call(args);
 		}
 	}
 
@@ -43,7 +45,7 @@ class App {
 		if (Guards.IsNil(args.action) || Lib.IsEmpty(args.action)) throw "No action provided!";
 		if (!Object.values(Actions).includes(args.action)) throw "Invalid action provided!";
 		if (Guards.IsNil(args.data) || Lib.IsEmpty(args.data)) throw "No data provided!";
-		const service = args.action.includes("rune") ? "rune" : args.action.includes("affix") ? "affix" : "unknown";
+		const service = args.action.includes("rune") ? "rune" : args.action.includes("aspect") ? "aspect" : "unknown";
 		if (service === "unknown") throw "Invalid action provided!";
 		return {
 			action: args.action,

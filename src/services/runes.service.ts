@@ -25,7 +25,7 @@ class RuneService {
 	public async call(args: ProcessArgs) {
 		const action = args.instructions.action;
 		const run = this.run[action];
-		if (!run) throw "Invalid action provided!";
+		if (!run) throw "runes.call - Invalid action provided!";
 		return await run(args.instructions.data);
 	}
 

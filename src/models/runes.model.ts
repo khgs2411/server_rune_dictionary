@@ -4,7 +4,7 @@ const runesSchema = new mongoose.Schema({
 	rune_id: { type: Number, required: false, unique: true }, //? auto increment
 	name: { type: String, required: true, unique: true },
 	weight: { type: Number, required: true },
-	type: { type: String, required: false },
+	type: { type: Number, required: false },
 });
 
 runesSchema.pre("save", async function (next) {

@@ -1,3 +1,4 @@
+import type { BOOLEANISH } from "common/enums";
 import Guards from "common/guards";
 import type Rune from "core/rune/rune";
 import type { RuneCreationData, RuneRetrieveData, RuneUpdateData } from "core/rune/rune.types";
@@ -9,8 +10,8 @@ import type { Document } from "mongoose";
 export type RuneDocument = Document<
 	unknown,
 	{},
-	{ name: string; weight: number; type?: string | null | undefined; rune_id?: number | null | undefined }
-> & { name: string; weight: number; type?: string | null | undefined; rune_id?: number | null | undefined } & {
+	{ name: string; weight: number; type?: BOOLEANISH | null | undefined; rune_id?: number | null | undefined }
+> & { name: string; weight: number; type?: BOOLEANISH | null | undefined; rune_id?: number | null | undefined } & {
 	_id: mongoose.Types.ObjectId;
 };
 
@@ -108,7 +109,7 @@ class RuneRepository {
 
 			return {
 				updateOne: {
-					filter: { name: runeData.name },
+					filter: Guards.IsNil(runeData.rune_id) ? { name: runeData.name } : { rune_id: runeData.rune_id },
 					update: { $set: update },
 				},
 			};

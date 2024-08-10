@@ -1,4 +1,4 @@
-import { Actions } from "common/enums";
+import { Actions, BOOLEANISH } from "common/enums";
 import { RUNES } from "core/rune/rune.enums";
 import type { RuneCreationData, RuneRetrieveData, RuneUpdateData } from "core/rune/rune.types";
 import { main } from "main/index";
@@ -31,7 +31,7 @@ const update_one: Request = {
 	data: <RuneUpdateData>{
 		rune_id: 2,
 		weight: 0.3,
-		type: "default",
+		type: BOOLEANISH.FALSE,
 	},
 };
 
@@ -42,17 +42,17 @@ const update_many: Request = {
 		{
 			name: RUNES.PHYSICAL,
 			weight: 1,
-			type: "default",
+			type: BOOLEANISH.FALSE,
 		},
 		{
 			name: RUNES.MAGICAL,
 			weight: 1,
-			type: "default",
+			type: BOOLEANISH.FALSE,
 		},
 		{
 			rune_id: 2,
 			weight: 0.5,
-			type: "default",
+			type: BOOLEANISH.FALSE,
 		},
 	],
 };
@@ -76,55 +76,35 @@ const get_runes: Request = {
 	action: Actions.RUNE_GET_RUNES,
 	data: <RuneRetrieveData[]>[{ name: RUNES.PHYSICAL }, { rune_id: 1 }],
 };
-async function createOne() {
-	return await main(insert_one);
-	// console.log(JSON.stringify(res, null, 2));
-}
+const createOne = async () => await main(insert_one);
 
-async function createMany() {
-	return await main(insert_many);
-	// console.log(JSON.stringify(res, null, 2));
-}
+const createMany = async () => await main(insert_many);
 
-async function updateOne() {
-	return await main(update_one);
-	// console.log(JSON.stringify(res, null, 2));
-}
+const updateOne = async () => await main(update_one);
 
-async function updateMany() {
-	return await main(update_many);
-	// console.log(JSON.stringify(res, null, 2));
-}
+const updateMany = async () => await main(update_many);
 
-async function deleteOne() {
-	return await main(delete_one);
-	// console.log(JSON.stringify(res, null, 2));
-}
+const deleteOne = async () => await main(delete_one);
 
-async function deleteMany() {
-	return await main(delete_many);
-	// console.log(JSON.stringify(res, null, 2));
-}
+const deleteMany = async () => await main(delete_many);
 
-async function getRunes() {
-	return await main(get_runes);
-	// console.log(JSON.stringify(res, null, 2));
-}
+const getRunes = async () => await main(get_runes);
+
 async function runRunes() {
-	const res = await getRunes();
+	// const res = await getRunes();
 	// const res = await createOne();
 	// const res = await createMany();
 	// const res = await updateOne();
-	// const res = await updateMany();
+	const res = await updateMany();
 	// const res = await deleteOne();
 	// const res = await deleteMany();
 	console.log(JSON.stringify(res, null, 2));
 }
 const run = async () => {
-	// await runRunes();
+	await runRunes();
 
-	const rune = new Rune({ name: "test", weight: 1, type: "test" });
-	console.log(rune.serialize());
+	// const rune = new Rune({ name: "test", weight: 1, type: 0 });
+	// console.log(rune.serialize());
 
 	process.exit(0);
 };

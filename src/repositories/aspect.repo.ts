@@ -3,7 +3,48 @@ import type Aspect from "core/aspect/aspect";
 import type { AspectCreationData, AspectRetrieveData, AspectUpdateData } from "core/aspect/aspect.types";
 import Mongo from "database/mongodb.database";
 import { AspectModel } from "models/aspects.model";
+import type mongoose from "mongoose";
+import type { Document } from "mongoose";
 
+export type AspectDocument = Document<
+	unknown,
+	{},
+	{
+		hash: string;
+		tier: number;
+		weight: number;
+		potency: number;
+		rune_ids: number[];
+		required_rune_ids: number[];
+		blocked_aspect_ids: number[];
+		is_damage: number;
+		is_typed: number;
+		is_dot: number;
+		is_range: number;
+		hit_count: number;
+		wait_turns: number;
+		percent: number;
+		convert: number;
+		aspect_id?: number | null | undefined;
+	}
+> & {
+	hash: string;
+	tier: number;
+	weight: number;
+	potency: number;
+	rune_ids: number[];
+	required_rune_ids: number[];
+	blocked_aspect_ids: number[];
+	is_damage: number;
+	is_typed: number;
+	is_dot: number;
+	is_range: number;
+	hit_count: number;
+	wait_turns: number;
+	percent: number;
+	convert: number;
+	aspect_id?: number | null | undefined;
+} & { _id: mongoose.Types.ObjectId };
 class AspectRepository {
 	constructor() {}
 
@@ -63,9 +104,9 @@ class AspectRepository {
 		return newAspectsCreated;
 	}
 
-	public static async Update(data: AspectUpdateData): Promise<any>;
-	public static async Update(_id: string, data?: AspectUpdateData): Promise<any>;
-	public static async Update(_idOrData: string | AspectUpdateData, data?: AspectUpdateData): Promise<any> {
+	public static async Update(data: AspectUpdateData): Promise<AspectDocument>;
+	public static async Update(_id: string, data?: AspectUpdateData): Promise<AspectDocument>;
+	public static async Update(_idOrData: string | AspectUpdateData, data?: AspectUpdateData): Promise<AspectDocument> {
 		await Mongo.Connection();
 		let filter;
 		let updateData;

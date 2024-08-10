@@ -9,7 +9,8 @@
 		"publish": "bun run build && bun run deploy",
 		"new": "docts fn new",
 		"remove": "docts fn remove",
-		"destroy": "doctl serverless undeploy"
+		"destroy": "doctl serverless undeploy",
+		"test": "test"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
