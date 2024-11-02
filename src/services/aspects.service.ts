@@ -1,15 +1,9 @@
 import { Actions } from "common/enums";
 import Guards from "common/guards";
+import Lib from "common/lib";
 import type { ProcessArgs } from "common/types";
 import Aspect from "core/aspect/aspect";
-import {
-	IsAspectRetrieveData,
-	IsAspectCreationData,
-	type AspectCreationData,
-	IsAspectUpdateData,
-	type AspectRetrieveData,
-	type AspectUpdateData,
-} from "core/aspect/aspect.types";
+import { IsAspectCreationData, IsAspectRetrieveData, IsAspectUpdateData } from "core/aspect/aspect.types";
 import AspectRepository from "repositories/aspect.repo";
 
 class AspectService {
@@ -36,10 +30,10 @@ class AspectService {
 		return await run(args.instructions.data);
 	}
 
-	private async getAspects(data: AspectRetrieveData[]) {
+	private async getAspects(data: any) {
 		if (!Guards.IsArray(data)) throw "getAspects Invalid data provided!";
-		if (!data.every((item: any) => IsAspectRetrieveData(item))) throw "getAspects Invalid data provided!!";
-		const aspects = await AspectRepository.Get(data);
+		if (!Lib.IsEmpty(data) && !data.every((item: any) => IsAspectRetrieveData(item))) throw "getAspects Invalid data provided!!";
+		const aspects = await AspectRepository.Get(data as any[]);
 
 		return {
 			msg: "Success!",
@@ -47,7 +41,7 @@ class AspectService {
 		};
 	}
 
-	private async createAspect(data: AspectCreationData) {
+	private async createAspect(data: any) {
 		const aspect = new Aspect(data);
 		if (!IsAspectCreationData(aspect.serialize())) throw "createAspect Invalid data provided!";
 		const new_aspect = await AspectRepository.Create(aspect);
@@ -57,7 +51,7 @@ class AspectService {
 		};
 	}
 
-	private async createAspects(data: AspectCreationData[]) {
+	private async createAspects(data: any) {
 		if (!Guards.IsArray(data)) throw "createAspects Invalid data provided!";
 		const aspects = (data as any[]).map((item) => new Aspect(item));
 		if (!aspects.every((aspect: any) => IsAspectCreationData(aspect))) throw "createAspects Invalid data provided!!";
@@ -68,7 +62,7 @@ class AspectService {
 		};
 	}
 
-	private async updateAspect(data: AspectUpdateData) {
+	private async updateAspect(data: any) {
 		if (!IsAspectUpdateData(data)) throw "updateAspect Invalid data provided!";
 		const updated = await AspectRepository.Update(data);
 		return {
@@ -77,7 +71,7 @@ class AspectService {
 		};
 	}
 
-	private async updateAspects(data: AspectUpdateData[]) {
+	private async updateAspects(data: any) {
 		if (!Guards.IsArray(data)) throw "updateAspects Invalid data provided!";
 		if (!data.every((item: any) => IsAspectUpdateData(item))) throw "updateAspects Invalid data provided!!";
 		const updated = await AspectRepository.UpdateMany(data);
@@ -87,7 +81,7 @@ class AspectService {
 		};
 	}
 
-	private async deleteAspect(data: AspectRetrieveData) {
+	private async deleteAspect(data: any) {
 		if (!IsAspectRetrieveData(data)) throw "deleteAspect Invalid data provided!";
 		const deleted = await AspectRepository.Delete(data);
 		return {
@@ -95,7 +89,7 @@ class AspectService {
 			deleted,
 		};
 	}
-	private async deleteAspects(data: AspectRetrieveData[]) {
+	private async deleteAspects(data: any) {
 		if (!Guards.IsArray(data)) throw "deleteAspects Invalid data provided!";
 		if (!data.every((item: any) => IsAspectRetrieveData(item))) throw "deleteAspects Invalid data provided!!";
 		const deleted = await AspectRepository.DeleteMany(data);

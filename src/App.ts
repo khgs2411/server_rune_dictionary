@@ -44,7 +44,8 @@ class App {
 	private static HandleRequest(args: Request): Instructions {
 		if (Guards.IsNil(args.action) || Lib.IsEmpty(args.action)) throw "No action provided!";
 		if (!Object.values(Actions).includes(args.action)) throw "Invalid action provided!";
-		if (Guards.IsNil(args.data) || Lib.IsEmpty(args.data)) throw "No data provided!";
+		// if (Guards.IsNil(args.data) || Lib.IsEmpty(args.data)) throw "No data provided!";
+		if (Guards.IsNil(args.data)) throw "No data provided!";
 		const service = args.action.includes("rune") ? "rune" : args.action.includes("aspect") ? "aspect" : "unknown";
 		if (service === "unknown") throw "Invalid action provided!";
 		return {

@@ -18,6 +18,10 @@ class Lib {
 		console.error(`[${timestamp}]`, ...args);
 	}
 
+	public static LogObject(obj: any) {
+		console.log(JSON.stringify(obj, null, 2));
+	}
+
 	public static GetDateTimestamp(date: string | Date, format: string = "DD/MM/YYYY HH:mm", isUTC: boolean = false): number {
 		if (typeof date === "string") {
 			const formatParts = format.split(/[-\/. :]/);

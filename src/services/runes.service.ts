@@ -1,5 +1,6 @@
 import { Actions } from "common/enums";
 import Guards from "common/guards";
+import Lib from "common/lib";
 import type { ProcessArgs } from "common/types";
 import Rune from "core/rune/rune";
 import { IsRuneCreationData, IsRuneRetrieveData, IsRuneUpdateData, type RuneCreationData } from "core/rune/rune.types";
@@ -29,10 +30,10 @@ class RuneService {
 		return await run(args.instructions.data);
 	}
 
-	private async getRunes(data: any) {
+	private async getRunes(data?: any) {
 		if (!Guards.IsArray(data)) throw "Invalid data provided!";
-		if (!data.every((item: any) => IsRuneRetrieveData(item))) throw "Invalid data provided!!";
-		const runes = await RuneRepository.Get(data);
+		if (!Lib.IsEmpty(data) && !data.every((item: any) => IsRuneRetrieveData(item))) throw "Invalid data provided!!";
+		const runes = await RuneRepository.Get(data as any[]);
 
 		return {
 			msg: "Success!",

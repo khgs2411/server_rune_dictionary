@@ -1,4 +1,5 @@
 import { Actions, BOOLEANISH } from "common/enums";
+import Lib from "common/lib";
 import { type Request } from "common/types";
 import { RUNES } from "core/rune/rune.enums";
 import type { RuneCreationData, RuneRetrieveData, RuneUpdateData } from "core/rune/rune.types";
@@ -73,41 +74,42 @@ const delete_many: Request = {
 const get_runes: Request = {
 	api_key,
 	action: Actions.RUNE_GET_RUNES,
-	data: <RuneRetrieveData[]>[{ name: RUNES.PHYSICAL }, { rune_id: 1 }],
+	data: [],
+	// data: <RuneRetrieveData[]>[{ name: RUNES.PHYSICAL }, { rune_id: 1 }],
 };
 async function createOne() {
 	const res = await main(insert_one);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function createMany() {
 	const res = await main(insert_many);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function updateOne() {
 	const res = await main(update_one);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function updateMany() {
 	const res = await main(update_many);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function deleteOne() {
 	const res = await main(delete_one);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function deleteMany() {
 	const res = await main(delete_many);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function getRunes() {
 	const res = await main(get_runes);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function runRunes() {
@@ -121,10 +123,6 @@ async function runRunes() {
 }
 const run = async () => {
 	await runRunes();
-
-	// const rune = new Rune({ name: "test", weight: 1, type: 0 });
-	// console.log(rune.serialize());
-
 	process.exit(0);
 };
 

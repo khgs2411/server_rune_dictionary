@@ -28,7 +28,8 @@ const get_aspects_data: AspectRetrieveData[] = [
 const get_aspects: Request = {
 	api_key,
 	action: Actions.ASPECT_GET_ASPECTS,
-	data: <AspectRetrieveData[]>get_aspects_data,
+	// data: <AspectRetrieveData[]>get_aspects_data,
+	data: [],
 };
 
 const insert_many_data: AspectCreationData[] = [

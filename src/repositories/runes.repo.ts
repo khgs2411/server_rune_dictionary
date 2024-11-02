@@ -1,5 +1,6 @@
 import type { BOOLEANISH } from "common/enums";
 import Guards from "common/guards";
+import Lib from "common/lib";
 import type Rune from "core/rune/rune";
 import type { RuneCreationData, RuneRetrieveData, RuneUpdateData } from "core/rune/rune.types";
 import Mongo from "database/mongodb.database";
@@ -18,8 +19,10 @@ export type RuneDocument = Document<
 class RuneRepository {
 	constructor() {}
 
-	public static async Get(runes: RuneRetrieveData[]) {
+	public static async Get(runes?: RuneRetrieveData[] | null | undefined) {
 		await Mongo.Connection();
+
+		if (Guards.IsNil(runes) || Lib.IsEmpty(runes)) return await RuneModel.find().lean();
 
 		const runeIds = runes.filter((rune) => rune.rune_id !== undefined).map((rune) => rune.rune_id);
 		const runeNames = runes.filter((rune) => rune.name).map((rune) => rune.name);

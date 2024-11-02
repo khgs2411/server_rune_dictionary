@@ -1,4 +1,5 @@
 import Guards from "common/guards";
+import Lib from "common/lib";
 import type Aspect from "core/aspect/aspect";
 import type { AspectCreationData, AspectRetrieveData, AspectUpdateData, IAspectProperties } from "core/aspect/aspect.types";
 import Mongo from "database/mongodb.database";
@@ -36,7 +37,7 @@ class AspectRepository {
 	public static async Get(aspects?: AspectRetrieveData[]) {
 		await Mongo.Connection();
 
-		if (Guards.IsNil(aspects)) return await AspectModel.find().lean();
+		if (Guards.IsNil(aspects) || Lib.IsEmpty(aspects)) return await AspectModel.find().lean();
 
 		const aspectIds = aspects.filter((aspect) => aspect.aspect_id !== undefined).map((aspect) => aspect.aspect_id);
 		const hashes = aspects.filter((aspect) => aspect.hash).map((aspect) => aspect.hash);
