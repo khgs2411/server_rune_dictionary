@@ -111,9 +111,9 @@ async function getRunes() {
 }
 
 async function runRunes() {
-	// await getRunes();
+	await getRunes();
 	// await createOne();
-	await createMany();
+	// await createMany();
 	// await updateOne();
 	// await updateMany();
 	// await deleteOne();

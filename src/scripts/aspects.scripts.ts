@@ -143,7 +143,8 @@ async function deleteMany() {
 }
 
 async function runAsepcts() {
-	await createMany();
+	// await createMany();
+	await getAspects();
 }
 
 const run = async () => {

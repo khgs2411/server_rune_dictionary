@@ -1,11 +1,9 @@
 import Guards from "common/guards";
-import Lib from "common/lib";
 import type Aspect from "core/aspect/aspect";
-import type { IAspectProperties, AspectCreationData, AspectRetrieveData, AspectUpdateData } from "core/aspect/aspect.types";
+import type { AspectCreationData, AspectRetrieveData, AspectUpdateData, IAspectProperties } from "core/aspect/aspect.types";
 import Mongo from "database/mongodb.database";
 import { AspectModel } from "models/aspects.model";
 import type mongoose from "mongoose";
-import type { Document } from "mongoose";
 
 export type AspectDocument = mongoose.Document<
 	unknown,
@@ -35,26 +33,25 @@ export type AspectDocument = mongoose.Document<
 class AspectRepository {
 	constructor() {}
 
-	public static async Get(aspects: AspectRetrieveData[]) {
+	public static async Get(aspects?: AspectRetrieveData[]): Promise<AspectDocument[]> {
 		await Mongo.Connection();
+
+		if (Guards.IsNil(aspects)) return await AspectModel.find().lean();
 
 		const aspectIds = aspects.filter((aspect) => aspect.aspect_id !== undefined).map((aspect) => aspect.aspect_id);
 		const hashes = aspects.filter((aspect) => aspect.hash).map((aspect) => aspect.hash);
 
 		const filters = [];
 
-		if (aspectIds.length > 0) {
-			filters.push({ aspect_id: { $in: aspectIds } });
-		}
-		if (hashes.length > 0) {
-			filters.push({ hash: { $in: hashes } });
-		}
+		if (aspectIds.length > 0) filters.push({ aspect_id: { $in: aspectIds } });
 
-		const retrievedAspects = await AspectModel.find({ $or: filters }).exec();
+		if (hashes.length > 0) filters.push({ hash: { $in: hashes } });
+
+		const retrievedAspects = await AspectModel.find({ $or: filters });
 		return retrievedAspects;
 	}
 
-	public static async Create(asepect: Aspect) {
+	public static async Create(asepect: Aspect): Promise<AspectDocument> {
 		await Mongo.Connection();
 		console.log(asepect.serialize());
 		const already_exists = await AspectModel.findOne(asepect.serialize());
@@ -65,7 +62,7 @@ class AspectRepository {
 		return new_asepect;
 	}
 
-	public static async CreateMany(aspects: Aspect[]) {
+	public static async CreateMany(aspects: Aspect[]): Promise<AspectDocument[]> {
 		await Mongo.Connection();
 
 		//get all the hashes of the aspects
@@ -139,13 +136,13 @@ class AspectRepository {
 		return updated;
 	}
 
-	public static async Delete(aspectData: AspectRetrieveData) {
+	public static async Delete(aspectData: AspectRetrieveData): Promise<mongoose.mongo.DeleteResult> {
 		await Mongo.Connection();
 		const filter = Guards.IsNil(aspectData.aspect_id) ? { hash: aspectData.hash } : { aspect_id: aspectData.aspect_id };
 		return await AspectModel.deleteOne(filter);
 	}
 
-	public static async DeleteMany(data: AspectRetrieveData[]) {
+	public static async DeleteMany(data: AspectRetrieveData[]): Promise<mongoose.mongo.BulkWriteResult> {
 		await Mongo.Connection();
 		return await AspectModel.bulkWrite(
 			data.map((aspect) => ({
