@@ -10,6 +10,7 @@
 		"new": "docts fn new",
 		"remove": "docts fn remove",
 		"destroy": "doctl serverless undeploy",
+		"url": "doctl sls fn get --url",
 		"test": "test"
 	},
 	"devDependencies": {
