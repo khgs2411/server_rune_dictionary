@@ -33,7 +33,7 @@ export type AspectDocument = mongoose.Document<
 class AspectRepository {
 	constructor() {}
 
-	public static async Get(aspects?: AspectRetrieveData[]): Promise<AspectDocument[]> {
+	public static async Get(aspects?: AspectRetrieveData[]) {
 		await Mongo.Connection();
 
 		if (Guards.IsNil(aspects)) return await AspectModel.find().lean();
@@ -47,8 +47,7 @@ class AspectRepository {
 
 		if (hashes.length > 0) filters.push({ hash: { $in: hashes } });
 
-		const retrievedAspects = await AspectModel.find({ $or: filters });
-		return retrievedAspects;
+		return await AspectModel.find({ $or: filters }).lean();
 	}
 
 	public static async Create(asepect: Aspect): Promise<AspectDocument> {
@@ -71,7 +70,7 @@ class AspectRepository {
 		//get all the aspects that already exist using the these hashes
 		const existingAspects = await AspectModel.find({ hash: { $in: hashes } })
 			.select("hash")
-			.exec();
+			.lean();
 
 		//get the last aspect_id
 		let lastAspectId =

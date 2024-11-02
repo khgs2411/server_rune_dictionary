@@ -36,7 +36,7 @@ class RuneService {
 
 		return {
 			msg: "Success!",
-			runes: runes.map((rune) => rune.toJSON()),
+			runes: runes,
 		};
 	}
 

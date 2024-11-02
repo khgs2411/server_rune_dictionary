@@ -43,7 +43,7 @@ class AspectService {
 
 		return {
 			msg: "Success!",
-			aspects: aspects.map((aspect) => aspect.toJSON()),
+			aspects: aspects,
 		};
 	}
 

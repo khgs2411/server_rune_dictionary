@@ -33,7 +33,7 @@ class RuneRepository {
 			filters.push({ name: { $in: runeNames } });
 		}
 
-		const retrievedRunes = await RuneModel.find({ $or: filters }).exec();
+		const retrievedRunes = await RuneModel.find({ $or: filters }).lean();
 		return retrievedRunes;
 	}
 
