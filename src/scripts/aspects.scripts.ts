@@ -1,4 +1,5 @@
 import { Actions } from "common/enums";
+import Lib from "common/lib";
 import type { Request } from "common/types";
 import type { AspectCreationData, AspectRetrieveData, AspectUpdateData } from "core/aspect/aspect.types";
 import { main } from "main/create";
@@ -110,37 +111,37 @@ const delete_many: Request = {
 
 async function createOne() {
 	const res = await main(insert_one);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function getAspects() {
 	const res = await main(get_aspects);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function createMany() {
 	const res = await main(insert_many);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function updateOne() {
 	const res = await main(update_one);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function updateMany() {
 	const res = await main(update_many);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function deleteOne() {
 	const res = await main(delete_one);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function deleteMany() {
 	const res = await main(delete_many);
-	console.log(JSON.stringify(res, null, 4));
+	Lib.LogObject(res);
 }
 
 async function runAsepcts() {
