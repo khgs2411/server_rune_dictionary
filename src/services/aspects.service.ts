@@ -24,10 +24,10 @@ class AspectService {
 	}
 
 	public async call(args: ProcessArgs) {
-		const action = args.instructions.action;
+		const action = args.strategy.action;
 		const run = this.run[action];
 		if (!run) throw "aspects.call - Invalid action provided!";
-		return await run(args.instructions.data);
+		return await run(args.strategy.data);
 	}
 
 	private async getAspects(data: any) {

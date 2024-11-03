@@ -3,7 +3,8 @@ import Lib from "common/lib";
 import { type Request } from "common/types";
 import { RUNES } from "core/rune/rune.enums";
 import type { RuneCreationData, RuneRetrieveData, RuneUpdateData } from "core/rune/rune.types";
-import { main } from "main/create";
+import { main } from "main/index";
+
 const api_key = "r_d_25c9dd62-ba12-44de-b303-67ef659ba7bd";
 
 const insert_one: Request = {
@@ -25,20 +26,20 @@ const insert_many: Request = {
 	],
 };
 
-const update_one: Request = {
+const update_one: Request<RuneUpdateData> = {
 	api_key,
 	action: Actions.RUNE_UPDATE_RUNE,
-	data: <RuneUpdateData>{
+	data: {
 		rune_id: 2,
 		weight: 0.3,
 		type: BOOLEANISH.FALSE,
 	},
 };
 
-const update_many: Request = {
+const update_many: Request<RuneUpdateData[]> = {
 	api_key,
 	action: Actions.RUNE_UPDATE_RUNES,
-	data: <RuneUpdateData[]>[
+	data: [
 		{
 			name: RUNES.PHYSICAL,
 			weight: 1,
@@ -77,6 +78,12 @@ const get_runes: Request = {
 	data: [],
 	// data: <RuneRetrieveData[]>[{ name: RUNES.PHYSICAL }, { rune_id: 1 }],
 };
+
+async function getRunes() {
+	const res = await main(get_runes);
+	Lib.LogObject(res);
+}
+
 async function createOne() {
 	const res = await main(insert_one);
 	Lib.LogObject(res);
@@ -107,40 +114,36 @@ async function deleteMany() {
 	Lib.LogObject(res);
 }
 
-async function getRunes() {
-	const res = await main(get_runes);
-	Lib.LogObject(res);
-}
-
-async function runRunes() {
-	await getRunes();
-	// await createOne();
-	// await createMany();
-	// await updateOne();
-	// await updateMany();
-	// await deleteOne();
-	// await deleteMany();
-}
 const run = async () => {
-	await runRunes();
-	process.exit(0);
+	try {
+		await getRunes();
+	} catch (e) {
+		console.error(e);
+	} finally {
+		process.exit(0);
+	}
 };
 
 const invoke = async () => {
 	// const response = await main(args);
-	const response = await fetch(
-		"https://faas-ams3-2a2df116.doserverless.co/api/v1/web/fn-8b5106d1-8570-4f63-a2af-01748ac110f3/main/create",
-		{
-			method: "POST",
-			body: JSON.stringify(insert_many),
-			headers: {
-				"Content-Type": "application/json",
+	try {
+		const response = await fetch(
+			"https://faas-ams3-2a2df116.doserverless.co/api/v1/web/fn-8b5106d1-8570-4f63-a2af-01748ac110f3/main/create",
+			{
+				method: "POST",
+				body: JSON.stringify(insert_many),
+				headers: {
+					"Content-Type": "application/json",
+				},
 			},
-		},
-	);
-	const output = await response.json();
-	console.log(output);
-	process.exit(0);
+		);
+		const output = await response.json();
+		console.log(output);
+	} catch (e) {
+		console.error(e);
+	} finally {
+		process.exit(0);
+	}
 };
 
 await run();

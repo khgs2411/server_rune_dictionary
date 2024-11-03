@@ -28,10 +28,10 @@ describe("Aspect Tests", () => {
 
 		const args: ProcessArgs = {
 			user,
-			instructions: {
+			strategy: {
 				action: Actions.ASPECT_INSERT_ASPECT,
 				data: <AspectCreationData>insert_one_data,
-				service: "aspect",
+				type: "aspect",
 			},
 		};
 		expect(service.call(args)).rejects.toThrow();

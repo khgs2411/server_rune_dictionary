@@ -1,7 +1,7 @@
 import { Actions } from "common/enums";
 import Guards from "common/guards";
 import Lib from "common/lib";
-import type { Instructions, ProcessArgs, Request } from "common/types";
+import type { Strategy, ProcessArgs, Request } from "common/types";
 import UsersRepository from "repositories/users.repo";
 import AspectService from "services/aspects.service";
 import RuneService from "services/runes.service";
@@ -11,12 +11,12 @@ class App {
 
 	public static async Request(args: DoFunctionArgs): Promise<ProcessArgs> {
 		const user = await UsersRepository.Validate(args.api_key);
-		const instructions = this.HandleRequest(args as Request);
-		return { user, instructions };
+		const strategy = this.setActionStrategy(args as Request);
+		return { user, strategy };
 	}
 
 	public static async Process(args: ProcessArgs) {
-		switch (args.instructions.service) {
+		switch (args.strategy.type) {
 			case "rune":
 				const runes = new RuneService();
 				return await runes.call(args);
@@ -41,17 +41,17 @@ class App {
 		};
 	}
 
-	private static HandleRequest(args: Request): Instructions {
+	private static setActionStrategy(args: Request): Strategy {
 		if (Guards.IsNil(args.action) || Lib.IsEmpty(args.action)) throw "No action provided!";
 		if (!Object.values(Actions).includes(args.action)) throw "Invalid action provided!";
 		// if (Guards.IsNil(args.data) || Lib.IsEmpty(args.data)) throw "No data provided!";
 		if (Guards.IsNil(args.data)) throw "No data provided!";
-		const service = args.action.includes("rune") ? "rune" : args.action.includes("aspect") ? "aspect" : "unknown";
-		if (service === "unknown") throw "Invalid action provided!";
+		const type = args.action.includes("rune") ? "rune" : args.action.includes("aspect") ? "aspect" : "unknown";
+		if (type === "unknown") throw "Invalid action provided!";
 		return {
 			action: args.action,
 			data: args.data,
-			service: service,
+			type: type,
 		};
 	}
 }

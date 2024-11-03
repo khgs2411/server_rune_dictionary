@@ -3,19 +3,19 @@ import type { Actions } from "./enums";
 
 export type NonNullableType<T> = Exclude<T, null | undefined>;
 
-export interface Request extends DoFunctionArgs {
+export interface Request<T = any> extends DoFunctionArgs {
 	api_key: string;
 	action?: Actions;
-	data?: any;
+	data?: T;
 }
 
 export interface ProcessArgs {
 	user: UserModel;
-	instructions: Instructions;
+	strategy: Strategy;
 }
 
-export interface Instructions {
+export interface Strategy {
 	action: Actions;
 	data: any;
-	service: "rune" | "aspect";
+	type: "rune" | "aspect";
 }

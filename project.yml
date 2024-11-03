@@ -9,15 +9,6 @@ packages:
       MONGO_DATABASE: db
     annotations: {}
     functions:
-      - name: create
-        binary: false
-        main: ""
-        runtime: nodejs:18
-        web: true
-        parameters: {}
-        environment: {}
-        annotations: {}
-        limits: {}
       - name: index
         binary: false
         main: ""
