@@ -1,5 +1,5 @@
 import type { Dto, Serializable } from "common/dto";
-import crypto from "crypto";
+import * as crypto from "crypto";
 import type { AspectCreationData, IAspectProperties } from "./aspect.types";
 import AspectProperties from "./aspectProperties";
 
@@ -61,4 +61,5 @@ class Aspect implements Serializable<Aspect> {
 		return { ...this, properties: this.properties.serialize() };
 	}
 }
+
 export default Aspect;

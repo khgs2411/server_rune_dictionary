@@ -12,10 +12,7 @@ const propertiesSchema = new mongoose.Schema<IPropertiesSchema>({
 		validate: {
 			validator: function (value: number) {
 				// If is_dot is 1, then is_damage must be 1
-				if (value === 1 && (this as IPropertiesSchema).is_damage !== 1) {
-					return false;
-				}
-				return true;
+				return !(value === 1 && (this as IPropertiesSchema).is_damage !== 1);
 			},
 			message: "If is_dot is 1, then is_damage must be 1",
 		},

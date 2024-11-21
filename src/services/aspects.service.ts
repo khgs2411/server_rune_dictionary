@@ -3,10 +3,15 @@ import Guards from "common/guards";
 import Lib from "common/lib";
 import type { ProcessArgs } from "common/types";
 import Aspect from "core/aspect/aspect";
-import { IsAspectCreationData, IsAspectRetrieveData, IsAspectUpdateData } from "core/aspect/aspect.types";
+import {
+	type AspectRetrieveData, type AspectUpdateData,
+	IsAspectCreationData,
+	IsAspectRetrieveData,
+	IsAspectUpdateData,
+} from "core/aspect/aspect.types";
 import AspectRepository from "repositories/aspect.repo";
 
-class AspectService {
+export default class AspectService {
 	run: Record<string, Function>;
 	constructor() {
 		this.run = {
@@ -74,7 +79,7 @@ class AspectService {
 	private async updateAspects(data: any) {
 		if (!Guards.IsArray(data)) throw "updateAspects Invalid data provided!";
 		if (!data.every((item: any) => IsAspectUpdateData(item))) throw "updateAspects Invalid data provided!!";
-		const updated = await AspectRepository.UpdateMany(data);
+		const updated = await AspectRepository.UpdateMany(data as AspectUpdateData[]);
 		return {
 			msg: "Success!",
 			updated,
@@ -92,11 +97,10 @@ class AspectService {
 	private async deleteAspects(data: any) {
 		if (!Guards.IsArray(data)) throw "deleteAspects Invalid data provided!";
 		if (!data.every((item: any) => IsAspectRetrieveData(item))) throw "deleteAspects Invalid data provided!!";
-		const deleted = await AspectRepository.DeleteMany(data);
+		const deleted = await AspectRepository.DeleteMany(data as AspectRetrieveData[]);
 		return {
 			msg: "Success!",
 			deleted,
 		};
 	}
 }
-export default AspectService;

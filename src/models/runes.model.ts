@@ -7,7 +7,7 @@ const runesSchema = new mongoose.Schema({
 	type: { type: Number, required: false },
 });
 
-runesSchema.pre("save", async function (next) {
+runesSchema.pre("save", async function (next: () => void) {
 	const rune = this;
 
 	if (rune.isNew) {

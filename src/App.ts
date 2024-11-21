@@ -7,7 +7,6 @@ import AspectService from "services/aspects.service";
 import RuneService from "services/runes.service";
 
 class App {
-	constructor() {}
 
 	public static async Request(args: DoFunctionArgs): Promise<ProcessArgs> {
 		const user = await UsersRepository.Validate(args.api_key);

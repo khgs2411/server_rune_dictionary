@@ -41,7 +41,7 @@ function logValidations(args: any) {
 		console.log('typeof args === "object"', typeof args === "object");
 	}
 	if (args === null) {
-		console.log("args !== null", args !== null);
+		console.log("args !== null", false);
 	}
 	if (typeof args.name !== "string") {
 		console.log('typeof args.name === "string"', typeof args.name === "string");

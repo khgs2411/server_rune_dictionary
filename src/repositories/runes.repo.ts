@@ -16,13 +16,13 @@ export type RuneDocument = Document<
 	_id: mongoose.Types.ObjectId;
 };
 
-class RuneRepository {
+export default class RuneRepository {
 	constructor() {}
 
 	public static async Get(runes?: RuneRetrieveData[] | null | undefined) {
-		await Mongo.Connection();
 
-		if (Guards.IsNil(runes) || Lib.IsEmpty(runes)) return await RuneModel.find().lean();
+		await Mongo.Connection();
+		if (Guards.IsNil(runes) || Lib.IsEmpty(runes)) return RuneModel.find().lean();
 
 		const runeIds = runes.filter((rune) => rune.rune_id !== undefined).map((rune) => rune.rune_id);
 		const runeNames = runes.filter((rune) => rune.name).map((rune) => rune.name);
@@ -36,8 +36,7 @@ class RuneRepository {
 			filters.push({ name: { $in: runeNames } });
 		}
 
-		const retrievedRunes = await RuneModel.find({ $or: filters }).lean();
-		return retrievedRunes;
+		return RuneModel.find({ $or: filters }).lean();
 	}
 
 	public static async Create(rune: Rune) {
@@ -46,8 +45,7 @@ class RuneRepository {
 
 		if (!Guards.IsNil(already_exists)) throw "Rune already exists";
 
-		const new_rune = RuneModel.create(rune.serialize());
-		return new_rune;
+		return RuneModel.create(rune.serialize());
 	}
 
 	public static async CreateMany(runes: Rune[]) {
@@ -56,12 +54,12 @@ class RuneRepository {
 		const serializedRunes = runes.map((rune) => rune.serialize()) as RuneCreationData[];
 		const runeNames = serializedRunes.map((rune) => rune.name);
 
-		const existingRunes = await RuneModel.find({ name: { $in: runeNames } })
+		const existingRunes:RuneModel[] = await RuneModel.find({ name: { $in: runeNames } })
 			.select("name rune_id")
 			.exec();
 
-		const existingRuneNames = new Set(existingRunes.map((rune) => rune.name));
-		let lastRuneId = existingRunes.reduce((maxId, rune) => Math.max(maxId, rune.rune_id ?? 0), 0);
+		const existingRuneNames = new Set(existingRunes.map((rune:RuneModel) => rune.name));
+		let lastRuneId = existingRunes.reduce((maxId:number, rune:RuneModel) => Math.max(maxId, rune.rune_id ?? 0), 0);
 
 		const uniqueRunes = serializedRunes.reduce<RuneCreationData[]>((acc, rune) => {
 			if (!existingRuneNames.has(rune.name)) {
@@ -74,8 +72,7 @@ class RuneRepository {
 
 		if (uniqueRunes.length === 0) throw "All runes already exist";
 
-		const newRunes = await RuneModel.insertMany(uniqueRunes);
-		return newRunes;
+		return await RuneModel.insertMany(uniqueRunes);
 	}
 
 	public static async Update(data: RuneUpdateData): Promise<RuneDocument>;
@@ -117,15 +114,13 @@ class RuneRepository {
 			};
 		});
 
-		const updated = await RuneModel.bulkWrite(bulkOperations);
-
-		return updated;
+		return await RuneModel.bulkWrite(bulkOperations);
 	}
 
 	public static async Delete(data: RuneRetrieveData) {
 		await Mongo.Connection();
 		const filter = Guards.IsNil(data.rune_id) ? { name: data.name } : { rune_id: data.rune_id };
-		return await RuneModel.deleteOne(filter);
+		return RuneModel.deleteOne(filter);
 	}
 
 	public static async DeleteMany(data: RuneRetrieveData[]) {
@@ -139,4 +134,3 @@ class RuneRepository {
 		);
 	}
 }
-export default RuneRepository;

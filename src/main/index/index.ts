@@ -8,14 +8,12 @@ export const main: DoFunction = async (request) => {
 	try {
 		const start = performance.now();
 
-		if (!db) {
-			db = await Mongo.Connection();
-			Lib.Log("Connected to MongoDB");
-		}
+		if (!db) db = await Mongo.Connection().finally(() => Lib.Log("Connected to MongoDB"));
 
-		const args = await App.Request(request);
-		const response = await App.Process(args);
+		const response = await App.Process(await App.Request(request));
+
 		const end = performance.now();
+
 		return App.Response({
 			...response,
 			runtime: Lib.msToString(end - start),

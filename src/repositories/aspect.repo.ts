@@ -1,7 +1,13 @@
 import Guards from "common/guards";
 import Lib from "common/lib";
 import type Aspect from "core/aspect/aspect";
-import type { AspectCreationData, AspectRetrieveData, AspectUpdateData, IAspectProperties } from "core/aspect/aspect.types";
+import type {
+	AspectCreationData,
+	AspectDeleteData,
+	AspectRetrieveData,
+	AspectUpdateData,
+	IAspectProperties,
+} from "core/aspect/aspect.types";
 import Mongo from "database/mongodb.database";
 import { AspectModel } from "models/aspects.model";
 import type mongoose from "mongoose";
@@ -31,13 +37,14 @@ export type AspectDocument = mongoose.Document<
 	properties: IAspectProperties;
 	aspect_id?: number | null | undefined;
 } & { _id: mongoose.Types.ObjectId };
-class AspectRepository {
+
+export default class AspectRepository {
 	constructor() {}
 
 	public static async Get(aspects?: AspectRetrieveData[]) {
 		await Mongo.Connection();
 
-		if (Guards.IsNil(aspects) || Lib.IsEmpty(aspects)) return await AspectModel.find().lean();
+		if (Guards.IsNil(aspects) || Lib.IsEmpty(aspects)) return AspectModel.find().lean();
 
 		const aspectIds = aspects.filter((aspect) => aspect.aspect_id !== undefined).map((aspect) => aspect.aspect_id);
 		const hashes = aspects.filter((aspect) => aspect.hash).map((aspect) => aspect.hash);
@@ -48,7 +55,7 @@ class AspectRepository {
 
 		if (hashes.length > 0) filters.push({ hash: { $in: hashes } });
 
-		return await AspectModel.find({ $or: filters }).lean();
+		return AspectModel.find({ $or: filters }).lean();
 	}
 
 	public static async Create(asepect: Aspect): Promise<AspectDocument> {
@@ -58,8 +65,7 @@ class AspectRepository {
 
 		if (!Guards.IsNil(already_exists)) throw "asepect already exists";
 
-		const new_asepect = AspectModel.create(asepect.serialize());
-		return new_asepect;
+		return AspectModel.create(asepect.serialize());
 	}
 
 	public static async CreateMany(aspects: Aspect[]): Promise<AspectDocument[]> {
@@ -79,7 +85,13 @@ class AspectRepository {
 
 		//filter hashes that already exist, and if they don't exist, increase the aspect_id
 		const existingAspectHashes = new Set(existingAspects.map((aspect) => aspect.hash));
-		const newAspects = aspects.filter((aspect) => !existingAspectHashes.has(aspect.getHashCode()));
+
+		const newAspects = aspects.filter((aspect) => {
+			const hashCode = aspect.getHashCode();
+			if (Guards.IsNil(hashCode)) return true;
+			return !existingAspectHashes.has(hashCode);
+		});
+
 		newAspects.forEach((aspect) => {
 			aspect.setAspectId(lastAspectId);
 			lastAspectId++;
@@ -87,8 +99,7 @@ class AspectRepository {
 
 		//create the new aspects
 		const newAspectsData = newAspects.map((aspect) => aspect.serialize()) as AspectCreationData[];
-		const newAspectsCreated = await AspectModel.create(newAspectsData);
-		return newAspectsCreated;
+		return await AspectModel.create(newAspectsData);
 	}
 
 	public static async Update(data: AspectUpdateData): Promise<AspectDocument>;
@@ -131,18 +142,16 @@ class AspectRepository {
 			};
 		});
 
-		const updated = await AspectModel.bulkWrite(bulkOperations);
-
-		return updated;
+		return await AspectModel.bulkWrite(bulkOperations);
 	}
 
 	public static async Delete(aspectData: AspectRetrieveData): Promise<mongoose.mongo.DeleteResult> {
 		await Mongo.Connection();
 		const filter = Guards.IsNil(aspectData.aspect_id) ? { hash: aspectData.hash } : { aspect_id: aspectData.aspect_id };
-		return await AspectModel.deleteOne(filter);
+		return AspectModel.deleteOne(filter);
 	}
 
-	public static async DeleteMany(data: AspectRetrieveData[]): Promise<mongoose.mongo.BulkWriteResult> {
+	public static async DeleteMany(data: AspectDeleteData[]): Promise<mongoose.mongo.BulkWriteResult> {
 		await Mongo.Connection();
 		return await AspectModel.bulkWrite(
 			data.map((aspect) => ({
@@ -153,5 +162,3 @@ class AspectRepository {
 		);
 	}
 }
-
-export default AspectRepository;

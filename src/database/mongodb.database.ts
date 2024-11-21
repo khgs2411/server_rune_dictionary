@@ -3,10 +3,10 @@ import Lib from "common/lib";
 import * as mongoose from "mongoose";
 
 class Mongo extends Database {
-	private username: string;
-	private password: string;
-	private host: string;
-	private uri: string;
+	private readonly username: string;
+	private readonly password: string;
+	private readonly host: string;
+	private readonly uri: string;
 
 	public client: mongoose.Mongoose | undefined;
 

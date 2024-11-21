@@ -73,47 +73,42 @@ class Lib {
 	}
 
 	public static FormatUnixToDate(unix_time_stamp: number, in_milliseconds: boolean = false): Date {
-		const date = new Date(unix_time_stamp * (in_milliseconds ? 1 : 1000));
-		return date;
+		return new Date(unix_time_stamp * (in_milliseconds ? 1 : 1000));
 	}
 
 	public static FormatDate(date: Date | string, format = "MM/dd/yyyy"): string {
-		try {
-			const leadingZero = (value: string) => (value.length < 2 ? `0${value}` : value);
-			if (!date) throw new Error("Lib.FormatDate() Exception: Date is required");
+		const leadingZero = (value: string) => (value.length < 2 ? `0${value}` : value);
+		if (!date) throw new Error("Lib.FormatDate() Exception: Date is required");
 
-			if (typeof date === "string") {
-				date = new Date(date);
-			}
-
-			const day = format.includes("dd") ? String(date.getDate()).padStart(2, "0") : String(date.getDate());
-			const month = format.includes("MM") ? String(date.getMonth() + 1).padStart(2, "0") : String(date.getMonth() + 1);
-			const year = date.getFullYear();
-			const hours = format.includes("HH") ? String(date.getHours()).padStart(2, "0") : String(date.getHours());
-			const minutes = format.includes("mm") ? String(date.getMinutes()).padStart(2, "0") : String(date.getMinutes());
-			const seconds = format.includes("ss") ? String(date.getSeconds()).padStart(2, "0") : String(date.getSeconds());
-
-			const split = format.split(/[^a-zA-Z]/);
-			let seperator = format.match(/[^a-zA-Z]/) ?? ["/"];
-
-			if (split.length < 3) throw new Error("Invalid format");
-
-			const sign = seperator[0];
-			let output = `${split[0]}${sign}${split[1]}${sign}${split[2]}`;
-			if (hours) output += ` ${leadingZero(hours)}`;
-			if (minutes) output += `:${leadingZero(minutes)}`;
-			if (seconds) output += `:${leadingZero(seconds)}`;
-
-			return output
-				.replace("MM", month)
-				.replace("mm", month)
-				.replace("dd", day)
-				.replace("DD", day)
-				.replace("yyyy", year.toString())
-				.replace("YYYY", year.toString());
-		} catch (e) {
-			throw e;
+		if (typeof date === "string") {
+			date = new Date(date);
 		}
+
+		const day = format.includes("dd") ? String(date.getDate()).padStart(2, "0") : String(date.getDate());
+		const month = format.includes("MM") ? String(date.getMonth() + 1).padStart(2, "0") : String(date.getMonth() + 1);
+		const year = date.getFullYear();
+		const hours = format.includes("HH") ? String(date.getHours()).padStart(2, "0") : String(date.getHours());
+		const minutes = format.includes("mm") ? String(date.getMinutes()).padStart(2, "0") : String(date.getMinutes());
+		const seconds = format.includes("ss") ? String(date.getSeconds()).padStart(2, "0") : String(date.getSeconds());
+
+		const split = format.split(/[^a-zA-Z]/);
+		let separator = format.match(/[^a-zA-Z]/) ?? ["/"];
+
+		if (split.length < 3) throw new Error("Invalid format");
+
+		const sign = separator[0];
+		let output = `${split[0]}${sign}${split[1]}${sign}${split[2]}`;
+		if (hours) output += ` ${leadingZero(hours)}`;
+		if (minutes) output += `:${leadingZero(minutes)}`;
+		if (seconds) output += `:${leadingZero(seconds)}`;
+
+		return output
+			.replace("MM", month)
+			.replace("mm", month)
+			.replace("dd", day)
+			.replace("DD", day)
+			.replace("yyyy", year.toString())
+			.replace("YYYY", year.toString());
 	}
 
 	public static DaysBetweenDates(startDate: Date | string | undefined, endDate: Date | string | undefined): number {
@@ -140,7 +135,7 @@ class Lib {
 
 	public static UUID() {
 		return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-			var r = (Math.random() * 16) | 0,
+			let r = (Math.random() * 16) | 0,
 				v = c === "x" ? r : (r & 0x3) | 0x8;
 			return v.toString(16);
 		});

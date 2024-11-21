@@ -31,6 +31,8 @@ export type AspectRetrieveData = {
 	hash?: string;
 };
 
+export type AspectDeleteData = AspectRetrieveData
+
 export type AspectCreationData = {
 	tier: 1 | 2 | 3 | 4;
 	weight: number;

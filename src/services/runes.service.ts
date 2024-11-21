@@ -3,10 +3,16 @@ import Guards from "common/guards";
 import Lib from "common/lib";
 import type { ProcessArgs } from "common/types";
 import Rune from "core/rune/rune";
-import { IsRuneCreationData, IsRuneRetrieveData, IsRuneUpdateData, type RuneCreationData } from "core/rune/rune.types";
+import {
+	IsRuneCreationData,
+	IsRuneRetrieveData,
+	IsRuneUpdateData,
+	type RuneCreationData,
+	type RuneRetrieveData,
+} from "core/rune/rune.types";
 import RuneRepository from "repositories/runes.repo";
 
-class RuneService {
+export default class RuneService {
 	run: Record<string, Function>;
 	constructor() {
 		this.run = {
@@ -54,7 +60,7 @@ class RuneService {
 	private async createRunes(data: any) {
 		if (!Guards.IsArray(data)) throw "Invalid data provided!";
 		if (!data.every((item: any) => IsRuneCreationData(item))) throw "Invalid data provided!!";
-		const runes = data.map((rune: RuneCreationData) => new Rune(rune));
+		const runes = (data as RuneCreationData[]).map((rune) => new Rune(rune));
 		const new_runes = await RuneRepository.CreateMany(runes);
 		return {
 			msg: "Success!",
@@ -74,7 +80,7 @@ class RuneService {
 	private async updateRunes(data: any) {
 		if (!Guards.IsArray(data)) throw "Invalid data provided!";
 		if (!data.every((item: any) => IsRuneUpdateData(item))) throw "Invalid data provided!!";
-		const updated = await RuneRepository.UpdateMany(data);
+		const updated = await RuneRepository.UpdateMany(data as RuneCreationData[]);
 		return {
 			msg: "Success!",
 			updated,
@@ -92,12 +98,10 @@ class RuneService {
 	private async deleteRunes(data: any) {
 		if (!Guards.IsArray(data)) throw "Invalid data provided!";
 		if (!data.every((item: any) => IsRuneRetrieveData(item))) throw "Invalid data provided!!";
-		const deleted = await RuneRepository.DeleteMany(data);
+		const deleted = await RuneRepository.DeleteMany(data as RuneRetrieveData[]);
 		return {
 			msg: "Success!",
 			deleted,
 		};
 	}
 }
-
-export default RuneService;

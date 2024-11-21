@@ -9,7 +9,7 @@ export type UserData = {
 	role?: ROLES;
 };
 
-class UsersRepository {
+export default class UsersRepository {
 	public static async Validate(api_key?: string) {
 		if (Lib.IsNumpty(api_key)) throw "Unauthorized!";
 
@@ -72,5 +72,3 @@ class UsersRepository {
 		return user;
 	}
 }
-
-export default UsersRepository;

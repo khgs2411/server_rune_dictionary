@@ -30,9 +30,5 @@ const usersSchema = new mongoose.Schema(
 	},
 );
 
-/* usersSchema.virtual("id").get(function () {
-	return this._id.toHexString();
-}); */
-
 export type UserModel = mongoose.InferSchemaType<typeof usersSchema>;
 export const UserModel = mongoose.model("User", usersSchema);
