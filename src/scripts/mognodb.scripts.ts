@@ -1,7 +1,7 @@
 import Mongo from "database/mongodb.database";
 import { UserModel } from "models/users.model";
 
-const run = async () => {
+export const run = async () => {
 	await Mongo.Connection();
 	const new_user = new UserModel({
 		username: "tal",
@@ -12,4 +12,4 @@ const run = async () => {
 	process.exit(0);
 };
 
-await run();
+

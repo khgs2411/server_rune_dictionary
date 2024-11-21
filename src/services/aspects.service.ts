@@ -4,8 +4,9 @@ import Lib from "common/lib";
 import type { ProcessArgs } from "common/types";
 import Aspect from "core/aspect/aspect";
 import {
+	type AspectDeleteData,
 	type AspectRetrieveData, type AspectUpdateData,
-	IsAspectCreationData,
+	IsAspectCreationData, IsAspectDeleteData,
 	IsAspectRetrieveData,
 	IsAspectUpdateData,
 } from "core/aspect/aspect.types";
@@ -28,9 +29,10 @@ export default class AspectService {
 		};
 	}
 
-	public async call(args: ProcessArgs) {
+	public static async Call(args: ProcessArgs) {
+		const self = new AspectService();
 		const action = args.strategy.action;
-		const run = this.run[action];
+		const run = self.run[action];
 		if (!run) throw "aspects.call - Invalid action provided!";
 		return await run(args.strategy.data);
 	}
@@ -38,7 +40,7 @@ export default class AspectService {
 	private async getAspects(data: any) {
 		if (!Guards.IsArray(data)) throw "getAspects Invalid data provided!";
 		if (!Lib.IsEmpty(data) && !data.every((item: any) => IsAspectRetrieveData(item))) throw "getAspects Invalid data provided!!";
-		const aspects = await AspectRepository.Get(data as any[]);
+		const aspects = await AspectRepository.Get(data as AspectRetrieveData[]);
 
 		return {
 			msg: "Success!",
@@ -86,18 +88,21 @@ export default class AspectService {
 		};
 	}
 
+
 	private async deleteAspect(data: any) {
-		if (!IsAspectRetrieveData(data)) throw "deleteAspect Invalid data provided!";
+		if (!IsAspectDeleteData(data)) throw "deleteAspect Invalid data provided!";
 		const deleted = await AspectRepository.Delete(data);
 		return {
 			msg: "Success!",
 			deleted,
 		};
 	}
+
+
 	private async deleteAspects(data: any) {
 		if (!Guards.IsArray(data)) throw "deleteAspects Invalid data provided!";
-		if (!data.every((item: any) => IsAspectRetrieveData(item))) throw "deleteAspects Invalid data provided!!";
-		const deleted = await AspectRepository.DeleteMany(data as AspectRetrieveData[]);
+		if (!data.every((item: any) => IsAspectDeleteData(item))) throw "deleteAspects Invalid data provided!!";
+		const deleted = await AspectRepository.DeleteMany(data as AspectDeleteData[]);
 		return {
 			msg: "Success!",
 			deleted,

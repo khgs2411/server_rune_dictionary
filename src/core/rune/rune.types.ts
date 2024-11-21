@@ -6,6 +6,8 @@ export type RuneRetrieveData = {
 	name?: string;
 };
 
+export type RuneDeleteData = RuneRetrieveData;
+
 export type RuneCreationData = {
 	name: string;
 	type: BOOLEANISH;
@@ -22,6 +24,10 @@ export function IsRuneRetrieveData(args: any): args is RuneRetrieveData {
 		Object.keys(args).length > 0 &&
 		Object.values(args).some((value) => !Guards.IsNil(value))
 	);
+}
+
+export function IsRuneDeleteData(args: any): args is RuneDeleteData {
+	return IsRuneRetrieveData(args);
 }
 
 export function IsRuneCreationData(args: any): args is RuneCreationData {

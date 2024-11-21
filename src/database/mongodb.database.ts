@@ -19,6 +19,7 @@ class Mongo extends Database {
 	}
 
 	public async connect(dbName: string = process.env.MONGO_DATABASE || "default"): Promise<void> {
+		if(!this.validateConnectionString()) throw new Error("Invalid connection string");
 		this.connected = false;
 		this.client = await mongoose.connect(this.uri, { dbName: dbName });
 		this.connected = true;
@@ -40,6 +41,10 @@ class Mongo extends Database {
 	public async setDatabase(dbName: string) {
 		await this.disconnect();
 		await this.connect(dbName);
+	}
+
+	private validateConnectionString(): boolean {
+		return !Lib.IsNumpty(this.username) || !Lib.IsNumpty(this.password) || !Lib.IsNumpty(this.host);
 	}
 
 	public static GetConnectionString(): string {

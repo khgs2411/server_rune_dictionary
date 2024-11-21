@@ -14,8 +14,10 @@ export interface ProcessArgs {
 	strategy: Strategy;
 }
 
+export type StrategyType = "rune" | "aspect";
+
 export interface Strategy {
 	action: Actions;
 	data: any;
-	type: "rune" | "aspect";
+	type: StrategyType;
 }

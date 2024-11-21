@@ -3,6 +3,7 @@ import Lib from "common/lib";
 import type { Request } from "common/types";
 import type { AspectCreationData, AspectRetrieveData, AspectUpdateData } from "core/aspect/aspect.types";
 import { main } from "main/index";
+
 const api_key = "r_d_25c9dd62-ba12-44de-b303-67ef659ba7bd";
 
 const insert_one_data: AspectCreationData = {
@@ -144,21 +145,16 @@ async function deleteMany() {
 	Lib.LogObject(res);
 }
 
-async function runAsepcts() {
-	// await createMany();
-	await getAspects();
-}
-
-const run = async () => {
+export const run = async () => {
 	try {
-		await runAsepcts();
+		await getAspects();
 	} catch (e) {
 		console.error(e);
 	} finally {
 		process.exit(0);
 	}
 };
-const invoke = async (payload: any) => {
+export const invoke = async (payload: any) => {
 	try {
 		// const response = await main(args);
 		const response = await fetch(
@@ -179,6 +175,4 @@ const invoke = async (payload: any) => {
 		process.exit(0);
 	}
 };
-
-await run();
-// await invoke(insert_many);
+;

@@ -67,6 +67,10 @@ export function IsAspectRetrieveData(args: any): args is AspectRetrieveData {
 	);
 }
 
+export function IsAspectDeleteData(args: any): args is AspectDeleteData {
+	return IsAspectRetrieveData(args);
+}
+
 export function IsAspectCreationData(args: any): args is AspectCreationData {
 	// logValidations(args);
 	return (

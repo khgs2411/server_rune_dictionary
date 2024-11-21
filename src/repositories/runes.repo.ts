@@ -2,7 +2,7 @@ import type { BOOLEANISH } from "common/enums";
 import Guards from "common/guards";
 import Lib from "common/lib";
 import type Rune from "core/rune/rune";
-import type { RuneCreationData, RuneRetrieveData, RuneUpdateData } from "core/rune/rune.types";
+import type { RuneCreationData, RuneDeleteData, RuneRetrieveData, RuneUpdateData } from "core/rune/rune.types";
 import Mongo from "database/mongodb.database";
 import { RuneModel } from "models/runes.model";
 import type mongoose from "mongoose";
@@ -117,13 +117,13 @@ export default class RuneRepository {
 		return await RuneModel.bulkWrite(bulkOperations);
 	}
 
-	public static async Delete(data: RuneRetrieveData) {
+	public static async Delete(data: RuneDeleteData) {
 		await Mongo.Connection();
 		const filter = Guards.IsNil(data.rune_id) ? { name: data.name } : { rune_id: data.rune_id };
 		return RuneModel.deleteOne(filter);
 	}
 
-	public static async DeleteMany(data: RuneRetrieveData[]) {
+	public static async DeleteMany(data: RuneDeleteData[]) {
 		await Mongo.Connection();
 		return await RuneModel.bulkWrite(
 			data.map((rune) => ({

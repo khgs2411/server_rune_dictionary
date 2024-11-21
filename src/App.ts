@@ -1,7 +1,7 @@
 import { Actions } from "common/enums";
 import Guards from "common/guards";
 import Lib from "common/lib";
-import type { Strategy, ProcessArgs, Request } from "common/types";
+import type { Strategy, ProcessArgs, Request, StrategyType } from "common/types";
 import UsersRepository from "repositories/users.repo";
 import AspectService from "services/aspects.service";
 import RuneService from "services/runes.service";
@@ -15,14 +15,7 @@ class App {
 	}
 
 	public static async Process(args: ProcessArgs) {
-		switch (args.strategy.type) {
-			case "rune":
-				const runes = new RuneService();
-				return await runes.call(args);
-			case "aspect":
-				const aspects = new AspectService();
-				return await aspects.call(args);
-		}
+		return await this.StrategyCall(args.strategy.type)(args);
 	}
 
 	public static Response(body?: any) {
@@ -52,6 +45,14 @@ class App {
 			data: args.data,
 			type: type,
 		};
+	}
+
+	private static StrategyCall(strategyType:StrategyType) {
+		const types = {
+			"rune": RuneService.Call,
+			"aspect": AspectService.Call,
+		}
+		return types[strategyType];
 	}
 }
 

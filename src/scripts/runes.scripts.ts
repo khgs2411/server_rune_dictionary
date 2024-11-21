@@ -114,7 +114,7 @@ async function deleteMany() {
 	Lib.LogObject(res);
 }
 
-const run = async () => {
+export const run = async () => {
 	try {
 		await getRunes();
 	} catch (e) {
@@ -124,7 +124,7 @@ const run = async () => {
 	}
 };
 
-const invoke = async () => {
+export const invoke = async () => {
 	// const response = await main(args);
 	try {
 		const response = await fetch(
@@ -146,5 +146,3 @@ const invoke = async () => {
 	}
 };
 
-await run();
-// await invoke();

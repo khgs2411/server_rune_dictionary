@@ -4,10 +4,10 @@ import Lib from "common/lib";
 import type { ProcessArgs } from "common/types";
 import Rune from "core/rune/rune";
 import {
-	IsRuneCreationData,
+	IsRuneCreationData, IsRuneDeleteData,
 	IsRuneRetrieveData,
 	IsRuneUpdateData,
-	type RuneCreationData,
+	type RuneCreationData, type RuneDeleteData,
 	type RuneRetrieveData,
 } from "core/rune/rune.types";
 import RuneRepository from "repositories/runes.repo";
@@ -29,9 +29,10 @@ export default class RuneService {
 		};
 	}
 
-	public async call(args: ProcessArgs) {
+	public static async Call(args: ProcessArgs) {
 		const action = args.strategy.action;
-		const run = this.run[action];
+		const self = new RuneService();
+		const run = self.run[action];
 		if (!run) throw "runes.call - Invalid action provided!";
 		return await run(args.strategy.data);
 	}
@@ -88,7 +89,7 @@ export default class RuneService {
 	}
 
 	private async deleteRune(data: any) {
-		if (!IsRuneRetrieveData(data)) throw "Invalid data provided!";
+		if (!IsRuneDeleteData(data)) throw "Invalid data provided!";
 		const deleted = await RuneRepository.Delete(data);
 		return {
 			msg: "Success!",
@@ -97,8 +98,8 @@ export default class RuneService {
 	}
 	private async deleteRunes(data: any) {
 		if (!Guards.IsArray(data)) throw "Invalid data provided!";
-		if (!data.every((item: any) => IsRuneRetrieveData(item))) throw "Invalid data provided!!";
-		const deleted = await RuneRepository.DeleteMany(data as RuneRetrieveData[]);
+		if (!data.every((item: any) => IsRuneDeleteData(item))) throw "Invalid data provided!!";
+		const deleted = await RuneRepository.DeleteMany(data as RuneDeleteData[]);
 		return {
 			msg: "Success!",
 			deleted,

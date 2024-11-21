@@ -34,6 +34,6 @@ describe("Aspect Tests", () => {
 				type: "aspect",
 			},
 		};
-		expect(service.call(args)).rejects.toThrow();
+		expect(service.Call(args)).rejects.toThrow();
 	});
 });
