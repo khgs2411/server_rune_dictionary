@@ -44,6 +44,7 @@ class App {
 	}
 
 	public static Preflight(): DoFunctionReturn {
+		Lib.Log("Preflight request received");
 		return {
 			body: null,
 			statusCode: 204,

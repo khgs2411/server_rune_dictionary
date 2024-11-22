@@ -10,7 +10,7 @@ export const main: DoFunction = async (request) => {
 
 		if (request.method === "OPTIONS") return App.Preflight();
 
-		if (!db) db = await Mongo.Connection().finally(() => Lib.Log("Connected to MongoDB"));
+		if (!db) db = await Mongo.Connection();
 
 		const response = await App.Process(await App.Request(request));
 
