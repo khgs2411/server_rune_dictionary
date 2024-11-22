@@ -11,7 +11,8 @@ export const main: DoFunction = async (request) => {
 
 	try {
 		const start = performance.now();
-		Lib.Log("Request received", request);
+
+		Lib.Log("Received payload:", JSON.stringify(request.body));
 
 		if (!db) db = await Mongo.Connection();
 
