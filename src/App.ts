@@ -6,7 +6,13 @@ import { StrategyType } from "common/enums";
 import AspectService from "services/aspects.service";
 import AuthService from "services/auth.service";
 import RuneService from "services/runes.service";
-
+const HEADERS = {
+	"Access-Control-Allow-Origin": "http://localhost:8080", // Allow specific origin
+	"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS", // Allow specific methods
+	"Access-Control-Allow-Headers": "Content-Type, Authorization", // Allow specific headers
+	"Access-Control-Allow-Credentials": "true", // Allow credentials
+	"Content-Type": "application/json",
+};
 class App {
 	public static async Request(args: DoFunctionArgs): Promise<ProcessArgs> {
 		const user = await AuthService.Authenticate(args.api_key);
@@ -18,30 +24,20 @@ class App {
 		return await this.StrategyCall(args.strategy.type)(args);
 	}
 
-	public static Response(body?: any) {
+	public static Response(body?: any): DoFunctionReturn {
 		return {
 			body: body,
-			code: 200,
-			headers: {
-				"Access-Control-Allow-Origin": "*", // Allow all origins
-				"Access-Control-Allow-Methods": "GET, POST, OPTIONS", // Allow specific methods
-				"Access-Control-Allow-Headers": "Content-Type, Authorization", // Allow specific headers
-				"Content-Type": "application/json",
-			},
+			statusCode: 200,
+			headers: HEADERS,
 		};
 	}
 
-	public static Error(code: number = 401, e: unknown) {
+	public static Error(code: number = 401, e: unknown): DoFunctionReturn {
 		Lib.Warn(code, e);
 		return {
 			body: e,
-			code: code,
-			headers: {
-				"Access-Control-Allow-Origin": "*", // Allow all origins
-				"Access-Control-Allow-Methods": "GET, POST, OPTIONS", // Allow specific methods
-				"Access-Control-Allow-Headers": "Content-Type, Authorization", // Allow specific headers
-				"Content-Type": "application/json",
-			},
+			statusCode: code,
+			headers: HEADERS,
 		};
 	}
 
