@@ -22,6 +22,11 @@ class App {
 		return {
 			body: body,
 			code: 200,
+			headers: {
+				"Access-Control-Allow-Origin": "*", // Allow all origins
+				"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS", // Allow specific methods
+				"Access-Control-Allow-Headers": "Content-Type, Authorization", // Allow specific headers
+			},
 		};
 	}
 
@@ -30,6 +35,11 @@ class App {
 		return {
 			body: e,
 			code: code,
+			headers: {
+				"Access-Control-Allow-Origin": "*", // Allow all origins
+				"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS", // Allow specific methods
+				"Access-Control-Allow-Headers": "Content-Type, Authorization", // Allow specific headers
+			},
 		};
 	}
 
