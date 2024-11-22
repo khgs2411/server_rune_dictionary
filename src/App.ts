@@ -8,11 +8,18 @@ import AuthService from "services/auth.service";
 import RuneService from "services/runes.service";
 
 const HEADERS = {
-	"Access-Control-Allow-Origin": "*", // Allow all origins during development
+	"Access-Control-Allow-Origin": "*", // Allow all during development
 	"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-	"Access-Control-Allow-Headers": "Content-Type, Authorization, x-requested-with",
+	"Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
 	"Access-Control-Allow-Credentials": "true",
-	// Vary: "Origin",
+};
+
+const dynamicHeaders = (request: DoFunctionArgs) => {
+	const origin = request.headers?.origin;
+	return {
+		...HEADERS,
+		"Access-Control-Allow-Origin": origin === "http://localhost:8080" ? origin : "*", // Adjust for specific origins
+	};
 };
 
 class App {
@@ -26,29 +33,29 @@ class App {
 		return await this.StrategyCall(args.strategy.type)(args);
 	}
 
-	public static Response(body?: any): DoFunctionReturn {
+	public static Response(body: any, args: DoFunctionArgs): DoFunctionReturn {
 		return {
 			body: body,
 			statusCode: 200,
-			headers: HEADERS,
+			headers: dynamicHeaders(args),
 		};
 	}
 
-	public static Error(code: number = 401, e: unknown): DoFunctionReturn {
+	public static Error(code: number = 401, e: unknown, args: DoFunctionArgs): DoFunctionReturn {
 		Lib.Warn(code, e);
 		return {
 			body: e,
 			statusCode: code,
-			headers: HEADERS,
+			headers: dynamicHeaders(args),
 		};
 	}
 
-	public static Preflight(): DoFunctionReturn {
+	public static Preflight(request: DoFunctionArgs): DoFunctionReturn {
 		Lib.Log("Preflight request received");
 		return {
 			body: null,
 			statusCode: 204,
-			headers: HEADERS,
+			headers: dynamicHeaders(request),
 		};
 	}
 

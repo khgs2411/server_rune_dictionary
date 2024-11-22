@@ -6,7 +6,7 @@ let db: Mongo | null = null;
 
 export const main: DoFunction = async (request) => {
 	if (request.__ow_method === "options" || request.method === "OPTIONS") {
-		return App.Preflight();
+		return App.Preflight(request);
 	}
 
 	try {
@@ -19,11 +19,14 @@ export const main: DoFunction = async (request) => {
 
 		const end = performance.now();
 
-		return App.Response({
-			...response,
-			runtime: Lib.msToString(end - start),
-		});
+		return App.Response(
+			{
+				...response,
+				runtime: Lib.msToString(end - start),
+			},
+			request,
+		);
 	} catch (e) {
-		return App.Error(400, e);
+		return App.Error(400, e, request);
 	}
 };
