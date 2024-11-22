@@ -26,6 +26,7 @@ class App {
 				"Access-Control-Allow-Origin": "*", // Allow all origins
 				"Access-Control-Allow-Methods": "GET, POST, OPTIONS", // Allow specific methods
 				"Access-Control-Allow-Headers": "Content-Type, Authorization", // Allow specific headers
+				"Content-Type": "application/json",
 			},
 		};
 	}
@@ -39,6 +40,7 @@ class App {
 				"Access-Control-Allow-Origin": "*", // Allow all origins
 				"Access-Control-Allow-Methods": "GET, POST, OPTIONS", // Allow specific methods
 				"Access-Control-Allow-Headers": "Content-Type, Authorization", // Allow specific headers
+				"Content-Type": "application/json",
 			},
 		};
 	}
