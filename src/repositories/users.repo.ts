@@ -10,21 +10,14 @@ export type UserData = {
 };
 
 export default class UsersRepository {
-	public static async Validate(username?: string, api_key?: string): Promise<UserModel>;
-	public static async Validate(api_key?: string): Promise<UserModel>;
-	public static async Validate(username_or_api_key?: string, api_key?: string): Promise<UserModel> {
+	public static async Validate(username: string, api_key: string | undefined): Promise<UserModel>;
+	public static async Validate(api_key: string): Promise<UserModel>;
+	public static async Validate(username_or_api_key: string, api_key?: string | undefined): Promise<UserModel> {
 		if (Lib.IsNumpty(username_or_api_key)) throw "Unauthorized!";
 
 		await Mongo.Connection();
 
-		const data: { api_key: string | undefined; username?: string } = {
-			api_key: username_or_api_key,
-		};
-
-		if (!Lib.IsNumpty(api_key)) {
-			data["username"] = username_or_api_key;
-			data["api_key"] = api_key;
-		}
+		const data = this.GetValidationData(username_or_api_key, api_key);
 
 		const user = await UserModel.findOne(data);
 
@@ -79,5 +72,20 @@ export default class UsersRepository {
 		}
 		await user.save();
 		return user;
+	}
+
+	public static GetValidationData(username_or_api_key?: string, api_key?: string): { api_key: string; username?: string | undefined } {
+		if (Guards.IsNil(username_or_api_key)) throw "Something went wrong. Please try again later.";
+		const data: { api_key: string; username?: string | undefined } = {
+			api_key: username_or_api_key,
+			// username: undefined,
+		};
+
+		if (!Guards.IsNil(api_key)) {
+			data["username"] = username_or_api_key;
+			data["api_key"] = api_key;
+		}
+
+		return data;
 	}
 }

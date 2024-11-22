@@ -8,7 +8,7 @@ const request: Request = {
 	api_key: api_key,
 	action: Actions.AUTH_LOGIN,
 	data: {
-		username: "admin",
+		username: "admisn",
 		api_key: api_key,
 	},
 };
