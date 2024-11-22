@@ -5,8 +5,10 @@ import type { ProcessArgs } from "common/types";
 import Aspect from "core/aspect/aspect";
 import {
 	type AspectDeleteData,
-	type AspectRetrieveData, type AspectUpdateData,
-	IsAspectCreationData, IsAspectDeleteData,
+	type AspectRetrieveData,
+	type AspectUpdateData,
+	IsAspectCreationData,
+	IsAspectDeleteData,
 	IsAspectRetrieveData,
 	IsAspectUpdateData,
 } from "core/aspect/aspect.types";
@@ -88,7 +90,6 @@ export default class AspectService {
 		};
 	}
 
-
 	private async deleteAspect(data: any) {
 		if (!IsAspectDeleteData(data)) throw "deleteAspect Invalid data provided!";
 		const deleted = await AspectRepository.Delete(data);
@@ -97,7 +98,6 @@ export default class AspectService {
 			deleted,
 		};
 	}
-
 
 	private async deleteAspects(data: any) {
 		if (!Guards.IsArray(data)) throw "deleteAspects Invalid data provided!";

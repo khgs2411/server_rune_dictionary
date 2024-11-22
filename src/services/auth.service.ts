@@ -15,7 +15,7 @@ export default class AuthService extends BaseService {
 		const self = new AuthService();
 		const run = self.run[action];
 		if (!run) throw "runes.call - Invalid action provided!";
-		return await run(args.strategy.data);
+		return await run(args.strategy.data, args);
 	}
 
 	public static async Authenticate(api_key: string) {
@@ -24,8 +24,14 @@ export default class AuthService extends BaseService {
 	}
 
 	//TODO: implement an actual login method with a user session
-	private async login(username: string, api_key: string) {
+	private async login(data: any, args: ProcessArgs) {
+		if (!data) throw "Something went wrong. Please try again later!";
+		const { username, api_key } = data;
+		if (!username || !api_key) throw "Something went wrong. Please try again later";
 		const user = await UsersRepository.Validate(username, api_key);
-		return user;
+		return {
+			msg: "Success!",
+			authorized: !!user,
+		};
 	}
 }

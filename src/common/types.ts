@@ -1,4 +1,5 @@
 import type { UserModel } from "models/users.model";
+import type { StrategyType } from "./enums";
 import type { Actions } from "./enums";
 
 export type NonNullableType<T> = Exclude<T, null | undefined>;
@@ -13,8 +14,6 @@ export interface ProcessArgs {
 	user: UserModel;
 	strategy: Strategy;
 }
-
-export type StrategyType = "rune" | "aspect" | "auth";
 
 export interface Strategy {
 	action: Actions;

@@ -13,7 +13,7 @@ export default class UsersRepository {
 	public static async Validate(username?: string, api_key?: string): Promise<UserModel>;
 	public static async Validate(api_key?: string): Promise<UserModel>;
 	public static async Validate(username_or_api_key?: string, api_key?: string): Promise<UserModel> {
-		if (Lib.IsNumpty(api_key)) throw "Unauthorized!";
+		if (Lib.IsNumpty(username_or_api_key)) throw "Unauthorized!";
 
 		await Mongo.Connection();
 

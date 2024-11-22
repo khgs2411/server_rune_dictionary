@@ -1,7 +1,8 @@
 import { Actions } from "common/enums";
 import Guards from "common/guards";
 import Lib from "common/lib";
-import type { ProcessArgs, Request, Strategy, StrategyType } from "common/types";
+import { type ProcessArgs, type Request, type Strategy } from "common/types";
+import { StrategyType } from "common/enums";
 import AspectService from "services/aspects.service";
 import AuthService from "services/auth.service";
 import RuneService from "services/runes.service";
@@ -35,10 +36,15 @@ class App {
 	private static setActionStrategy(args: Request): Strategy {
 		if (Guards.IsNil(args.action) || Lib.IsEmpty(args.action)) throw "No action provided!";
 		if (!Object.values(Actions).includes(args.action)) throw "Invalid action provided!";
-		// if (Guards.IsNil(args.data) || Lib.IsEmpty(args.data)) throw "No data provided!";
+
 		if (Guards.IsNil(args.data)) throw "No data provided!";
-		const type = args.action.includes("rune") ? "rune" : args.action.includes("aspect") ? "aspect" : "unknown";
-		if (type === "unknown") throw "Invalid action provided!";
+
+		const action_type = args.action.split("_")[0];
+		if (Guards.IsNil(action_type)) throw "Invalid action provided!";
+
+		const type = Object.values(StrategyType).includes(action_type as StrategyType) ? (action_type as StrategyType) : "unknown";
+		if (type === "unknown") throw "Invalid action provided!!";
+
 		return {
 			action: args.action,
 			data: args.data,

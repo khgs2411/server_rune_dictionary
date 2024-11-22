@@ -175,4 +175,3 @@ export const invoke = async (payload: any) => {
 		process.exit(0);
 	}
 };
-;

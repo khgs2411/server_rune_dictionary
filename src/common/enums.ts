@@ -12,6 +12,12 @@ export enum E_IS {
 	BOOLEAN = "boolean",
 	REGEX = "regex",
 }
+
+export enum StrategyType {
+	Rune = "rune",
+	Aspect = "aspect",
+	Auth = "auth",
+}
 export enum Actions {
 	RUNE_GET_RUNE = "get_rune",
 	RUNE_GET_RUNES = "get_runes",

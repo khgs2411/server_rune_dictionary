@@ -1,4 +1,5 @@
-import { Actions, BOOLEANISH } from "common/enums";
+import { BOOLEANISH } from "common/enums";
+import { Actions } from "common/enums";
 import Lib from "common/lib";
 import { type Request } from "common/types";
 import { RUNES } from "core/rune/rune.enums";
@@ -145,4 +146,3 @@ export const invoke = async () => {
 		process.exit(0);
 	}
 };
-
