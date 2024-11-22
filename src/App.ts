@@ -1,15 +1,14 @@
 import { Actions } from "common/enums";
 import Guards from "common/guards";
 import Lib from "common/lib";
-import type { Strategy, ProcessArgs, Request, StrategyType } from "common/types";
-import UsersRepository from "repositories/users.repo";
+import type { ProcessArgs, Request, Strategy, StrategyType } from "common/types";
 import AspectService from "services/aspects.service";
+import AuthService from "services/auth.service";
 import RuneService from "services/runes.service";
 
 class App {
-
 	public static async Request(args: DoFunctionArgs): Promise<ProcessArgs> {
-		const user = await UsersRepository.Validate(args.api_key);
+		const user = await AuthService.Authenticate(args.api_key);
 		const strategy = this.setActionStrategy(args as Request);
 		return { user, strategy };
 	}
@@ -47,11 +46,12 @@ class App {
 		};
 	}
 
-	private static StrategyCall(strategyType:StrategyType) {
+	private static StrategyCall(strategyType: StrategyType) {
 		const types = {
-			"rune": RuneService.Call,
-			"aspect": AspectService.Call,
-		}
+			rune: RuneService.Call,
+			aspect: AspectService.Call,
+			auth: AuthService.Call,
+		};
 		return types[strategyType];
 	}
 }

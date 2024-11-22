@@ -4,17 +4,19 @@ import Lib from "common/lib";
 import type { ProcessArgs } from "common/types";
 import Rune from "core/rune/rune";
 import {
-	IsRuneCreationData, IsRuneDeleteData,
+	IsRuneCreationData,
+	IsRuneDeleteData,
 	IsRuneRetrieveData,
 	IsRuneUpdateData,
-	type RuneCreationData, type RuneDeleteData,
-	type RuneRetrieveData,
+	type RuneCreationData,
+	type RuneDeleteData,
 } from "core/rune/rune.types";
 import RuneRepository from "repositories/runes.repo";
+import BaseService from "./service.base";
 
-export default class RuneService {
-	run: Record<string, Function>;
+export default class RuneService extends BaseService {
 	constructor() {
+		super();
 		this.run = {
 			[Actions.RUNE_GET_RUNE]: () => {
 				throw "Not Implemented!";

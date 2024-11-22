@@ -10,14 +10,23 @@ export type UserData = {
 };
 
 export default class UsersRepository {
-	public static async Validate(api_key?: string) {
+	public static async Validate(username?: string, api_key?: string): Promise<UserModel>;
+	public static async Validate(api_key?: string): Promise<UserModel>;
+	public static async Validate(username_or_api_key?: string, api_key?: string): Promise<UserModel> {
 		if (Lib.IsNumpty(api_key)) throw "Unauthorized!";
 
 		await Mongo.Connection();
 
-		const user = await UserModel.findOne({
-			api_key: api_key,
-		});
+		const data: { api_key: string | undefined; username?: string } = {
+			api_key: username_or_api_key,
+		};
+
+		if (!Lib.IsNumpty(api_key)) {
+			data["username"] = username_or_api_key;
+			data["api_key"] = api_key;
+		}
+
+		const user = await UserModel.findOne(data);
 
 		if (Guards.IsNil(user)) throw "Unauthorized!!";
 
