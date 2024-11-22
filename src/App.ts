@@ -6,13 +6,15 @@ import { StrategyType } from "common/enums";
 import AspectService from "services/aspects.service";
 import AuthService from "services/auth.service";
 import RuneService from "services/runes.service";
+
 const HEADERS = {
-	"Access-Control-Allow-Origin": "http://localhost:8080", // Allow specific origin
+	"Access-Control-Allow-Origin": "*", // Allow all origins for development
 	"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS", // Allow specific methods
 	"Access-Control-Allow-Headers": "Content-Type, Authorization", // Allow specific headers
 	"Access-Control-Allow-Credentials": "true", // Allow credentials
 	"Content-Type": "application/json",
 };
+
 class App {
 	public static async Request(args: DoFunctionArgs): Promise<ProcessArgs> {
 		const user = await AuthService.Authenticate(args.api_key);
@@ -37,6 +39,14 @@ class App {
 		return {
 			body: e,
 			statusCode: code,
+			headers: HEADERS,
+		};
+	}
+
+	public static Preflight(): DoFunctionReturn {
+		return {
+			body: null,
+			statusCode: 204,
 			headers: HEADERS,
 		};
 	}
