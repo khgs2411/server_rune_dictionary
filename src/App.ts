@@ -8,7 +8,7 @@ import AuthService from "services/auth.service";
 import RuneService from "services/runes.service";
 
 const HEADERS = {
-	"Access-Control-Allow-Origin": "*", // Or specify your exact frontend domain
+	"Access-Control-Allow-Origin": "http://localhost:8080", // Or specify your exact frontend domain
 	"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
 	"Access-Control-Allow-Headers": "Content-Type, Authorization, x-requested-with",
 	"Access-Control-Allow-Credentials": "true",
