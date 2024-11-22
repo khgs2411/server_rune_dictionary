@@ -8,12 +8,11 @@ import AuthService from "services/auth.service";
 import RuneService from "services/runes.service";
 
 const HEADERS = {
-	"Access-Control-Allow-Origin": "*", // Allow all origins for development
-	"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS", // Allow specific methods
-	"Access-Control-Allow-Headers": "Content-Type, Authorization", // Allow specific headers
-	"Access-Control-Allow-Credentials": "true", // Allow credentials
-	"Content-Type": "application/json",
-	"Access-Control-Max-Age": "86400", // 24 hours
+	"Access-Control-Allow-Origin": "*", // Or specify your exact frontend domain
+	"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+	"Access-Control-Allow-Headers": "Content-Type, Authorization, x-requested-with",
+	"Access-Control-Allow-Credentials": "true",
+	Vary: "Origin",
 };
 
 class App {

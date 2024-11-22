@@ -5,10 +5,13 @@ import Mongo from "database/mongodb.database";
 let db: Mongo | null = null;
 
 export const main: DoFunction = async (request) => {
+	if (request.__ow_method === "options" || request.method === "OPTIONS") {
+		return App.Preflight();
+	}
+
 	try {
 		const start = performance.now();
 		Lib.Log("Request received", request);
-		if (request.__ow_method === "options") return App.Preflight();
 
 		if (!db) db = await Mongo.Connection();
 
