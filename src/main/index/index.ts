@@ -8,7 +8,7 @@ export const main: DoFunction = async (request) => {
 	try {
 		const start = performance.now();
 		Lib.Log("Request received", request);
-		if (request.method === "OPTIONS") return App.Preflight();
+		if (request.__ow_method === "options") return App.Preflight();
 
 		if (!db) db = await Mongo.Connection();
 

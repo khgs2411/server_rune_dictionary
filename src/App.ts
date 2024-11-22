@@ -13,6 +13,7 @@ const HEADERS = {
 	"Access-Control-Allow-Headers": "Content-Type, Authorization", // Allow specific headers
 	"Access-Control-Allow-Credentials": "true", // Allow credentials
 	"Content-Type": "application/json",
+	"Access-Control-Max-Age": "86400", // 24 hours
 };
 
 class App {
