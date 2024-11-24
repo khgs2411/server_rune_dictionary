@@ -13,10 +13,11 @@ import {
 	IsAspectUpdateData,
 } from "core/aspect/aspect.types";
 import AspectRepository from "repositories/aspect.repo";
+import BaseService from "./service.base";
 
-export default class AspectService {
-	run: Record<string, Function>;
+export default class AspectService extends BaseService {
 	constructor() {
+		super();
 		this.run = {
 			[Actions.ASPECT_GET_ASPECT]: () => {
 				throw "Not Implemented!";
@@ -36,7 +37,7 @@ export default class AspectService {
 		const action = args.strategy.action;
 		const run = self.run[action];
 		if (!run) throw "aspects.call - Invalid action provided!";
-		return await run(args.strategy.data);
+		return await run(args.strategy.data, args);
 	}
 
 	private async getAspects(data: any) {
@@ -47,6 +48,7 @@ export default class AspectService {
 		return {
 			msg: "Success!",
 			aspects: aspects,
+			status: true,
 		};
 	}
 
@@ -57,6 +59,7 @@ export default class AspectService {
 		return {
 			msg: "Success!",
 			aspect: new_aspect.toJSON(),
+			status: true,
 		};
 	}
 
@@ -68,6 +71,7 @@ export default class AspectService {
 		return {
 			msg: "Success!",
 			aspects: new_aspects.map((aspect) => aspect.toJSON()),
+			status: true,
 		};
 	}
 
@@ -77,6 +81,7 @@ export default class AspectService {
 		return {
 			msg: "Success!",
 			updated,
+			status: true,
 		};
 	}
 
@@ -87,6 +92,7 @@ export default class AspectService {
 		return {
 			msg: "Success!",
 			updated,
+			status: true,
 		};
 	}
 
@@ -96,6 +102,7 @@ export default class AspectService {
 		return {
 			msg: "Success!",
 			deleted,
+			status: true,
 		};
 	}
 
@@ -106,6 +113,7 @@ export default class AspectService {
 		return {
 			msg: "Success!",
 			deleted,
+			status: true,
 		};
 	}
 }

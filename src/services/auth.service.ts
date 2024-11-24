@@ -41,6 +41,7 @@ export default class AuthService extends BaseService {
 		return {
 			msg: "Success!",
 			authorized: !!user,
+			status: true,
 		};
 	}
 }

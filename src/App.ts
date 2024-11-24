@@ -7,13 +7,10 @@ import AspectService from "services/aspects.service";
 import AuthService from "services/auth.service";
 import RuneService from "services/runes.service";
 
-const HEADERS = (request: DoFunctionArgs) => {
-	const origin = request.headers?.origin || "*";
-	return {
-		"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-		"Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
-		"Access-Control-Allow-Credentials": "true",
-	};
+const HEADERS = {
+	"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+	"Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+	"Access-Control-Allow-Credentials": "true",
 };
 
 class App {
@@ -31,7 +28,7 @@ class App {
 		return {
 			body: body,
 			statusCode: 200,
-			headers: HEADERS(args),
+			headers: HEADERS,
 		};
 	}
 
@@ -40,16 +37,16 @@ class App {
 		return {
 			body: e,
 			statusCode: code,
-			headers: HEADERS(args),
+			headers: HEADERS,
 		};
 	}
 
-	public static Preflight(request: DoFunctionArgs): DoFunctionReturn {
+	public static Preflight(args: DoFunctionArgs): DoFunctionReturn {
 		Lib.Log("Preflight request received");
 		return {
 			body: null,
 			statusCode: 204,
-			headers: HEADERS(request),
+			headers: HEADERS,
 		};
 	}
 

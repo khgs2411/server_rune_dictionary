@@ -36,7 +36,7 @@ export default class RuneService extends BaseService {
 		const self = new RuneService();
 		const run = self.run[action];
 		if (!run) throw "runes.call - Invalid action provided!";
-		return await run(args.strategy.data);
+		return await run(args.strategy.data, args);
 	}
 
 	private async getRunes(data?: any) {
@@ -47,6 +47,7 @@ export default class RuneService extends BaseService {
 		return {
 			msg: "Success!",
 			runes: runes,
+			status: true,
 		};
 	}
 
@@ -56,6 +57,7 @@ export default class RuneService extends BaseService {
 		const new_rune = await RuneRepository.Create(rune);
 		return {
 			msg: "Success!",
+			status: true,
 			rune: new_rune.toJSON(),
 		};
 	}
@@ -67,6 +69,7 @@ export default class RuneService extends BaseService {
 		const new_runes = await RuneRepository.CreateMany(runes);
 		return {
 			msg: "Success!",
+			status: true,
 			runes: new_runes.map((rune) => rune.toJSON()),
 		};
 	}
@@ -76,6 +79,7 @@ export default class RuneService extends BaseService {
 		const updated = await RuneRepository.Update(data);
 		return {
 			msg: "Success!",
+			status: true,
 			updated,
 		};
 	}
@@ -86,6 +90,7 @@ export default class RuneService extends BaseService {
 		const updated = await RuneRepository.UpdateMany(data as RuneCreationData[]);
 		return {
 			msg: "Success!",
+			status: true,
 			updated,
 		};
 	}
@@ -95,6 +100,7 @@ export default class RuneService extends BaseService {
 		const deleted = await RuneRepository.Delete(data);
 		return {
 			msg: "Success!",
+			status: true,
 			deleted,
 		};
 	}
@@ -104,6 +110,7 @@ export default class RuneService extends BaseService {
 		const deleted = await RuneRepository.DeleteMany(data as RuneDeleteData[]);
 		return {
 			msg: "Success!",
+			status: true,
 			deleted,
 		};
 	}
