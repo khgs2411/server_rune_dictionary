@@ -3,9 +3,9 @@ import Guards from "common/guards";
 import Lib from "common/lib";
 import { type ProcessArgs, type Request, type Strategy } from "common/types";
 import { StrategyType } from "common/enums";
-import AspectService from "services/aspects.service";
-import AuthService from "services/auth.service";
-import RuneService from "services/runes.service";
+import AspectService from "application/services/aspects.service";
+import AuthService from "application/services/auth.service";
+import RuneService from "application/services/runes.service";
 
 const HEADERS = {
 	"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",

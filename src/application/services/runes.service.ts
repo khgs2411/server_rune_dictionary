@@ -2,7 +2,7 @@ import { Actions } from "common/enums";
 import Guards from "common/guards";
 import Lib from "common/lib";
 import type { ProcessArgs } from "common/types";
-import Rune from "core/rune/rune";
+import Rune from "application/domain/rune/rune";
 import {
 	IsRuneCreationData,
 	IsRuneDeleteData,
@@ -10,9 +10,9 @@ import {
 	IsRuneUpdateData,
 	type RuneCreationData,
 	type RuneDeleteData,
-} from "core/rune/rune.types";
-import RuneRepository from "repositories/runes.repo";
-import BaseService from "./service.base";
+} from "application/domain/rune/rune.types";
+import RuneRepository from "database/repositories/runes.repo";
+import BaseService from "../../base/service.base";
 
 export default class RuneService extends BaseService {
 	constructor() {

@@ -1,4 +1,4 @@
-import Mongo from "database/mongodb.database";
+import Mongo from "database/connections/mongodb.database";
 import type { Request } from "common/types";
 import { Actions } from "common/enums";
 import { main } from "main/index";

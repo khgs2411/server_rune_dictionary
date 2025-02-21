@@ -1,10 +1,10 @@
 import type { BOOLEANISH } from "common/enums";
 import Guards from "common/guards";
 import Lib from "common/lib";
-import type Rune from "core/rune/rune";
-import type { RuneCreationData, RuneDeleteData, RuneRetrieveData, RuneUpdateData } from "core/rune/rune.types";
-import Mongo from "database/mongodb.database";
-import { RuneModel } from "models/runes.model";
+import type Rune from "application/domain/rune/rune";
+import type { RuneCreationData, RuneDeleteData, RuneRetrieveData, RuneUpdateData } from "application/domain/rune/rune.types";
+import Mongo from "database/connections/mongodb.database";
+import { RuneModel } from "database/models/runes.model";
 import type mongoose from "mongoose";
 import type { Document } from "mongoose";
 

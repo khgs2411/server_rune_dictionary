@@ -1,7 +1,7 @@
 import { Actions } from "common/enums";
 import Lib from "common/lib";
 import type { Request } from "common/types";
-import type { AspectCreationData, AspectRetrieveData, AspectUpdateData } from "core/aspect/aspect.types";
+import type { AspectCreationData, AspectRetrieveData, AspectUpdateData } from "application/domain/aspect/aspect.types";
 import { main } from "main/index";
 
 const api_key = "r_d_25c9dd62-ba12-44de-b303-67ef659ba7bd";

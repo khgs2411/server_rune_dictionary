@@ -1,6 +1,6 @@
 import Lib from "common/lib";
 import App from "App";
-import Mongo from "database/mongodb.database";
+import Mongo from "database/connections/mongodb.database";
 
 let db: Mongo | null = null;
 

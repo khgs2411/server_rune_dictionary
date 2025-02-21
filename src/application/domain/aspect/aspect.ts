@@ -1,6 +1,6 @@
 import type { Dto, Serializable } from "common/dto";
 import * as crypto from "crypto";
-import type { AspectCreationData, IAspectProperties } from "./aspect.types";
+import type { AspectCreationData } from "./aspect.types";
 import AspectProperties from "./aspectProperties";
 
 class Aspect implements Serializable<Aspect> {
