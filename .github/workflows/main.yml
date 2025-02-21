@@ -1,6 +1,10 @@
 name: Run publish script on push
 
 on: [push]
+
+env:
+  DOCTL_NAMESPACE: rune-dictionary
+
 jobs:
     build:
         if: true
