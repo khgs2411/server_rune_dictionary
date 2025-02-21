@@ -5,7 +5,8 @@ import * as auth from "./auth.scripts";
 
 export const run = async () => {
 	try {
-		const res = await auth.run();
+		// const res = await auth.run();
+		const res = await runes.run();
 		console.log(res);
 	} catch (e) {
 		console.error(e);
