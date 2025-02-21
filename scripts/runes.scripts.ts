@@ -135,6 +135,7 @@ export const invoke = async () => {
 				body: JSON.stringify(insert_many),
 				headers: {
 					"Content-Type": "application/json",
+					"Authorization": "Bearer " + api_key,
 				},
 			},
 		);

@@ -6,6 +6,7 @@ import { StrategyType } from "common/enums";
 import AspectService from "application/services/aspects.service";
 import AuthService from "application/services/auth.service";
 import RuneService from "application/services/runes.service";
+import { Logger } from "application/utils/logger";
 
 const HEADERS = {
 	"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -15,6 +16,7 @@ const HEADERS = {
 
 class App {
 	public static async Request(args: DoFunctionArgs): Promise<ProcessArgs> {
+		Logger.GetInstance().debug("Request received:", args);
 		const user = await AuthService.Authenticate(args.api_key);
 		const strategy = this.setActionStrategy(args as Request);
 		return { user, strategy };

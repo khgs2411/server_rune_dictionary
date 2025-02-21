@@ -1,7 +1,6 @@
-import Lib from "common/lib";
 import App from "App";
+import Lib from "common/lib";
 import Mongo from "database/connections/mongodb.database";
-import { Logger } from "application/utils/logger";
 
 let db: Mongo | null = null;
 
@@ -11,8 +10,6 @@ export const main: DoFunction = async (request) => {
 
 	try {
 		const start = performance.now();
-
-		Logger.GetInstance().debug("Request received:", request.body);
 
 		if (!db) db = await Mongo.Connection();
 
