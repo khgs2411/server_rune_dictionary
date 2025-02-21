@@ -1,5 +1,5 @@
-import Mongo from "database/mongodb.database";
-import { UserModel } from "models/users.model";
+import Mongo from "database/connections/mongodb.database";
+import { UserModel } from "database/models/users.model";
 
 export const run = async () => {
 	await Mongo.Connection();

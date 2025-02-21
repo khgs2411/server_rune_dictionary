@@ -1,4 +1,4 @@
-import type { UserModel } from "models/users.model";
+import type { UserModel } from "database/models/users.model";
 import type { StrategyType } from "./enums";
 import type { Actions } from "./enums";
 

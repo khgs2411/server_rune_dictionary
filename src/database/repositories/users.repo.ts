@@ -1,7 +1,7 @@
 import Guards from "common/guards";
 import Lib from "common/lib";
-import Mongo from "database/mongodb.database";
-import { ROLES, UserModel } from "models/users.model";
+import Mongo from "database/connections/mongodb.database";
+import { ROLES, UserModel } from "database/models/users.model";
 
 export type UserData = {
 	username: string;

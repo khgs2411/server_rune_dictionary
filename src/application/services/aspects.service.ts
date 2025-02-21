@@ -2,7 +2,7 @@ import { Actions } from "common/enums";
 import Guards from "common/guards";
 import Lib from "common/lib";
 import type { ProcessArgs } from "common/types";
-import Aspect from "core/aspect/aspect";
+import Aspect from "application/domain/aspect/aspect";
 import {
 	type AspectDeleteData,
 	type AspectRetrieveData,
@@ -11,9 +11,9 @@ import {
 	IsAspectDeleteData,
 	IsAspectRetrieveData,
 	IsAspectUpdateData,
-} from "core/aspect/aspect.types";
-import AspectRepository from "repositories/aspect.repo";
-import BaseService from "./service.base";
+} from "application/domain/aspect/aspect.types";
+import AspectRepository from "database/repositories/aspect.repo";
+import BaseService from "../../base/service.base";
 
 export default class AspectService extends BaseService {
 	constructor() {
@@ -38,6 +38,11 @@ export default class AspectService extends BaseService {
 		const run = self.run[action];
 		if (!run) throw "aspects.call - Invalid action provided!";
 		return await run(args.strategy.data, args);
+	}
+
+	private async getAspect(data: any) {
+		if (!IsAspectRetrieveData(data)) throw "getAspect Invalid data provided!";
+		
 	}
 
 	private async getAspects(data: any) {

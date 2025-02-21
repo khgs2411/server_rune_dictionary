@@ -1,5 +1,6 @@
-import type { IPropertiesSchema } from "core/aspect/aspect.types";
+import type { IPropertiesSchema } from "application/domain/aspect/aspect.types";
 import mongoose from "mongoose";
+import { Document } from "mongoose";
 
 const propertiesSchema = new mongoose.Schema<IPropertiesSchema>({
 	is_damage: { type: Number, required: true },

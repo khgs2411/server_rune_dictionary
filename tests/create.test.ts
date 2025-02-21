@@ -1,12 +1,12 @@
 import { describe, expect, test, beforeAll } from "bun:test";
-import type { AspectCreationData } from "core/aspect/aspect.types";
+import type { AspectCreationData } from "application/domain/aspect/aspect.types";
 import type { ProcessArgs, Request } from "common/types";
 import { Actions } from "common/enums";
 import { main } from "main/index";
-import AspectService from "services/aspects.service";
+import AspectService from "application/services/aspects.service";
 import { beforeEach } from "node:test";
-import UsersRepository from "repositories/users.repo";
-import { UserModel } from "models/users.model";
+import UsersRepository from "database/repositories/users.repo";
+import { UserModel } from "database/models/users.model";
 const api_key = "r_d_25c9dd62-ba12-44de-b303-67ef659ba7bd";
 const service = new AspectService();
 let user: UserModel;

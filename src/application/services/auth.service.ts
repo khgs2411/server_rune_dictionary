@@ -1,8 +1,8 @@
 import type { ProcessArgs } from "common/types";
-import UsersRepository from "repositories/users.repo";
-import BaseService from "./service.base";
+import UsersRepository from "database/repositories/users.repo";
+import BaseService from "../../base/service.base";
 import { Actions } from "common/enums";
-import type { UserModel } from "models/users.model";
+import type { UserModel } from "database/models/users.model";
 
 export default class AuthService extends BaseService {
 	private static session: Map<string, UserModel> = new Map();

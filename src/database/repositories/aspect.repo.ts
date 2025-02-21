@@ -1,42 +1,16 @@
 import Guards from "common/guards";
 import Lib from "common/lib";
-import type Aspect from "core/aspect/aspect";
+import type Aspect from "application/domain/aspect/aspect";
 import type {
 	AspectCreationData,
 	AspectDeleteData,
 	AspectRetrieveData,
 	AspectUpdateData,
 	IAspectProperties,
-} from "core/aspect/aspect.types";
-import Mongo from "database/mongodb.database";
-import { AspectModel } from "models/aspects.model";
+} from "application/domain/aspect/aspect.types";
+import Mongo from "database/connections/mongodb.database";
+import { AspectModel } from "database/models/aspects.model";
 import type mongoose from "mongoose";
-
-export type AspectDocument = mongoose.Document<
-	unknown,
-	{},
-	{
-		aspect_id?: number | null | undefined;
-		hash: string;
-		tier: number;
-		weight: number;
-		potency: number;
-		rune_ids: number[];
-		required_rune_ids: number[];
-		blocked_aspect_ids: number[];
-		properties: IAspectProperties;
-	}
-> & {
-	hash: string;
-	tier: number;
-	weight: number;
-	potency: number;
-	rune_ids: number[];
-	required_rune_ids: number[];
-	blocked_aspect_ids: number[];
-	properties: IAspectProperties;
-	aspect_id?: number | null | undefined;
-} & { _id: mongoose.Types.ObjectId };
 
 export default class AspectRepository {
 	constructor() {}
@@ -58,7 +32,7 @@ export default class AspectRepository {
 		return AspectModel.find({ $or: filters }).lean();
 	}
 
-	public static async Create(asepect: Aspect): Promise<AspectDocument> {
+	public static async Create(asepect: Aspect) {
 		await Mongo.Connection();
 		console.log(asepect.serialize());
 		const already_exists = await AspectModel.findOne(asepect.serialize());
@@ -68,7 +42,7 @@ export default class AspectRepository {
 		return AspectModel.create(asepect.serialize());
 	}
 
-	public static async CreateMany(aspects: Aspect[]): Promise<AspectDocument[]> {
+	public static async CreateMany(aspects: Aspect[]) {
 		await Mongo.Connection();
 
 		//get all the hashes of the aspects
@@ -102,9 +76,9 @@ export default class AspectRepository {
 		return await AspectModel.create(newAspectsData);
 	}
 
-	public static async Update(data: AspectUpdateData): Promise<AspectDocument>;
-	public static async Update(_id: string, data?: AspectUpdateData): Promise<AspectDocument>;
-	public static async Update(_idOrData: string | AspectUpdateData, data?: AspectUpdateData): Promise<AspectDocument> {
+	public static async Update(data: AspectUpdateData): Promise<AspectModel>;
+	public static async Update(_id: string, data?: AspectUpdateData): Promise<AspectModel>;
+	public static async Update(_idOrData: string | AspectUpdateData, data?: AspectUpdateData): Promise<AspectModel> {
 		await Mongo.Connection();
 		let filter;
 		let updateData;

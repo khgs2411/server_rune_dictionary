@@ -1,4 +1,4 @@
-import Database from "base/base.database";
+import Database from "base/database.base";
 import Lib from "common/lib";
 import * as mongoose from "mongoose";
 
