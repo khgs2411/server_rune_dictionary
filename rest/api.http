@@ -151,6 +151,18 @@ Authorization: Bearer {{apiKey}}
     "data": []
 }
 
+### Get Single Rune by id rune_id 0
+# @name getRuneById
+POST {{baseUrl}}/index HTTP/1.1
+content-type: {{contentType}}
+Authorization: Bearer {{apiKey}}
+
+{
+    "api_key": "{{apiKey}}",
+    "action": "rune_get_runes",
+    "data": [{ "rune_id": 0 }]
+}
+
 ### Create Single Rune
 # @name createRune
 POST {{baseUrl}}/index HTTP/1.1
