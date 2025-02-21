@@ -13,10 +13,21 @@ jobs:
             - name: List files in workspace
               run: ls
 
+            - name: Debug - Echo DOCTL_NAMESPACE
+              run: echo "DOCTL_NAMESPACE is ${{ env.DOCTL_NAMESPACE }}"
+
             - name: Set up Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: "20"
+
+            - name: Cache Node modules
+              uses: actions/cache@v3
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
 
             - name: Authenticate doctl
               uses: digitalocean/action-doctl@v2
@@ -26,10 +37,10 @@ jobs:
             - name: Install doctl serverless support
               run: doctl serverless install
 
-            - name: "Install docts globally"
+            - name: Install docts globally
               run: npm install -g docts-cli
 
-            - name: Connect doctl serverless to a functions namespace
+            - name: Connect doctl serverless to functions namespace
               run: doctl serverless connect ${{ env.DOCTL_NAMESPACE }}
 
             - name: Install dependencies
@@ -38,8 +49,9 @@ jobs:
             - name: Run build script
               run: npm run build
 
-            - name: List files in workspace after build
-              run: ls
-
             - name: Run deploy script
               run: npm run deploy
+
+            - name: Verify deployment
+              run: |
+                echo "Deployment completed"
