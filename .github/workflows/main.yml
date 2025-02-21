@@ -3,7 +3,7 @@ name: Run publish script on push
 on: [push]
 
 env:
-  DOCTL_NAMESPACE: rune-dictionary
+    DOCTL_NAMESPACE: rune-dictionary
 
 jobs:
     build:
@@ -13,12 +13,6 @@ jobs:
         steps:
             - name: Checkout repository
               uses: actions/checkout@v3
-
-            - name: List files in workspace
-              run: ls
-
-            - name: Debug - Echo DOCTL_NAMESPACE
-              run: echo "DOCTL_NAMESPACE is ${{ env.DOCTL_NAMESPACE }}"
 
             - name: Set up Node.js
               uses: actions/setup-node@v3
@@ -58,4 +52,4 @@ jobs:
 
             - name: Verify deployment
               run: |
-                echo "Deployment completed"
+                  echo "Deployment completed"
