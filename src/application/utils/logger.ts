@@ -1,6 +1,7 @@
 import { LogLevel } from "../../database/models/logs.model";
 import { LogRepository, type ILogQuery } from "../../database/repositories/logs.repository";
 import Singleton from "../../base/singleton";
+import util from "util";
 
 export interface ILogger {
     info(message: string, metadata?: Record<string, any>): Promise<void>;
@@ -43,12 +44,50 @@ export class Logger extends Singleton implements ILogger {
         };
     }
 
+    private serializeMetadata(metadata: Record<string, any> | undefined): Record<string, any> {
+        if (!metadata) return {};
+        
+        const serialized: Record<string, any> = {};
+        
+        for (const [key, value] of Object.entries(metadata)) {
+            if (value instanceof Error) {
+                const errorObj = {
+                    ...value,
+                    stack: value.stack,
+                };
+                serialized[key] = errorObj;
+            } else if (value === undefined) {
+                serialized[key] = 'undefined';
+            } else if (value === null) {
+                serialized[key] = 'null';
+            } else if (typeof value === 'object') {
+                try {
+                    // Use Node's util.inspect for detailed object serialization
+                    serialized[key] = util.inspect(value, {
+                        depth: 5,
+                        maxArrayLength: 100,
+                        maxStringLength: 200,
+                        compact: true,
+                        breakLength: Infinity
+                    });
+                } catch {
+                    serialized[key] = JSON.stringify(value);
+                }
+            } else {
+                serialized[key] = value;
+            }
+        }
+        
+        return serialized;
+    }
+
     private async log(level: LogLevel, message: string, metadata?: Record<string, any>) {
         const { source, stack } = this.getCallerInfo();
         const combinedMetadata = {
-            ...Logger.defaultMetadata,
-            ...metadata
+            ...this.serializeMetadata(Logger.defaultMetadata),
+            ...this.serializeMetadata(metadata)
         };
+
         await this.repository.create(level, message, combinedMetadata, source, stack);
     }
 
@@ -72,10 +111,10 @@ export class Logger extends Singleton implements ILogger {
         const { source, stack } = this.getCallerInfo();
         const logsWithSource = logs.map(log => ({
             ...log,
-            metadata: {
+            metadata: this.serializeMetadata({
                 ...Logger.defaultMetadata,
                 ...log.metadata
-            },
+            }),
             source,
             stack
         }));
