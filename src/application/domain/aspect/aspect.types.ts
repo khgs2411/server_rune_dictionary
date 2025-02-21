@@ -26,13 +26,6 @@ export interface IAspectProperties {
 
 export interface IPropertiesSchema extends Document, IAspectProperties {}
 
-export type AspectRetrieveData = {
-	aspect_id?: number;
-	hash?: string;
-};
-
-export type AspectDeleteData = AspectRetrieveData
-
 export type AspectCreationData = {
 	tier: 1 | 2 | 3 | 4;
 	weight: number;
@@ -52,11 +45,17 @@ export type AspectCreationData = {
 	properties?: Partial<IAspectProperties>;
 };
 
-export type AspectUpdateData = Partial<AspectCreationData> & {
+export type AspectRetrieveData = {
 	aspect_id?: number;
 	hash?: string;
-	[key: string]: any; // Add index signature
 };
+
+export type AspectDeleteData = AspectRetrieveData;
+
+export type AspectUpdateData = Partial<AspectCreationData> &
+	AspectRetrieveData & {
+		[key: string]: any; // Add index signature
+	};
 
 export function IsAspectRetrieveData(args: any): args is AspectRetrieveData {
 	return (
@@ -88,6 +87,12 @@ export function IsAspectCreationData(args: any): args is AspectCreationData {
 		//every property is number
 		Object.values(args.properties).every((value) => typeof value === "number")
 	);
+}
+
+export function IsAspectUpdateData(args: any): args is AspectUpdateData {
+	return !Guards.IsNil(args) && typeof args === "object" && Object.keys(args).length > 0 && args.tier
+		? args.tier > 0
+		: true && Object.values(args).some((value) => !Guards.IsNil(value));
 }
 
 function logValidations(args: any) {
@@ -142,10 +147,4 @@ function logValidations(args: any) {
 	if (typeof args.convert !== "number") {
 		console.log('typeof args.convert === "number"', typeof args.convert === "number");
 	}
-}
-
-export function IsAspectUpdateData(args: any): args is AspectUpdateData {
-	return !Guards.IsNil(args) && typeof args === "object" && Object.keys(args).length > 0 && args.tier
-		? args.tier > 0
-		: true && Object.values(args).some((value) => !Guards.IsNil(value));
 }

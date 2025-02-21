@@ -13,8 +13,7 @@ import { AspectModel } from "database/models/aspects.model";
 import type mongoose from "mongoose";
 
 export default class AspectRepository {
-	constructor() {}
-
+	
 	public static async Get(aspects?: AspectRetrieveData[]) {
 		await Mongo.Connection();
 
@@ -82,8 +81,8 @@ export default class AspectRepository {
 		await Mongo.Connection();
 		let filter;
 		let updateData;
-		if (typeof _idOrData === "string") {
-			if (!data) throw "Undefined|null data provided!";
+		if (Guards.IsNil(data)) throw "Undefined|null data provided!";
+		if (Guards.IsString(_idOrData)) {
 			const { aspect_id, hash, ...rest } = data;
 			filter = { _id: _idOrData };
 			updateData = rest;
@@ -92,7 +91,7 @@ export default class AspectRepository {
 			filter = Guards.IsNil(aspect_id) ? { hash: hash } : { aspect_id: aspect_id };
 			updateData = rest;
 		}
-		const updated = await AspectModel.findOneAndUpdate(filter, updateData, { new: false });
+		const updated = await AspectModel.findOneAndUpdate<AspectModel>(filter, updateData, { new: false });
 		if (!updated) throw "Aspect does not exist";
 		return updated;
 	}
