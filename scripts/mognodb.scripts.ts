@@ -4,7 +4,7 @@ import { UserModel } from "database/models/users.model";
 export const run = async () => {
 	await Mongo.Connection();
 	const new_user = new UserModel({
-		username: "tal",
+		username: "yazin",
 		role: "admin",
 	});
 	await new_user.generateApiKey(true);
