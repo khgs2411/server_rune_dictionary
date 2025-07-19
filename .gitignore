@@ -130,3 +130,4 @@ dist
 
 # manual
 packages/*
+.DS_Store
