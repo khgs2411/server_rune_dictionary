@@ -17,4 +17,5 @@ packages:
         parameters: {}
         environment: {}
         annotations: {}
-        limits: {}
+        limits:
+          memory: 512

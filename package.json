@@ -4,7 +4,7 @@
 	"description": "",
 	"type": "module",
 	"scripts": {
-		"build": "docts build",
+		"build": "bun scripts/final-build.scripts.ts",
 		"deploy": "doctl serverless deploy .",
 		"publish": "bun run build && bun run deploy",
 		"new": "docts fn new",
@@ -27,6 +27,6 @@
 	},
 	"dependencies": {
 		"mongoose": "^8.17.0",
-		"topsyde-utils": "^1.0.189"
+		"topsyde-utils": "^1.0.191"
 	}
 }
