@@ -2,75 +2,89 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Rune Dictionary Server - DigitalOcean Serverless API
+
+This is the dictionary server component of the Rune RPG multi-service architecture, providing a serverless API for game data management.
+
 ## Development Commands
 
-### Build and Deploy
-- `bun run build` - Build the project using docts
-- `bun run deploy` - Deploy to DigitalOcean serverless functions 
-- `bun run publish` - Build and deploy in sequence
-- `bun run destroy` - Remove deployment from DigitalOcean
-- `bun run url` - Get the deployed function URL
+```bash
+# Build & Deployment
+bun run build           # Build with docts
+bun run deploy          # Deploy to DigitalOcean Functions
+bun run publish         # Build and deploy sequence (build + deploy)
+bun run destroy         # Undeploy from DigitalOcean Functions
 
-### Function Management
-- `bun run new` - Create new serverless function
-- `bun run remove` - Remove serverless function
+# Function Management
+bun run new             # Create new serverless function
+bun run remove          # Remove serverless function
+bun run url             # Get deployed function URL
 
-### Testing and Code Quality
-- `bun run test` - Run tests (currently just "test" command)
-- ESLint and Prettier are configured but no package.json scripts exist for them
-- TypeScript compilation uses `noEmit: true` (no build output)
+# Development Scripts
+bun scripts/run.scripts.ts  # Run utility scripts for testing services
+```
 
-## Architecture Overview
+## High-Level Architecture
 
-This is a **serverless TypeScript application** designed for DigitalOcean Functions that provides a rune dictionary API with MongoDB persistence.
+### Service Structure
+The server follows a **Strategy Pattern** architecture where requests are routed based on their action type:
 
-### Core Architecture Pattern
-The application follows a **strategy pattern** with action-based routing:
-1. **Entry Point**: `src/main/index/index.ts` - Main serverless function handler
-2. **Request Processing**: `src/App.ts` - Central request processor with strategy pattern
-3. **Action Routing**: Actions are parsed and routed to appropriate services (rune, aspect, auth)
+1. **Entry Point** (`src/main/index/index.ts`):
+   - Handles DigitalOcean Functions requests
+   - Manages MongoDB connection persistence across invocations
+   - Routes requests to App for processing
 
-### Key Components
+2. **Request Router** (`src/App.ts`):
+   - Authenticates requests via API key
+   - Determines strategy type (rune, aspect, auth) from action
+   - Routes to appropriate service
 
-**Base Classes** (`src/base/`):
-- `service.base.ts` - Base service class with run function pattern
-- `database.base.ts` - Database connection base
-- `singleton.ts` - Singleton pattern implementation  
-- `provider.base.ts` - Provider pattern base
+3. **Service Layer** (`src/application/services/`):
+   - `RuneService` - CRUD operations for runes
+   - `AspectService` - CRUD operations for aspects
+   - `AuthService` - API key authentication and user management
 
-**Domain Layer** (`src/application/domain/`):
-- `rune/` - Rune entity with types, enums, and properties
-- `aspect/` - Aspect entity with types, enums, and properties
+4. **Data Layer**:
+   - **Models** (`src/database/models/`) - Mongoose schemas for MongoDB
+   - **Repositories** (`src/database/repositories/`) - Data access layer
+   - **Connection** (`src/database/connections/mongodb.database.ts`) - MongoDB connection management
 
-**Service Layer** (`src/application/services/`):
-- `runes.service.ts` - CRUD operations for runes
-- `aspects.service.ts` - CRUD operations for aspects  
-- `auth.service.ts` - Authentication service
+### Key Architectural Patterns
 
-**Data Layer** (`src/database/`):
-- `connections/mongodb.database.ts` - MongoDB connection management
-- `models/` - Mongoose models for all entities
-- `repositories/` - Repository pattern for data access
+1. **Serverless Optimization**:
+   - Connection pooling for MongoDB to persist across function invocations
+   - Lightweight initialization for cold starts
 
-### Request Flow
-1. Request enters via `main/index/index.ts`
-2. `App.Request()` authenticates user and determines strategy
-3. `App.Process()` routes to appropriate service based on action type
-4. Service executes specific action method
-5. Response formatted and returned via `App.Response()`
+2. **Action-Based Routing**:
+   - Actions follow pattern: `{ENTITY}_{OPERATION}_{TARGET}`
+   - Examples: `RUNE_GET_RUNES`, `ASPECT_INSERT_ASPECT`, `AUTH_CREATE_USER`
 
-### Action System
-Actions follow pattern: `{TYPE}_{VERB}_{ENTITY}` (e.g., `RUNE_GET_RUNES`, `ASPECT_INSERT_ASPECT`)
-- Parsed to determine strategy type (rune, aspect, auth)
-- Routed to corresponding service's Call method
-- Service maps action to specific implementation method
+3. **Base Classes**:
+   - `BaseService` - Common service functionality
+   - `Database` - Database connection abstraction
+   - `Singleton` - Singleton pattern implementation
 
-### Database Integration
-- Uses Mongoose ODM with MongoDB
-- Connection initialized once and reused (serverless optimization)
-- Repository pattern abstracts data access from services
-- Models define schema and validation
+4. **Type Safety**:
+   - Strong TypeScript typing throughout
+   - Type guards for runtime validation
+   - Domain-specific types in `application/domain/`
 
-### Authentication
-- API key-based authentication via `AuthService.Authenticate()`
-- User context passed through ProcessArgs to all services
+### Environment Configuration
+The server expects these environment variables (configured in `project.yml`):
+- `MONGO_USERNAME` - MongoDB Atlas username
+- `MONGO_PASSWORD` - MongoDB Atlas password
+- `MONGO_HOST` - MongoDB Atlas cluster host
+- `MONGO_DATABASE` - Database name
+
+### Integration with Other Services
+- Provides game data (runes, aspects) to the client application
+- Shared MongoDB models with matchmaking server
+- Deployed via DigitalOcean Functions for serverless scaling
+
+## Project Context
+This server is part of the larger Rune RPG system. Refer to the parent `CLAUDE.md` file for overall architecture and cross-service documentation.
+
+### Important Notes from Parent Documentation
+- Use `bun` instead of `npm` for all JavaScript/TypeScript operations
+- Database connection: Use `await Mongo.Connection()` 
+- This is part of a multi-service game architecture with Vue 3 client and WebSocket matchmaking server

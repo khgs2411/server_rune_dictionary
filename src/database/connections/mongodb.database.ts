@@ -1,6 +1,6 @@
 import Database from "base/database.base";
 import Lib from "common/lib";
-import * as mongoose from "mongoose";
+import { Mongoose, connect as connectMongoose, mongo } from "mongoose";
 
 class Mongo extends Database {
 	private readonly username: string;
@@ -8,7 +8,7 @@ class Mongo extends Database {
 	private readonly host: string;
 	private readonly uri: string;
 
-	public client: mongoose.Mongoose | undefined;
+	public client: Mongoose | undefined;
 
 	constructor() {
 		super();
@@ -22,7 +22,7 @@ class Mongo extends Database {
 	public async connect(dbName: string = process.env.MONGO_DATABASE || "default"): Promise<void> {
 		if(!this.validateConnectionString()) throw new Error("Invalid connection string");
 		this.connected = false;
-		this.client = await mongoose.connect(this.uri, { dbName: dbName });
+		this.client = await connectMongoose(this.uri, { dbName: dbName });
 		this.connected = true;
 
 		Lib.Log(`MongoDB connected`);
@@ -34,7 +34,7 @@ class Mongo extends Database {
 		Lib.Log("MongoDB disconnected");
 	}
 
-	public getMongoClient(): mongoose.mongo.MongoClient | undefined {
+	public getMongoClient(): mongo.MongoClient | undefined {
 		if (this.client) return this.client.connection.getClient();
 		return undefined;
 	}

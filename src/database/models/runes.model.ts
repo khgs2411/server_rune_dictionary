@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import { HydratedDocument, InferSchemaType, Schema, model } from "mongoose";
 
-const runesSchema = new mongoose.Schema({
+
+const runesSchema = new Schema({
 	rune_id: { type: Number, required: false, unique: true }, //? auto increment
 	name: { type: String, required: true, unique: true },
 	weight: { type: Number, required: true },
@@ -12,13 +13,13 @@ runesSchema.pre("save", async function (next: () => void) {
 
 	if (rune.isNew) {
 		// Get the current highest rune_id and increment it
-		const lastRune = await mongoose.model("Rune").findOne().sort({ rune_id: -1 }).exec();
+		const lastRune = await model("Rune").findOne().sort({ rune_id: -1 }).exec();
 		rune.rune_id = lastRune ? lastRune.rune_id + 1 : 0;
 	}
 
 	next();
 });
 
-type RuneModelType = mongoose.InferSchemaType<typeof runesSchema>;
-export type RuneModel = mongoose.HydratedDocument<RuneModelType>;
-export const RuneModel = mongoose.model("Rune", runesSchema);
+type RuneModelType = InferSchemaType<typeof runesSchema>;
+export type RuneModel = HydratedDocument<RuneModelType>;
+export const RuneModel = model("Rune", runesSchema);

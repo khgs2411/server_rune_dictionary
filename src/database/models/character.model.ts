@@ -1,7 +1,8 @@
-import mongoose from "mongoose";
+import { HydratedDocument, InferSchemaType, Schema, model } from "mongoose";
+
 import { IStats, statsSchemaDefinition } from "./definitions/stats";
 
-const characterSchema = new mongoose.Schema({
+const characterSchema = new Schema({
     userId: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     level: { type: Number, default: 1 },
@@ -56,13 +57,13 @@ interface ICharacterData {
 
 export interface ICharacterShape extends ICharacterData {
     name: string;
-    level: number;
+    level?: number | undefined;
 }
 
 type CharacterDefinition = ICharacterData & ICharacterMethods
-type CharacterModelType = Omit<mongoose.InferSchemaType<typeof characterSchema>, 'stats' | 'baseStats'> & CharacterDefinition;
+type CharacterModelType = Omit<InferSchemaType<typeof characterSchema>, 'stats' | 'baseStats'> & CharacterDefinition;
 
 
-export type CharacterModel = mongoose.HydratedDocument<CharacterModelType>;
+export type CharacterModel = HydratedDocument<CharacterModelType>;
 
-export const CharacterModel = mongoose.model<CharacterModel>("Character", characterSchema);
+export const CharacterModel = model<CharacterModel>("Character", characterSchema);

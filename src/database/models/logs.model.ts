@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import { HydratedDocument, InferSchemaType, Schema, model } from "mongoose";
+
 
 export enum LogLevel {
     INFO = "info",
@@ -7,7 +8,7 @@ export enum LogLevel {
     DEBUG = "debug"
 }
 
-const logsSchema = new mongoose.Schema({
+const logsSchema = new Schema({
     timestamp: { 
         type: Date, 
         required: true,
@@ -24,7 +25,7 @@ const logsSchema = new mongoose.Schema({
     },
     metadata: {
         type: Map,
-        of: mongoose.Schema.Types.Mixed,
+        of: Schema.Types.Mixed,
         default: new Map()
     },
     source: {
@@ -43,6 +44,6 @@ const logsSchema = new mongoose.Schema({
 logsSchema.index({ timestamp: -1 });
 logsSchema.index({ level: 1 });
 
-type LogModelType = mongoose.InferSchemaType<typeof logsSchema>;
-export type LogModel = mongoose.HydratedDocument<LogModelType>;
-export const LogModel = mongoose.model("Log", logsSchema);
+type LogModelType = InferSchemaType<typeof logsSchema>;
+export type LogModel = HydratedDocument<LogModelType>;
+export const LogModel = model("Log", logsSchema);

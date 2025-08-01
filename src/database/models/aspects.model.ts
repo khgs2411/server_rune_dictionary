@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import { HydratedDocument, InferSchemaType, Schema, model } from "mongoose";
 import { IPropertiesSchema } from "./aspect.types";
 
-const propertiesSchema = new mongoose.Schema<IPropertiesSchema>({
+const propertiesSchema = new Schema<IPropertiesSchema>({
     is_damage: { type: Number, required: true },
     is_typed: { type: Number, required: true },
     is_convert: { type: Number, required: true },
@@ -34,7 +34,7 @@ const propertiesSchema = new mongoose.Schema<IPropertiesSchema>({
     is_frenzy: { type: Number, required: true },
 });
 
-const aspectsSchema = new mongoose.Schema({
+const aspectsSchema = new Schema({
     hash: { type: String, required: true, unique: true },
     aspect_id: { type: Number, required: false, unique: true }, //? auto increment
     tier: { type: Number, required: true },
@@ -60,7 +60,7 @@ aspectsSchema.pre("save", async function (next) {
 
     if (aspect.isNew) {
         if (!aspect.aspect_id) {
-            const lastAspect = await mongoose.model("Aspect").findOne().sort({ aspect_id: -1 }).exec();
+            const lastAspect = await model("Aspect").findOne().sort({ aspect_id: -1 }).exec();
             aspect.aspect_id = lastAspect ? lastAspect.aspect_id + 1 : 0;
         }
     }
@@ -69,7 +69,7 @@ aspectsSchema.pre("save", async function (next) {
 });
 
 
-type AspectModelType = mongoose.InferSchemaType<typeof aspectsSchema>;
-export type AspectModel = mongoose.HydratedDocument<AspectModelType>;
+type AspectModelType = InferSchemaType<typeof aspectsSchema>;
+export type AspectModel = HydratedDocument<AspectModelType>;
 
-export const AspectModel = mongoose.model("Aspect", aspectsSchema);
+export const AspectModel = model("Aspect", aspectsSchema);

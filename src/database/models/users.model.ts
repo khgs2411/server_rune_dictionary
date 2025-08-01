@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import { HydratedDocument, InferSchemaType, Schema, model } from "mongoose";
+
 import { Guards, Lib } from "topsyde-utils";
 
 export enum ROLES {
@@ -6,11 +7,11 @@ export enum ROLES {
 	ADMIN = "admin",
 }
 
-const usersSchema = new mongoose.Schema(
+const usersSchema = new Schema(
 	{
 		username: { type: String, required: true, unique: true },
 		api_key: { type: String, required: false, unique: true },
-		role: { type: mongoose.Schema.Types.String, required: true, default: ROLES.USER },
+		role: { type: Schema.Types.String, required: true, default: ROLES.USER },
 	},
 	{
 		toJSON: { virtuals: true },
@@ -29,6 +30,6 @@ const usersSchema = new mongoose.Schema(
 	},
 );
 
-type UserModelType = mongoose.InferSchemaType<typeof usersSchema>;
-export type UserModel = mongoose.HydratedDocument<UserModelType>;
-export const UserModel = mongoose.model("User", usersSchema);
+type UserModelType = InferSchemaType<typeof usersSchema>;
+export type UserModel = HydratedDocument<UserModelType>;
+export const UserModel = model("User", usersSchema);

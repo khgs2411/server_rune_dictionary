@@ -11,9 +11,8 @@
     "jsx": "react-jsx",
     "allowJs": true,
     // Bundler mode
-    "moduleResolution": "Bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
+    "moduleResolution": "node",
+
     "noEmit": true,
     // Best practices
     "strict": true,
