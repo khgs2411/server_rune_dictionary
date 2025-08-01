@@ -43,5 +43,6 @@ const logsSchema = new mongoose.Schema({
 logsSchema.index({ timestamp: -1 });
 logsSchema.index({ level: 1 });
 
-export type LogModel = mongoose.InferSchemaType<typeof logsSchema>;
+type LogModelType = mongoose.InferSchemaType<typeof logsSchema>;
+export type LogModel = mongoose.HydratedDocument<LogModelType>;
 export const LogModel = mongoose.model("Log", logsSchema);

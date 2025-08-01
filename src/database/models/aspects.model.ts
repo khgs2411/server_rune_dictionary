@@ -68,5 +68,8 @@ aspectsSchema.pre("save", async function (next) {
     next();
 });
 
-export type AspectModel = mongoose.InferSchemaType<typeof aspectsSchema>;
+
+type AspectModelType = mongoose.InferSchemaType<typeof aspectsSchema>;
+export type AspectModel = mongoose.HydratedDocument<AspectModelType>;
+
 export const AspectModel = mongoose.model("Aspect", aspectsSchema);

@@ -19,5 +19,6 @@ runesSchema.pre("save", async function (next: () => void) {
 	next();
 });
 
-export type RuneModel = mongoose.InferSchemaType<typeof runesSchema>;
+type RuneModelType = mongoose.InferSchemaType<typeof runesSchema>;
+export type RuneModel = mongoose.HydratedDocument<RuneModelType>;
 export const RuneModel = mongoose.model("Rune", runesSchema);

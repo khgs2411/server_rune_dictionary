@@ -29,5 +29,6 @@ const usersSchema = new mongoose.Schema(
 	},
 );
 
-export type UserModel = mongoose.InferSchemaType<typeof usersSchema>;
+type UserModelType = mongoose.InferSchemaType<typeof usersSchema>;
+export type UserModel = mongoose.HydratedDocument<UserModelType>;
 export const UserModel = mongoose.model("User", usersSchema);
