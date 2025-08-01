@@ -54,6 +54,11 @@ interface ICharacterData {
     baseStats?: IStats;
 }
 
+export interface ICharacterShape extends ICharacterData {
+    name: string;
+    level: number;
+}
+
 type CharacterDefinition = ICharacterData & ICharacterMethods
 type CharacterModelType = Omit<mongoose.InferSchemaType<typeof characterSchema>, 'stats' | 'baseStats'> & CharacterDefinition;
 
