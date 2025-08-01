@@ -39,6 +39,9 @@ playerSchema.methods.levelUp = function (stats?: Partial<IStats>) {
                 this.stats[key] = stats[key]!;
             }
         });
+    } else {
+        self.stats.maxHealth += 10;
+        self.stats.health = self.stats.maxHealth
     }
 
     return self;
