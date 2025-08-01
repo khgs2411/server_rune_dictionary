@@ -13,7 +13,7 @@ export default class UsersRepository {
 	public static async Validate(username: string, api_key: string | undefined): Promise<UserModel>;
 	public static async Validate(api_key: string): Promise<UserModel>;
 	public static async Validate(username_or_api_key: string, api_key?: string | undefined): Promise<UserModel> {
-		if (Lib.IsNumpty(username_or_api_key)) throw "Unauthorized!";
+		if (Lib.IsNumpty(username_or_api_key)) throw new Error("Unauthorized!");
 
 		await Mongo.Connection();
 
@@ -21,7 +21,7 @@ export default class UsersRepository {
 
 		const user = await UserModel.findOne(data);
 
-		if (Guards.IsNil(user)) throw "Unauthorized!!";
+		if (Guards.IsNil(user)) throw new Error("Unauthorized!!");
 
 		return user;
 	}
@@ -33,7 +33,7 @@ export default class UsersRepository {
 			username: username,
 		});
 
-		if (!Guards.IsNil(user)) throw "Username already exists";
+		if (!Guards.IsNil(user)) throw new Error("Username already exists");
 
 		const new_user = new UserModel({
 			username: username,
@@ -51,7 +51,7 @@ export default class UsersRepository {
 			username: username,
 		});
 
-		if (Guards.IsNil(user)) throw "Username does not exist";
+		if (Guards.IsNil(user)) throw new Error("Username does not exist");
 
 		await UserModel.deleteOne({
 			username: username,
@@ -63,7 +63,7 @@ export default class UsersRepository {
 		const user = await UserModel.findOne({
 			username: data.username,
 		});
-		if (Guards.IsNil(user)) throw "Username does not exist";
+		if (Guards.IsNil(user)) throw new Error("Username does not exist");
 		if (data.api_key) {
 			user.api_key = data.api_key;
 		}
@@ -75,7 +75,7 @@ export default class UsersRepository {
 	}
 
 	public static GetValidationData(username_or_api_key?: string, api_key?: string): { api_key: string; username?: string | undefined } {
-		if (Guards.IsNil(username_or_api_key)) throw "Something went wrong. Please try again later.";
+		if (Guards.IsNil(username_or_api_key)) throw new Error("Something went wrong. Please try again later.");
 		const data: { api_key: string; username?: string | undefined } = {
 			api_key: username_or_api_key,
 			// username: undefined,

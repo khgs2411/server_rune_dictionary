@@ -1,13 +1,12 @@
-import Guards from "common/guards";
-import Lib from "common/lib";
 import type Aspect from "application/domain/aspect/aspect";
 import type {
 	AspectCreationData,
 	AspectDeleteData,
 	AspectRetrieveData,
-	AspectUpdateData,
-	IAspectProperties,
+	AspectUpdateData
 } from "application/domain/aspect/aspect.types";
+import Guards from "common/guards";
+import Lib from "common/lib";
 import Mongo from "database/connections/mongodb.database";
 import { AspectModel } from "database/models/aspects.model";
 import type mongoose from "mongoose";
@@ -36,7 +35,7 @@ export default class AspectRepository {
 		console.log(asepect.serialize());
 		const already_exists = await AspectModel.findOne(asepect.serialize());
 
-		if (!Guards.IsNil(already_exists)) throw "asepect already exists";
+		if (!Guards.IsNil(already_exists)) throw new Error("asepect already exists");
 
 		return AspectModel.create(asepect.serialize());
 	}
@@ -81,7 +80,7 @@ export default class AspectRepository {
 		await Mongo.Connection();
 		let filter;
 		let updateData;
-		if (Guards.IsNil(data)) throw "Undefined|null data provided!";
+		if (Guards.IsNil(data)) throw new Error("Undefined|null data provided!");
 		if (Guards.IsString(_idOrData)) {
 			const { aspect_id, hash, ...rest } = data;
 			filter = { _id: _idOrData };
@@ -92,7 +91,7 @@ export default class AspectRepository {
 			updateData = rest;
 		}
 		const updated = await AspectModel.findOneAndUpdate<AspectModel>(filter, updateData, { new: false });
-		if (!updated) throw "Aspect does not exist";
+		if (!updated) throw new Error("Aspect does not exist");
 		return updated;
 	}
 

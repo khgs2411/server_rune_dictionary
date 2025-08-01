@@ -1,8 +1,8 @@
+import { Actions } from "common/enums";
 import type { ProcessArgs } from "common/types";
+import type { UserModel } from "database/models/users.model";
 import UsersRepository from "database/repositories/users.repo";
 import BaseService from "../../base/service.base";
-import { Actions } from "common/enums";
-import type { UserModel } from "database/models/users.model";
 
 export default class AuthService extends BaseService {
 	private static session: Map<string, UserModel> = new Map();
@@ -16,7 +16,7 @@ export default class AuthService extends BaseService {
 		const action = args.strategy.action;
 		const self = new AuthService();
 		const run = self.run[action];
-		if (!run) throw "runes.call - Invalid action provided!";
+		if (!run) throw new Error("runes.call - Invalid action provided!");
 		return await run(args.strategy.data, args);
 	}
 
@@ -34,9 +34,9 @@ export default class AuthService extends BaseService {
 
 	//TODO: implement an actual login method with a user session
 	private async login(data: any, args: ProcessArgs) {
-		if (!data) throw "Something went wrong. Please try again later!";
+		if (!data) throw new Error("Something went wrong. Please try again later!");
 		const { username, api_key } = data;
-		if (!username || !api_key) throw "Something went wrong. Please try again later";
+		if (!username || !api_key) throw new Error("Something went wrong. Please try again later");
 		const user = await UsersRepository.Validate(username, api_key);
 		return {
 			msg: "Success!",

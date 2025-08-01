@@ -1,7 +1,3 @@
-import { Actions } from "common/enums";
-import Guards from "common/guards";
-import Lib from "common/lib";
-import type { ProcessArgs } from "common/types";
 import Rune from "application/domain/rune/rune";
 import {
 	IsRuneCreationData,
@@ -11,6 +7,10 @@ import {
 	type RuneCreationData,
 	type RuneDeleteData,
 } from "application/domain/rune/rune.types";
+import { Actions } from "common/enums";
+import Guards from "common/guards";
+import Lib from "common/lib";
+import type { ProcessArgs } from "common/types";
 import RuneRepository from "database/repositories/runes.repo";
 import BaseService from "../../base/service.base";
 
@@ -19,7 +19,7 @@ export default class RuneService extends BaseService {
 		super();
 		this.run = {
 			[Actions.RUNE_GET_RUNE]: () => {
-				throw "Not Implemented!";
+				throw new Error("Not Implemented!");
 			},
 			[Actions.RUNE_GET_RUNES]: this.getRunes,
 			[Actions.RUNE_INSERT_RUNE]: this.createRune,
@@ -35,13 +35,13 @@ export default class RuneService extends BaseService {
 		const action = args.strategy.action;
 		const self = new RuneService();
 		const run = self.run[action];
-		if (!run) throw "runes.call - Invalid action provided!";
+		if (!run) throw new Error("runes.call - Invalid action provided!");
 		return await run(args.strategy.data, args);
 	}
 
 	private async getRunes(data?: any) {
-		if (!Guards.IsArray(data)) throw "Invalid data provided!";
-		if (!Lib.IsEmpty(data) && !data.every((item: any) => IsRuneRetrieveData(item))) throw "Invalid data provided!!";
+		if (!Guards.IsArray(data)) throw new Error("Invalid data provided!");
+		if (!Lib.IsEmpty(data) && !data.every((item: any) => IsRuneRetrieveData(item))) throw new Error("Invalid data provided!!");
 		const runes = await RuneRepository.Get(data as any[]);
 
 		return {
@@ -52,7 +52,7 @@ export default class RuneService extends BaseService {
 	}
 
 	private async createRune(data: any) {
-		if (!IsRuneCreationData(data)) throw "Invalid data provided!";
+		if (!IsRuneCreationData(data)) throw new Error("Invalid data provided!");
 		const rune = new Rune(data);
 		const new_rune = await RuneRepository.Create(rune);
 		return {
@@ -63,8 +63,8 @@ export default class RuneService extends BaseService {
 	}
 
 	private async createRunes(data: any) {
-		if (!Guards.IsArray(data)) throw "Invalid data provided!";
-		if (!data.every((item: any) => IsRuneCreationData(item))) throw "Invalid data provided!!";
+		if (!Guards.IsArray(data)) throw new Error("Invalid data provided!");
+		if (!data.every((item: any) => IsRuneCreationData(item))) throw new Error("Invalid data provided!!");
 		const runes = (data as RuneCreationData[]).map((rune) => new Rune(rune));
 		const new_runes = await RuneRepository.CreateMany(runes);
 		return {
@@ -75,7 +75,7 @@ export default class RuneService extends BaseService {
 	}
 
 	private async updateRune(data: any) {
-		if (!IsRuneUpdateData(data)) throw "Invalid data provided!";
+		if (!IsRuneUpdateData(data)) throw new Error("Invalid data provided!");
 		const updated = await RuneRepository.Update(data);
 		return {
 			msg: "Success!",
@@ -85,8 +85,8 @@ export default class RuneService extends BaseService {
 	}
 
 	private async updateRunes(data: any) {
-		if (!Guards.IsArray(data)) throw "Invalid data provided!";
-		if (!data.every((item: any) => IsRuneUpdateData(item))) throw "Invalid data provided!!";
+		if (!Guards.IsArray(data)) throw new Error("Invalid data provided!");
+		if (!data.every((item: any) => IsRuneUpdateData(item))) throw new Error("Invalid data provided!!");
 		const updated = await RuneRepository.UpdateMany(data as RuneCreationData[]);
 		return {
 			msg: "Success!",
@@ -96,7 +96,7 @@ export default class RuneService extends BaseService {
 	}
 
 	private async deleteRune(data: any) {
-		if (!IsRuneDeleteData(data)) throw "Invalid data provided!";
+		if (!IsRuneDeleteData(data)) throw new Error("Invalid data provided!");
 		const deleted = await RuneRepository.Delete(data);
 		return {
 			msg: "Success!",
@@ -105,8 +105,8 @@ export default class RuneService extends BaseService {
 		};
 	}
 	private async deleteRunes(data: any) {
-		if (!Guards.IsArray(data)) throw "Invalid data provided!";
-		if (!data.every((item: any) => IsRuneDeleteData(item))) throw "Invalid data provided!!";
+		if (!Guards.IsArray(data)) throw new Error("Invalid data provided!");
+		if (!data.every((item: any) => IsRuneDeleteData(item))) throw new Error("Invalid data provided!!");
 		const deleted = await RuneRepository.DeleteMany(data as RuneDeleteData[]);
 		return {
 			msg: "Success!",
