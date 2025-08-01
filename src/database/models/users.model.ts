@@ -1,6 +1,5 @@
-import Guards from "common/guards";
-import Lib from "common/lib";
 import mongoose from "mongoose";
+import { Guards, Lib } from "topsyde-utils";
 
 export enum ROLES {
 	USER = "user",

@@ -1,0 +1,3 @@
+[submodule "src/database/models"]
+	path = src/database/models
+	url = https://github.com/khgs2411/server_rune_models.git
