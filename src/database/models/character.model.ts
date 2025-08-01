@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { IStats, statsSchemaDefinition } from "./definitions/stats";
 
-const playerSchema = new mongoose.Schema({
+const characterSchema = new mongoose.Schema({
     userId: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     level: { type: Number, default: 1 },
@@ -22,14 +22,14 @@ const playerSchema = new mongoose.Schema({
 
 
 // Define interface for methods
-interface IPlayerMethods {
+interface ICharacterMethods {
     levelUp(stats?: Partial<IStats>): this;
 }
 
 
 // Add any methods or virtuals here
-playerSchema.methods.levelUp = function (stats?: Partial<IStats>) {
-    const self = this as PlayerModel;
+characterSchema.methods.levelUp = function (stats?: Partial<IStats>) {
+    const self = this as CharacterModel;
 
     self.level += 1;
 
@@ -49,15 +49,15 @@ playerSchema.methods.levelUp = function (stats?: Partial<IStats>) {
 
 // Export with proper typing
 
-interface IPlayerData {
+interface ICharacterData {
     stats: IStats;
     baseStats?: IStats;
 }
 
-type PlayerDefinition = IPlayerData & IPlayerMethods
-type PlayerModelType = Omit<mongoose.InferSchemaType<typeof playerSchema>, 'stats' | 'baseStats'> & PlayerDefinition;
+type CharacterDefinition = ICharacterData & ICharacterMethods
+type CharacterModelType = Omit<mongoose.InferSchemaType<typeof characterSchema>, 'stats' | 'baseStats'> & CharacterDefinition;
 
 
-export type PlayerModel = mongoose.HydratedDocument<PlayerModelType>;
+export type CharacterModel = mongoose.HydratedDocument<CharacterModelType>;
 
-export const PlayerModel = mongoose.model<PlayerModel>("Player", playerSchema);
+export const CharacterModel = mongoose.model<CharacterModel>("Character", characterSchema);
