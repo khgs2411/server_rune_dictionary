@@ -4,7 +4,7 @@
     "": {
       "dependencies": {
         "mongoose": "^8.17.0",
-        "topsyde-utils": "^1.0.189",
+        "topsyde-utils": "^1.0.191",
       },
     },
   },
@@ -193,7 +193,7 @@
 
     "tinyglobby": ["tinyglobby@0.2.14", "", { "dependencies": { "fdir": "^6.4.4", "picomatch": "^4.0.2" } }, "sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ=="],
 
-    "topsyde-utils": ["topsyde-utils@1.0.189", "", { "dependencies": { "rxjs": "^7.8.2", "vite": "^6.2.0", "vue": "^3.5.13" } }, "sha512-9iSPvbhRx01sxtNRVbyR5A4aJeW6vXgNdbF4A/vVClqm2D8VSg2d2kTpjtpJzsbSeu4exBkrOvML5INwZtY27g=="],
+    "topsyde-utils": ["topsyde-utils@1.0.191", "", { "dependencies": { "rxjs": "^7.8.2", "vite": "^6.2.0", "vue": "^3.5.13" } }, "sha512-EdFiRv2I60+F8WNJUJZPgGgmuZMYFEVAfX5Gv9aVoaPTonYlbYhPcyyxaICRPduSzc8AgaUQIAC38YvF9oB0ZA=="],
 
     "tr46": ["tr46@5.1.1", "", { "dependencies": { "punycode": "^2.3.1" } }, "sha512-hdF5ZgjTqgAntKkklYw0R03MG2x/bSzTtkxmIRw/sTNV8YXsCJ1tfLAX23lhxhHJlEf3CRCOCGGWw3vI3GaSPw=="],
 

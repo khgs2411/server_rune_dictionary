@@ -1,6 +1,6 @@
 {
   "dependencies": {
     "mongoose": "^8.17.0",
-    "topsyde-utils": "^1.0.189"
+    "topsyde-utils": "^1.0.191"
   }
 }
