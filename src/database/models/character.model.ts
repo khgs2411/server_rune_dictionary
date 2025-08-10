@@ -2,68 +2,82 @@ import { HydratedDocument, InferSchemaType, Schema, model } from "mongoose";
 
 import { IStats, statsSchemaDefinition } from "./definitions/stats";
 
-const characterSchema = new Schema({
+const characterSchema = new Schema(
+  {
     userId: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     level: { type: Number, default: 1 },
     experience: { type: Number, default: 0 },
     stats: {
-        type: statsSchemaDefinition,
-        required: true
+      type: statsSchemaDefinition,
+      required: true,
     },
     baseStats: {
-        type: statsSchemaDefinition,
-        required: false
+      type: statsSchemaDefinition,
+      required: false,
     },
-}, {
+  },
+  {
     timestamps: true,
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-});
-
+    toObject: { virtuals: true },
+  }
+);
 
 // Define interface for methods
 interface ICharacterMethods {
-    levelUp(stats?: Partial<IStats>): this;
+  levelUp(stats?: Partial<IStats>): this;
 }
-
 
 // Add any methods or virtuals here
 characterSchema.methods.levelUp = function (stats?: Partial<IStats>) {
-    const self = this as CharacterModel;
+  const self = this as CharacterModel;
 
-    self.level += 1;
+  self.level += 1;
 
-    if (stats) {
-        (Object.keys(stats) as Array<keyof IStats>).forEach(key => {
-            if (key in this.stats) {
-                this.stats[key] = stats[key]!;
-            }
-        });
-    } else {
-        self.stats.maxHealth += 10;
-        self.stats.health = self.stats.maxHealth
-    }
+  if (stats) {
+    (Object.keys(stats) as Array<keyof IStats>).forEach((key) => {
+      if (key in this.stats) {
+        this.stats[key] = stats[key]!;
+      }
+    });
+  } else {
+    // Default level up improvements
+    self.stats.maxHealth += 10;
+    self.stats.health = self.stats.maxHealth;
+    self.stats.attack += 2;
+    self.stats.defense += 2;
+    self.stats.special_attack += 2;
+    self.stats.special_defense += 2;
+    self.stats.speed += 1;
+    // Tempo remains the same on level up (it's a tactical choice, not a stat that grows)
+  }
 
-    return self;
+  return self;
 };
 
 // Export with proper typing
 
 interface ICharacterData {
-    stats: IStats;
-    baseStats?: IStats;
+  stats: IStats;
+  baseStats?: IStats;
 }
 
 export interface ICharacterShape extends ICharacterData {
-    name: string;
-    level?: number | undefined;
+  name: string;
+  level?: number | undefined;
 }
 
-type CharacterDefinition = ICharacterData & ICharacterMethods
-type CharacterModelType = Omit<InferSchemaType<typeof characterSchema>, 'stats' | 'baseStats'> & CharacterDefinition;
-
+type CharacterDefinition = ICharacterData & ICharacterMethods;
+type CharacterModelType = Omit<
+  InferSchemaType<typeof characterSchema>,
+  "stats" | "baseStats"
+> &
+  CharacterDefinition;
 
 export type CharacterModel = HydratedDocument<CharacterModelType>;
 
-export const CharacterModel = model<CharacterModel>("Character", characterSchema);
+export const CharacterModel = model<CharacterModel>(
+  "Character",
+  characterSchema
+);
