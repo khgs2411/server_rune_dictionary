@@ -51,6 +51,7 @@ characterSchema.methods.levelUp = function (stats?: Partial<IStats>) {
     self.stats.special_defense += 2;
     self.stats.speed += 1;
     // Tempo remains the same on level up (it's a tactical choice, not a stat that grows)
+    self.stats.tempo = self.stats.tempo;
   }
 
   return self;
