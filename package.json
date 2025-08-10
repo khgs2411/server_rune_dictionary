@@ -4,7 +4,7 @@
 	"description": "",
 	"type": "module",
 	"scripts": {
-		"build": "npm scripts/final-build.scripts.ts",
+		"build": "node scripts/final-build.scripts.ts",
 		"deploy": "doctl serverless deploy .",
 		"publish": "bun scripts/final-build.scripts.ts && bun run deploy",
 		"new": "docts fn new",
