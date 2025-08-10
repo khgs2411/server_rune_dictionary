@@ -43,12 +43,12 @@ characterSchema.methods.levelUp = function (stats?: Partial<IStats>) {
     });
   } else {
     // Default level up improvements
-    self.stats.maxHealth += 10;
+    self.stats.maxHealth += 1;
     self.stats.health = self.stats.maxHealth;
-    self.stats.attack += 2;
-    self.stats.defense += 2;
-    self.stats.special_attack += 2;
-    self.stats.special_defense += 2;
+    self.stats.attack += 1;
+    self.stats.defense += 1;
+    self.stats.special_attack += 1;
+    self.stats.special_defense += 1;
     self.stats.speed += 1;
     // Tempo remains the same on level up (it's a tactical choice, not a stat that grows)
     self.stats.tempo = self.stats.tempo;
