@@ -12,20 +12,25 @@ jobs:
 
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
+
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: latest
 
             - name: Set up Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: "20"
 
-            - name: Cache Node modules
+            - name: Cache Bun modules
               uses: actions/cache@v3
               with:
-                  path: ~/.npm
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  path: ~/.bun/install/cache
+                  key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
                   restore-keys: |
-                      ${{ runner.os }}-node-
+                      ${{ runner.os }}-bun-
 
             - name: Authenticate doctl
               uses: digitalocean/action-doctl@v2
@@ -36,19 +41,19 @@ jobs:
               run: doctl serverless install
 
             - name: Install docts globally
-              run: npm install -g docts-cli
+              run: bunx -y docts-cli@latest --version && npm install -g docts-cli
 
             - name: Connect doctl serverless to functions namespace
               run: doctl serverless connect ${{ env.DOCTL_NAMESPACE }}
 
             - name: Install dependencies
-              run: npm install
+              run: bun install
 
             - name: Run build script
-              run: npm run build
+              run: bun run build
 
             - name: Run deploy script
-              run: npm run deploy
+              run: bun run deploy
 
             - name: Verify deployment
               run: |

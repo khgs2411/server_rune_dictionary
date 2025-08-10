@@ -4,9 +4,9 @@
 	"description": "",
 	"type": "module",
 	"scripts": {
-		"build": "node scripts/final-build.scripts.ts",
+		"build": "bun scripts/final-build.scripts.ts",
 		"deploy": "doctl serverless deploy .",
-		"publish": "bun scripts/final-build.scripts.ts && bun run deploy",
+		"publish": "bun run build && bun run deploy",
 		"new": "docts fn new",
 		"remove": "docts fn remove",
 		"destroy": "doctl serverless undeploy",
